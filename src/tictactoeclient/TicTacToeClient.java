@@ -5,10 +5,10 @@
  */
 package tictactoeclient;
 
+import controller.SplashBaseController;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
