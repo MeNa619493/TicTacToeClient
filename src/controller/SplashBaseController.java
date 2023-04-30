@@ -1,4 +1,4 @@
-package tictactoeclient;
+package controller;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,7 +33,7 @@ public class SplashBaseController extends AnchorPane {
 
         getChildren().add(splashImage);
         
-        
+        //file:./src/view/background.jpg
         Image image = new Image(getClass().getResourceAsStream("background.jpg"));
         splashImage.setImage(image);
 
