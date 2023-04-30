@@ -16,16 +16,28 @@ import javafx.stage.Stage;
  * @author Mina
  */
 public class TicTacToeClient extends Application {
-    
+
     @Override
     public void start(Stage primaryStage) {
-        AnchorPane root = new SplashBaseController();
-        
-        Scene scene = new Scene(root, 525, 425);
-        
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
+        chooseXOBase ChooseXOroot = new chooseXOBase();
+        mainBase rootMain = new mainBase();
+        Scene MainScene = new Scene(rootMain);
+        Scene chooseXOScene = new Scene(ChooseXOroot);
+        primaryStage.setScene(MainScene);
         primaryStage.show();
+        primaryStage.setResizable(false);
+        rootMain.btnPlayVsFriend.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                primaryStage.setScene(chooseXOScene);
+            }
+        });
+        ChooseXOroot.btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                primaryStage.setScene(MainScene);
+            }
+        });
     }
 
     /**
@@ -34,5 +46,5 @@ public class TicTacToeClient extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
