@@ -9,8 +9,6 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
@@ -18,27 +16,28 @@ import javafx.stage.Stage;
  * @author Mina
  */
 public class TicTacToeClient extends Application {
-    
+
     @Override
     public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
+        chooseXOBase ChooseXOroot = new chooseXOBase();
+        mainBase rootMain = new mainBase();
+        Scene MainScene = new Scene(rootMain);
+        Scene chooseXOScene = new Scene(ChooseXOroot);
+        primaryStage.setScene(MainScene);
+        primaryStage.show();
+        primaryStage.setResizable(false);
+        rootMain.btnPlayVsFriend.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
+                primaryStage.setScene(chooseXOScene);
             }
         });
-        
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        
-        Scene scene = new Scene(root, 300, 250);
-        
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        ChooseXOroot.btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                primaryStage.setScene(MainScene);
+            }
+        });
     }
 
     /**
@@ -47,5 +46,5 @@ public class TicTacToeClient extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

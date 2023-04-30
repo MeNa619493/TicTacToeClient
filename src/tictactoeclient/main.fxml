@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="pan" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    
+   <children>
+       
+      
+      <Button fx:id="btnPlayVsComputer" layoutX="154.0" layoutY="132.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="293.0" text="Play VS Computer">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnPlayVsFriend" layoutX="154.0" layoutY="201.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="293.0" text="Play VS Friend">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnPlayOverTheNetwork" layoutX="154.0" layoutY="272.0" mnemonicParsing="false" text="Play Over The Network">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnGameHistory" layoutX="470.0" layoutY="354.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="116.0" text="Game History">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      
+   </children>
+   
+</AnchorPane>
