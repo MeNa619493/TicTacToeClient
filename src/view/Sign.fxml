@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="402.0" prefWidth="502.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sign.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sign.FXMLDocumentController">
    <children>
       <Button fx:id="signUpBtn" layoutX="194.0" layoutY="116.0" mnemonicParsing="false" onAction="" prefHeight="44.0" prefWidth="100.0" style="-fx-background-color: white; -fx-border-radius: 0; -fx-border-color: black; -fx-border-width: 2px 5px 5px 2px; -fx-font-weight: Bolder; -fx-width: 99px; -fx-height: 41px;" styleClass="btn" stylesheets="@style.css" text="Sign Up" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
          <font>
