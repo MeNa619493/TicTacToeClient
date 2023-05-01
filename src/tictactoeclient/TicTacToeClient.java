@@ -26,7 +26,8 @@ public class TicTacToeClient extends Application {
         primaryStage.setScene(MainScene);
         primaryStage.show();
         primaryStage.setResizable(false);
-        rootMain.btnPlayVsFriend.setOnAction(new EventHandler<ActionEvent>() {
+    }
+      /*  rootMain.btnPlayVsFriend.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 primaryStage.setScene(chooseXOScene);
@@ -38,7 +39,7 @@ public class TicTacToeClient extends Application {
                 primaryStage.setScene(MainScene);
             }
         });
-    }
+    }*/
 
     /**
      * @param args the command line arguments
