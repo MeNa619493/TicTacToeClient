@@ -1,4 +1,4 @@
-package tictactoeclient;
+package controller;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -15,10 +15,10 @@ import javafx.scene.text.Text;
 public class mainBase extends AnchorPane {
 
     
-    protected final Button btnPlayVsComputer;
-    protected final Button btnPlayVsFriend;
-    protected final Button btnPlayOverTheNetwork;
-    protected final Button btnGameHistory;
+    public final Button btnPlayVsComputer;
+    public final Button btnPlayVsFriend;
+    public final Button btnPlayOverTheNetwork;
+    public final Button btnGameHistory;
     
 
     public mainBase() {
@@ -65,9 +65,9 @@ public class mainBase extends AnchorPane {
         btnGameHistory.setLayoutY(354.0);
         btnGameHistory.setMnemonicParsing(false);
         btnGameHistory.setPrefHeight(32.0);
-        btnGameHistory.setPrefWidth(116.0);
+        btnGameHistory.setPrefWidth(120.0);
         btnGameHistory.setText("Game History");
-        btnGameHistory.setFont(new Font("System Bold", 14.0));
+        btnGameHistory.setFont(new Font("System Bold", 12.0));
 
       
 
@@ -77,9 +77,13 @@ public class mainBase extends AnchorPane {
         getChildren().add(btnPlayOverTheNetwork);
         getChildren().add(btnGameHistory);
        
-        setStyle("-fx-background-image: url('file:./src/Photo/bg.jpg');"
+        setStyle("-fx-background-image: url('file:./src/Photo/bg3.jpg');"
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
+        btnPlayVsComputer.setId("myButton");
+        btnPlayVsFriend.setId("myButton");
+        btnPlayOverTheNetwork.setId("myButton");
+        btnGameHistory.setId("myButton");
         
     }
 }

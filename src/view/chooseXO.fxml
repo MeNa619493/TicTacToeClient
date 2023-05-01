@@ -8,14 +8,14 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tictactoeclient.ChooseXOController">
    <children>
-      <Text fx:id="tvChoose" fill="RED" layoutX="221.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose">
+      <Text fx:id="tvChoose" fill="#0070fc" layoutX="221.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose">
          <font>
             <Font name="System Bold" size="48.0" />
          </font>
       </Text>
       <Button fx:id="btnChooseX" layoutX="125.0" layoutY="131.0" mnemonicParsing="false" prefHeight="135.0" prefWidth="168.0" style="-fx-background-color: transparent;" />
       <Button fx:id="btnChooseO" layoutX="325.0" layoutY="131.0" mnemonicParsing="false" prefHeight="135.0" prefWidth="168.0" style="-fx-background-color: transparent;" />
-      <Button fx:id="btnEndGame" layoutX="520.0" layoutY="361.0" mnemonicParsing="false" text="End Game">
+      <Button fx:id="btnEndGame" layoutX="500.0" layoutY="350.0" mnemonicParsing="false" text="End Game">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
