@@ -1,4 +1,4 @@
-package tictactoeclient;
+package controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,9 +12,9 @@ import javafx.scene.text.Text;
 public class chooseXOBase extends AnchorPane {
 
     protected final Text tvChoose;
-    protected final Button btnChooseX;
-    protected final Button btnChooseO;
-    protected final Button btnEndGame;
+    public final Button btnChooseX;
+    public final Button btnChooseO;
+    public final Button btnEndGame;
     protected final ImageView ivLine;
 
     public chooseXOBase() {
@@ -30,7 +30,7 @@ public class chooseXOBase extends AnchorPane {
         setPrefWidth(600.0);
         setStyle("-fx-background-color: transparent;");
 
-        tvChoose.setFill(javafx.scene.paint.Color.RED);
+        tvChoose.setFill(javafx.scene.paint.Color.web("#0070fc"));
         tvChoose.setLayoutX(221.0);
         tvChoose.setLayoutY(80.0);
         tvChoose.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
@@ -52,8 +52,8 @@ public class chooseXOBase extends AnchorPane {
         btnChooseO.setPrefWidth(168.0);
         btnChooseO.setStyle("-fx-background-color: transparent;");
 
-        btnEndGame.setLayoutX(520.0);
-        btnEndGame.setLayoutY(361.0);
+        btnEndGame.setLayoutX(500.0);
+        btnEndGame.setLayoutY(350.0);
         btnEndGame.setMnemonicParsing(false);
         btnEndGame.setText("End Game");
         btnEndGame.setFont(new Font("System Bold", 12.0));
@@ -75,16 +75,18 @@ public class chooseXOBase extends AnchorPane {
         viewX.setFitHeight(120);
         viewX.setPreserveRatio(true);
         btnChooseX.setGraphic(viewX);
-        
+
         Image imgO = new Image("file:./src/Photo/o.png");
         ImageView viewO = new ImageView(imgO);
         viewO.setFitHeight(120);
         viewO.setPreserveRatio(true);
         btnChooseO.setGraphic(viewO);
-        setStyle("-fx-background-image: url('file:./src/Photo/bg.jpg');"
+        setStyle("-fx-background-image: url('file:./src/Photo/bg3.jpg');"
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
-        Image imgLine = new Image("file:./src/Photo/line.png",true);
+        btnEndGame.setId("myButton");
+        Image imgLine = new Image("file:./src/Photo/line.png", true);
         ivLine.setImage(imgLine);
+        
     }
 }
