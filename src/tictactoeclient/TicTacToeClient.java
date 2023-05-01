@@ -5,13 +5,6 @@
  */
 package tictactoeclient;
 
-import controller.OneVsComputerController;
-import controller.SplashBaseController;
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import controller.FxmlOneVsComBase;
 import controller.FxmlOneVsOneBase;
 import controller.FxmlOneVsOnlineBase;
@@ -25,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import utilities.Navigation;
 
 /**
  *
@@ -74,14 +66,7 @@ public class TicTacToeClient extends Application {
         rootMain.btnPlayVsComputer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try{
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/FxmlOneVsComputer.fxml"));
-                    Parent root = (Parent)fxmlLoader.load();        
-                    Scene scene = new Scene(root);
-                    primaryStage.setScene(scene);
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
+                primaryStage.setScene(oneVsOneChooseXOScene);
             }
         });
         primaryStage.show();
