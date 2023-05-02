@@ -62,7 +62,15 @@ public class TicTacToeClient extends Application {
         }
         primaryStage.setScene(MainScene);
         primaryStage.setResizable(false);
+
+        rootMain.btnPlayVsComputer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                primaryStage.setScene(oneVsOneChooseXOScene);
+            }
+        });
         primaryStage.show();
+
         rootMain.btnPlayVsFriend.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
