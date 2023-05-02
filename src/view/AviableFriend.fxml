@@ -194,7 +194,12 @@
          </GridPane.margin>
       </Button>
    </children>
-</GridPane>
-        </content>
+ </GridPane>
+   </content>
+   <stylesheets>
+      <URL value="@../Photo/buttonStylemo.css" />
+      <URL value="@../Photo/paneCss.css" />
+      <URL value="@../Photo/scroll.css" />
+   </stylesheets>
 </ScrollPane>
 
