@@ -2,6 +2,7 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -14,6 +15,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import utilities.Navigation;
 
 public class FxmlOneVsOneBase extends AnchorPane {
@@ -49,17 +51,9 @@ public class FxmlOneVsOneBase extends AnchorPane {
     Image imgo;
     int playerScoorNum;
     int computerScoreNum;
-    chooseXOBase chooseXO=new chooseXOBase();
+    
 
-    public FxmlOneVsOneBase() {
-        if(chooseXO.xoFlag==1)
-        {
-        x=chooseXO.xoFlag;
-        }else if(chooseXO.xoFlag==0){
-         x=chooseXO.xoFlag;
-        }else{
-        x=1;
-        }
+    public FxmlOneVsOneBase(Stage primaryStage) {
         
         playerScoorNum = 0;
         computerScoreNum = 0;
@@ -394,6 +388,16 @@ public class FxmlOneVsOneBase extends AnchorPane {
         btnReset.setDisable(true);
         playerScore.setText("" + playerScoorNum);
         computerScore.setText("" + computerScoreNum);
+        
+        btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                mainBase rootMain = new mainBase(primaryStage);
+                Scene MainScene = new Scene(rootMain);
+                MainScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+                primaryStage.setScene(MainScene);
+            }
+        });
     }
 
     public void draw(Button btn) {

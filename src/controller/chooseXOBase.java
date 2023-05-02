@@ -108,7 +108,7 @@ public class chooseXOBase extends AnchorPane {
             @Override
             public void handle(ActionEvent event) {
                 if(isGoingToOneVsOne){
-                    FxmlOneVsOneBase oneVsOneRoot = new FxmlOneVsOneBase();
+                    FxmlOneVsOneBase oneVsOneRoot = new FxmlOneVsOneBase(primaryStage);
                     Scene oneVsOneScene = new Scene(oneVsOneRoot);
                     primaryStage.setScene(oneVsOneScene);
                     oneVsOneScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
@@ -125,7 +125,7 @@ public class chooseXOBase extends AnchorPane {
             @Override
             public void handle(ActionEvent event) {
                 if(isGoingToOneVsOne){
-                    FxmlOneVsOneBase oneVsOneRoot = new FxmlOneVsOneBase();
+                    FxmlOneVsOneBase oneVsOneRoot = new FxmlOneVsOneBase(primaryStage);
                     Scene oneVsOneScene = new Scene(oneVsOneRoot);
                     primaryStage.setScene(oneVsOneScene);
                     oneVsOneScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");

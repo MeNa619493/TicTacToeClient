@@ -29,7 +29,6 @@ public class TicTacToeClient extends Application {
         
         MainScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
         
-
         try {
             primaryStage.setScene(splashScene);
             primaryStage.setResizable(false);
