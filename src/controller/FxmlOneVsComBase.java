@@ -19,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import static jdk.nashorn.internal.objects.NativeMath.random;
+import utilities.MiniMax;
 import utilities.Navigation;
 
 public class FxmlOneVsComBase extends AnchorPane {
@@ -334,7 +335,7 @@ public class FxmlOneVsComBase extends AnchorPane {
     }
     
     //easy
-    private void computerTurn(){
+   /* private void computerTurn(){
         if(!isWinner){
             if(available.size() > 0){
                 int index = (int)floor(random(available.size()-1));
@@ -349,38 +350,38 @@ public class FxmlOneVsComBase extends AnchorPane {
                 checkWinner();
             }
         }
-    }
+    }*/
     
     //hard
-//    private void computerTurn(){
-//        if(!isWinner){
-//            if(available.size() > 0){
-//                char[][] playBoard = new char[3][3];
-//                for (int j = 0; j < 3; j++) {
-//                    for (int i = 0; i < 3; i++) {
-//                        if(board[j][i].getText().isEmpty()){
-//                             playBoard[j][i] = ' ';
-//                             continue;
-//                        }
-//                        playBoard[j][i] = (board[j][i].getText()).charAt(0);
-//                    }
-//                }
-//                
-//                int[] res = new int[2];
-//                res = MiniMax.getBestMove(playBoard,9);
-//                int index = res[0]*3+res[1];
-//                Button buttonChoosed = btns.get(index);
-//                buttonChoosed.setText(currentPlayer);
-//                buttonChoosed.setTextFill(Color.TRANSPARENT);
-//                buttonChoosed.setGraphic(createImageViewO());
-//                isUserTurn = true;
-//                currentPlayer = "X";
-//                buttonChoosed.setDisable(true);
-//                available.remove(buttonChoosed);
-//                checkWinner();
-//            }
-//        }
-//    }
+    private void computerTurn(){
+        if(!isWinner){
+            if(available.size() > 0){
+                char[][] playBoard = new char[3][3];
+                for (int j = 0; j < 3; j++) {
+                    for (int i = 0; i < 3; i++) {
+                        if(board[j][i].getText().isEmpty()){
+                             playBoard[j][i] = ' ';
+                             continue;
+                        }
+                        playBoard[j][i] = (board[j][i].getText()).charAt(0);
+                    }
+                }
+                
+                int[] res = new int[2];
+                res = MiniMax.getBestMove(playBoard,9);
+                int index = res[0]*3+res[1];
+                Button buttonChoosed = btns.get(index);
+                buttonChoosed.setText(currentPlayer);
+                buttonChoosed.setTextFill(Color.TRANSPARENT);
+                buttonChoosed.setGraphic(createImageViewO());
+                isUserTurn = true;
+                currentPlayer = "X";
+                buttonChoosed.setDisable(true);
+                available.remove(buttonChoosed);
+                checkWinner();
+            }
+        }
+    }
     
     private Boolean equals(Button a,Button b,Button c) {
         if(!a.getText().isEmpty() 

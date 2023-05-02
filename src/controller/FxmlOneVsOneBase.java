@@ -14,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import utilities.Navigation;
 
 public class FxmlOneVsOneBase extends AnchorPane {
 
@@ -370,35 +371,48 @@ public class FxmlOneVsOneBase extends AnchorPane {
     public void checkWinner() {
         if (btn00.getText().equals(btn10.getText()) && btn00.getText().equals(btn02.getText()) && btn00.getText() != "" && btn01.getText() != "" && btn02.getText() != "") {
             endApp();
-            winerDialog();
+            showResultVideo();
         } else if (btn10.getText().equals(btn11.getText()) && btn10.getText().equals(btn12.getText()) && btn10.getText() != "" && btn11.getText() != "" && btn12.getText() != "") {
             endApp();
-            winerDialog();
+            showResultVideo();
         } else if (btn20.getText().equals(btn21.getText()) && btn20.getText().equals(btn22.getText()) && btn20.getText() != "" && btn21.getText() != "" && btn22.getText() != "") {
             endApp();
-            winerDialog();
+            showResultVideo();
         } else if (btn00.getText().equals(btn10.getText()) && btn00.getText().equals(btn20.getText()) && btn00.getText() != "" && btn10.getText() != "" && btn20.getText() != "") {
             endApp();
-            winerDialog();
+            showResultVideo();
         } else if (btn01.getText().equals(btn11.getText()) && btn01.getText().equals(btn21.getText()) && btn01.getText() != "" && btn11.getText() != "" && btn21.getText() != "") {
             endApp();
-            winerDialog();
+            showResultVideo();
         } else if (btn02.getText().equals(btn12.getText()) && btn02.getText().equals(btn22.getText()) && btn02.getText() != "" && btn12.getText() != "" && btn22.getText() != "") {
             endApp();
-            winerDialog();
+            showResultVideo();
         } else if (btn00.getText().equals(btn11.getText()) && btn00.getText().equals(btn22.getText()) && btn00.getText() != "" && btn11.getText() != "" && btn22.getText() != "") {
             endApp();
-            winerDialog();
+            showResultVideo();
         } else if (btn02.getText().equals(btn11.getText()) && btn02.getText().equals(btn20.getText()) && btn01.getText() != "" && btn11.getText() != "" && btn20.getText() != "") {
             endApp();
-            winerDialog();
+            showResultVideo();
         } else {
             if (checkNull() == 1) {
-                drawDialog();
+                showDrawVideo();
             }
         }
     }
-
+    private void showResultVideo(){
+        Navigation nav = new Navigation();
+        --x;
+       if(x % 2 != 0){
+            nav.navigatToWatchVideo("win");
+        }else {
+            nav.navigatToWatchVideo("lose");
+        }
+    }
+    private void showDrawVideo(){
+        Navigation nav = new Navigation();
+            nav.navigatToWatchVideo("tie");
+        
+    }
     private void winerDialog() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Winner");
