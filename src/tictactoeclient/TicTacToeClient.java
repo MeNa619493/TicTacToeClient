@@ -11,6 +11,10 @@ import controller.FxmlOneVsOnlineBase;
 import controller.mainBase;
 import controller.chooseXOBase;
 import controller.FxmlSplashBase;
+import controller.SignBase;
+import controller.computerLevelBase;
+import controller.signInBase;
+import controller.signUpBase;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -33,7 +37,10 @@ public class TicTacToeClient extends Application {
         mainBase rootMain = new mainBase();
         chooseXOBase OneVsOneChooseXOroot = new chooseXOBase();
         chooseXOBase OneVsCompChooseXOroot = new chooseXOBase();
-        chooseXOBase OneVsOnlineChooseXOroot = new chooseXOBase();
+        SignBase signRoot=new SignBase();
+        signInBase signInRoot=new signInBase();
+        signUpBase signUpRoot=new signUpBase();
+        computerLevelBase computerLevelRoot=new computerLevelBase();
         FxmlOneVsOneBase oneVsOneRoot = new FxmlOneVsOneBase();
         FxmlOneVsComBase oneVsComRoot = new FxmlOneVsComBase();
         FxmlOneVsOnlineBase oneVsOnlineRoot = new FxmlOneVsOnlineBase();
@@ -41,17 +48,23 @@ public class TicTacToeClient extends Application {
         Scene MainScene = new Scene(rootMain);
         Scene oneVsOneChooseXOScene = new Scene(OneVsOneChooseXOroot);
         Scene OneVsComChooseXOScene = new Scene(OneVsCompChooseXOroot);
-        Scene OneVsOnlineChooseXOScene = new Scene(OneVsOnlineChooseXOroot);
         Scene oneVsOneScene = new Scene(oneVsOneRoot);
         Scene oneVsComScene = new Scene(oneVsComRoot);
         Scene oneVsOnlineScene = new Scene(oneVsOnlineRoot);
+        Scene signScene = new Scene(signRoot);
+        Scene signInScene = new Scene(signInRoot);
+        Scene signUpScene = new Scene(signUpRoot);
+        Scene computerLevelScene = new Scene(computerLevelRoot);
         MainScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
         oneVsOneChooseXOScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
         OneVsComChooseXOScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
-        OneVsOnlineChooseXOScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
         oneVsOneScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
         oneVsComScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
         oneVsOnlineScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+        signScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+        signInScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+        signUpScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+        computerLevelScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
         try {
             primaryStage.setScene(splashScene);
             primaryStage.setResizable(false);
@@ -80,13 +93,13 @@ public class TicTacToeClient extends Application {
         rootMain.btnPlayVsComputer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                primaryStage.setScene(OneVsComChooseXOScene);
+                primaryStage.setScene(computerLevelScene);
             }
         });
         rootMain.btnPlayOverTheNetwork.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                primaryStage.setScene(OneVsOnlineChooseXOScene);
+                 primaryStage.setScene(signScene);
             }
         });
         OneVsOneChooseXOroot.btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
@@ -129,26 +142,7 @@ public class TicTacToeClient extends Application {
                 primaryStage.setScene(oneVsComScene);
             }
         });
-         OneVsOnlineChooseXOroot.btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                primaryStage.setScene(MainScene);
-            }
-        });
-        OneVsOnlineChooseXOroot.btnChooseX.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                xoFlag = 1;
-                primaryStage.setScene(oneVsOnlineScene);
-            }
-        });
-        OneVsOnlineChooseXOroot.btnChooseX.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                xoFlag = 2;
-                primaryStage.setScene(oneVsOnlineScene);
-            }
-        });
+         
         oneVsOneRoot.btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -161,10 +155,22 @@ public class TicTacToeClient extends Application {
                 primaryStage.setScene(MainScene);
             }
         });
-        oneVsOnlineRoot.btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
+        signRoot.btnSignIn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                primaryStage.setScene(MainScene);
+                primaryStage.setScene(signInScene);
+            }
+        });
+        signRoot.btnSignUp.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                primaryStage.setScene(signUpScene);
+            }
+        });
+        computerLevelRoot.btnHigh.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                primaryStage.setScene(OneVsComChooseXOScene);
             }
         });
     }
