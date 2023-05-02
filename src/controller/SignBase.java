@@ -1,8 +1,12 @@
 package controller;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public  class SignBase extends AnchorPane {
 
@@ -10,7 +14,7 @@ public  class SignBase extends AnchorPane {
     public final Button btnSignIn;
     public final Button btnSignHome;
 
-    public SignBase() {
+    public SignBase(Stage primaryStage) {
 
         btnSignUp = new Button();
         btnSignIn = new Button();
@@ -55,5 +59,35 @@ public  class SignBase extends AnchorPane {
         btnSignUp.setId("myButton");
         btnSignIn.setId("myButton");
         btnSignHome.setId("myButton");
+        
+        btnSignIn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                signInBase signInRoot=new signInBase();
+                Scene signInScene = new Scene(signInRoot);
+                signInScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+                primaryStage.setScene(signInScene);
+            }
+        });
+        
+        btnSignUp.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                signUpBase signUpRoot=new signUpBase();
+                Scene signUpScene = new Scene(signUpRoot);
+                signUpScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+                primaryStage.setScene(signUpScene);
+            }
+        });
+        
+        btnSignHome.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                mainBase rootMain = new mainBase(primaryStage);
+                Scene MainScene = new Scene(rootMain);
+                MainScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+                primaryStage.setScene(MainScene);
+            }
+        });
     }
 }
