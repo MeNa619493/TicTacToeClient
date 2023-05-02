@@ -16,7 +16,7 @@ public class chooseXOBase extends AnchorPane {
     public final Button btnChooseO;
     public final Button btnEndGame;
     protected final ImageView ivLine;
-
+    public int xoFlag=1;
     public chooseXOBase() {
 
         tvChoose = new Text();
@@ -24,7 +24,7 @@ public class chooseXOBase extends AnchorPane {
         btnChooseO = new Button();
         btnEndGame = new Button();
         ivLine = new ImageView();
-
+        
         setId("AnchorPane");
         setPrefHeight(400.0);
         setPrefWidth(600.0);
@@ -87,6 +87,18 @@ public class chooseXOBase extends AnchorPane {
         btnEndGame.setId("myButton");
         Image imgLine = new Image("file:./src/Photo/line.png", true);
         ivLine.setImage(imgLine);
+        btnChooseX.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                xoFlag=1;
+            }
+        });
+        btnChooseO.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                xoFlag=0;
+            }
+        });
         
     }
 }
