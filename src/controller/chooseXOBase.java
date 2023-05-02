@@ -2,22 +2,26 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class chooseXOBase extends AnchorPane {
 
     protected final Text tvChoose;
-    public final Button btnChooseX;
-    public final Button btnChooseO;
-    public final Button btnEndGame;
+    protected final Button btnChooseX;
+    protected final Button btnChooseO;
+    protected final Button btnEndGame;
     protected final ImageView ivLine;
-
-    public chooseXOBase() {
+    Stage primaryStage;
+    Boolean isGoingToOneVsOne;
+    
+    public chooseXOBase(Stage primaryStage, Boolean isGoingToOneVsOne, Boolean isHard) {
 
         tvChoose = new Text();
         btnChooseX = new Button();
@@ -87,6 +91,52 @@ public class chooseXOBase extends AnchorPane {
         btnEndGame.setId("myButton");
         Image imgLine = new Image("file:./src/Photo/line.png", true);
         ivLine.setImage(imgLine);
+        this.primaryStage = primaryStage;
+        this.isGoingToOneVsOne = isGoingToOneVsOne;
+        
+        btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                mainBase rootMain = new mainBase(primaryStage);
+                Scene MainScene = new Scene(rootMain);
+                MainScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+                primaryStage.setScene(MainScene);
+            }
+        });
+        
+        btnChooseX.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(isGoingToOneVsOne){
+                    FxmlOneVsOneBase oneVsOneRoot = new FxmlOneVsOneBase();
+                    Scene oneVsOneScene = new Scene(oneVsOneRoot);
+                    primaryStage.setScene(oneVsOneScene);
+                    oneVsOneScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+                }else{
+                    FxmlOneVsComBase oneVsComRoot = new FxmlOneVsComBase(primaryStage, isHard);
+                    Scene oneVsComScene = new Scene(oneVsComRoot);
+                    primaryStage.setScene(oneVsComScene);
+                    oneVsComScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+                }
+            }
+        });
+        
+        btnChooseO.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(isGoingToOneVsOne){
+                    FxmlOneVsOneBase oneVsOneRoot = new FxmlOneVsOneBase();
+                    Scene oneVsOneScene = new Scene(oneVsOneRoot);
+                    primaryStage.setScene(oneVsOneScene);
+                    oneVsOneScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+                }else{
+                    FxmlOneVsComBase oneVsComRoot = new FxmlOneVsComBase(primaryStage, isHard);
+                    Scene oneVsComScene = new Scene(oneVsComRoot);
+                    primaryStage.setScene(oneVsComScene);
+                    oneVsComScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+                }
+            }
+        });
         
     }
 }

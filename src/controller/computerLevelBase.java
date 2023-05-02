@@ -1,18 +1,22 @@
 package controller;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class computerLevelBase extends AnchorPane {
 
-    public final Button btnLow;
-    public final Button btnHigh;
-    public final Button btnEndGame;
+    protected final Button btnLow;
+    protected final Button btnHigh;
+    protected final Button btnEndGame;
     protected final Text text;
 
-    public computerLevelBase() {
+    public computerLevelBase(Stage primaryStage) {
 
         btnLow = new Button();
         btnHigh = new Button();
@@ -65,5 +69,35 @@ public class computerLevelBase extends AnchorPane {
         btnLow.setId("myButton");
         btnHigh.setId("myButton");
         btnEndGame.setId("myButton");
+        
+        btnHigh.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                chooseXOBase OneVsOneChooseXOroot = new chooseXOBase(primaryStage, false, true);
+                Scene oneVsOneChooseXOScene = new Scene(OneVsOneChooseXOroot);
+                primaryStage.setScene(oneVsOneChooseXOScene);
+                oneVsOneChooseXOScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+            }
+        });
+        
+        btnLow.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                chooseXOBase OneVsOneChooseXOroot = new chooseXOBase(primaryStage, false, false);
+                Scene oneVsOneChooseXOScene = new Scene(OneVsOneChooseXOroot);
+                primaryStage.setScene(oneVsOneChooseXOScene);
+                oneVsOneChooseXOScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+            }
+        });
+        
+        btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                mainBase rootMain = new mainBase(primaryStage);
+                Scene MainScene = new Scene(rootMain);
+                MainScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+                primaryStage.setScene(MainScene);
+            }
+        });
     }
 }
