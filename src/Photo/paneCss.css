@@ -1,0 +1,7 @@
+.root{
+    
+/*    -fx-background-images: url('../proje/backGround');*/
+    -fx-background-image:url('./bgGp.jpg');
+    -fx-background-size:cover ; 
+    
+}
