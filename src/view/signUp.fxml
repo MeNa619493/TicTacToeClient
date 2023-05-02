@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -39,8 +40,8 @@
          </font>
       </Text>
       <TextField fx:id="tfUpUserName" layoutX="209.0" layoutY="50.0" prefHeight="32.0" prefWidth="355.0" promptText="Enter Your User Name" style="-fx-background-color: #323741;" />
-      <TextField fx:id="tfUpPassword" layoutX="209.0" layoutY="154.0" prefHeight="32.0" prefWidth="355.0" promptText="Enter Your Password" style="-fx-background-color: #323741;" />
       <TextField fx:id="tfUpEmail" layoutX="209.0" layoutY="102.0" prefHeight="32.0" prefWidth="355.0" promptText="Enter Your Email" style="-fx-background-color: #323741;" />
-      <TextField fx:id="tfUpConPassword" layoutX="209.0" layoutY="213.0" prefHeight="32.0" prefWidth="355.0" promptText="Confirm your Password" style="-fx-background-color: #323741;" />
+      <PasswordField fx:id="tfUpPassword" layoutX="209.0" layoutY="152.0" prefHeight="32.0" prefWidth="355.0" promptText="Enter Your Password" style="-fx-background-color: #323741;" />
+      <PasswordField fx:id="tfUpConPassword" layoutX="209.0" layoutY="212.0" prefHeight="32.0" prefWidth="355.0" promptText="Enter Your Password" style="-fx-background-color: #323741;" />
    </children>
 </AnchorPane>

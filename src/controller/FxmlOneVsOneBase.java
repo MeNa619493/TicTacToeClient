@@ -41,14 +41,28 @@ public class FxmlOneVsOneBase extends AnchorPane {
     protected final Button btn01;
     protected final Button btn00;
     public final Button btnEndGame;
-    int x = 1;
+    public final Button btnReset;
+    int x =1;
     int y = 1;
     int flag = 0;
     Image imgx;
     Image imgo;
+    int playerScoorNum;
+    int computerScoreNum;
+    chooseXOBase chooseXO=new chooseXOBase();
 
     public FxmlOneVsOneBase() {
-
+        if(chooseXO.xoFlag==1)
+        {
+        x=chooseXO.xoFlag;
+        }else if(chooseXO.xoFlag==0){
+         x=chooseXO.xoFlag;
+        }else{
+        x=1;
+        }
+        
+        playerScoorNum = 0;
+        computerScoreNum = 0;
         text = new Text();
         playerScore = new Text();
         text0 = new Text();
@@ -72,6 +86,7 @@ public class FxmlOneVsOneBase extends AnchorPane {
         btn01 = new Button();
         btn00 = new Button();
         btnEndGame = new Button();
+        btnReset = new Button();
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -239,6 +254,14 @@ public class FxmlOneVsOneBase extends AnchorPane {
         btnEndGame.setText("End Game");
         btnEndGame.setFont(new Font(14.0));
 
+        AnchorPane.setBottomAnchor(btnReset, 20.0);
+        AnchorPane.setRightAnchor(btnReset, 470.0);
+        btnReset.setLayoutX(20.0);
+        btnReset.setLayoutY(12.0);
+        btnReset.setMnemonicParsing(false);
+        btnReset.setText("New Round");
+        btnReset.setFont(new Font(14.0));
+
         getChildren().add(text);
         getChildren().add(playerScore);
         getChildren().add(text0);
@@ -262,10 +285,12 @@ public class FxmlOneVsOneBase extends AnchorPane {
         stackPane.getChildren().add(gridPane);
         getChildren().add(stackPane);
         getChildren().add(btnEndGame);
+        getChildren().add(btnReset);
         setStyle("-fx-background-image: url('file:./src/Photo/bgGp.jpg');"
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
         btnEndGame.setId("myButton");
+        btnReset.setId("myButton");
         btn00.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -322,6 +347,32 @@ public class FxmlOneVsOneBase extends AnchorPane {
                 draw(btn22);
             }
         });
+        btnReset.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                resetLayout();
+                x = 1;
+            }
+        });
+        btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                resetLayout();
+                x = 1;
+            }
+        });
+//        chooseXO.btnChooseX.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                x=1;
+//            }
+//        });
+//        chooseXO.btnChooseO.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                x=0;
+//            }
+//        });
         GridPane.setHalignment(btn00, javafx.geometry.HPos.CENTER);
         GridPane.setValignment(btn00, javafx.geometry.VPos.CENTER);
         GridPane.setHalignment(btn01, javafx.geometry.HPos.CENTER);
@@ -340,6 +391,9 @@ public class FxmlOneVsOneBase extends AnchorPane {
         GridPane.setValignment(btn21, javafx.geometry.VPos.CENTER);
         GridPane.setHalignment(btn22, javafx.geometry.HPos.CENTER);
         GridPane.setValignment(btn22, javafx.geometry.VPos.CENTER);
+        btnReset.setDisable(true);
+        playerScore.setText("" + playerScoorNum);
+        computerScore.setText("" + computerScoreNum);
     }
 
     public void draw(Button btn) {
@@ -369,70 +423,85 @@ public class FxmlOneVsOneBase extends AnchorPane {
     }
 
     public void checkWinner() {
-        if (btn00.getText().equals(btn10.getText()) && btn00.getText().equals(btn02.getText()) && btn00.getText() != "" && btn01.getText() != "" && btn02.getText() != "") {
+        if (btn00.getText().equals(btn01.getText()) && btn00.getText().equals(btn02.getText()) && btn00.getText() != "" && btn01.getText() != "" && btn02.getText() != "") {
             endApp();
             showResultVideo();
+            btnReset.setDisable(false);
+
         } else if (btn10.getText().equals(btn11.getText()) && btn10.getText().equals(btn12.getText()) && btn10.getText() != "" && btn11.getText() != "" && btn12.getText() != "") {
             endApp();
             showResultVideo();
+            btnReset.setDisable(false);
         } else if (btn20.getText().equals(btn21.getText()) && btn20.getText().equals(btn22.getText()) && btn20.getText() != "" && btn21.getText() != "" && btn22.getText() != "") {
             endApp();
             showResultVideo();
+            btnReset.setDisable(false);
         } else if (btn00.getText().equals(btn10.getText()) && btn00.getText().equals(btn20.getText()) && btn00.getText() != "" && btn10.getText() != "" && btn20.getText() != "") {
             endApp();
             showResultVideo();
+            btnReset.setDisable(false);
         } else if (btn01.getText().equals(btn11.getText()) && btn01.getText().equals(btn21.getText()) && btn01.getText() != "" && btn11.getText() != "" && btn21.getText() != "") {
             endApp();
             showResultVideo();
+            btnReset.setDisable(false);
         } else if (btn02.getText().equals(btn12.getText()) && btn02.getText().equals(btn22.getText()) && btn02.getText() != "" && btn12.getText() != "" && btn22.getText() != "") {
             endApp();
             showResultVideo();
+            btnReset.setDisable(false);
         } else if (btn00.getText().equals(btn11.getText()) && btn00.getText().equals(btn22.getText()) && btn00.getText() != "" && btn11.getText() != "" && btn22.getText() != "") {
             endApp();
             showResultVideo();
+            btnReset.setDisable(false);
         } else if (btn02.getText().equals(btn11.getText()) && btn02.getText().equals(btn20.getText()) && btn01.getText() != "" && btn11.getText() != "" && btn20.getText() != "") {
             endApp();
             showResultVideo();
+            btnReset.setDisable(false);
         } else {
             if (checkNull() == 1) {
                 showDrawVideo();
+                btnReset.setDisable(false);
             }
         }
+
     }
-    private void showResultVideo(){
+
+    private void showResultVideo() {
         Navigation nav = new Navigation();
-        --x;
-       if(x % 2 != 0){
-            nav.navigatToWatchVideo("win");
-        }else {
-            nav.navigatToWatchVideo("lose");
-        }
-    }
-    private void showDrawVideo(){
-        Navigation nav = new Navigation();
-            nav.navigatToWatchVideo("tie");
-        
-    }
-    private void winerDialog() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Winner");
         --x;
         if (x % 2 != 0) {
-            alert.setContentText("winer is X");
-            alert.showAndWait();
+            nav.navigatToWatchVideo("win");
+            playerScore.setText("" + (++playerScoorNum));
         } else {
-            alert.setContentText("winer is O");
-            alert.showAndWait();
+            nav.navigatToWatchVideo("lose");
+            computerScore.setText("" + (++computerScoreNum));
         }
     }
 
-    private void drawDialog() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Draw");
-        alert.setContentText("No One Win (Draw)");
-        alert.showAndWait();
+    private void showDrawVideo() {
+        Navigation nav = new Navigation();
+        nav.navigatToWatchVideo("tie");
+
     }
 
+//    private void winerDialog() {
+//        Alert alert = new Alert(Alert.AlertType.WARNING);
+//        alert.setTitle("Winner");
+//        --x;
+//        if (x % 2 != 0) {
+//            alert.setContentText("winer is X");
+//            alert.showAndWait();
+//        } else {
+//            alert.setContentText("winer is O");
+//            alert.showAndWait();
+//        }
+//    }
+//
+//    private void drawDialog() {
+//        Alert alert = new Alert(Alert.AlertType.WARNING);
+//        alert.setTitle("Draw");
+//        alert.setContentText("No One Win (Draw)");
+//        alert.showAndWait();
+//    }
     public void endApp() {
         btn00.setDisable(true);
         btn01.setDisable(true);
@@ -450,5 +519,36 @@ public class FxmlOneVsOneBase extends AnchorPane {
             flag = 1;
         }
         return flag;
+    }
+
+    public void resetLayout() {
+        btn00.setText("");
+        btn01.setText("");
+        btn02.setText("");
+        btn10.setText("");
+        btn11.setText("");
+        btn12.setText("");
+        btn20.setText("");
+        btn21.setText("");
+        btn22.setText("");
+        btn00.setGraphic(null);
+        btn01.setGraphic(null);
+        btn02.setGraphic(null);
+        btn10.setGraphic(null);
+        btn11.setGraphic(null);
+        btn12.setGraphic(null);
+        btn20.setGraphic(null);
+        btn21.setGraphic(null);
+        btn22.setGraphic(null);
+        btn00.setDisable(false);
+        btn01.setDisable(false);
+        btn02.setDisable(false);
+        btn10.setDisable(false);
+        btn11.setDisable(false);
+        btn12.setDisable(false);
+        btn20.setDisable(false);
+        btn21.setDisable(false);
+        btn22.setDisable(false);
+
     }
 }

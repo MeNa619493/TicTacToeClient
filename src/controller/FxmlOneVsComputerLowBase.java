@@ -22,7 +22,7 @@ import static jdk.nashorn.internal.objects.NativeMath.random;
 import utilities.MiniMax;
 import utilities.Navigation;
 
-public class FxmlOneVsComBase extends AnchorPane {
+public class FxmlOneVsComputerLowBase extends AnchorPane {
 
     private Boolean isUserTurn = true;
     private boolean isWinner = false;
@@ -32,7 +32,6 @@ public class FxmlOneVsComBase extends AnchorPane {
     ArrayList<Button> btns;
     Button[][] board = new Button[3][3];
     ArrayList<Button> available = new ArrayList();
-
     protected final Text text;
     protected final Text playerScore;
     protected final Text text0;
@@ -55,9 +54,9 @@ public class FxmlOneVsComBase extends AnchorPane {
     protected final Button btn3;
     protected final Button btn2;
     protected final Button btn1;
-    public final Button btnEndGame;
+    protected final Button btnEndGame;
 
-    public FxmlOneVsComBase() {
+    public FxmlOneVsComputerLowBase() {
 
         text = new Text();
         playerScore = new Text();
@@ -103,7 +102,7 @@ public class FxmlOneVsComBase extends AnchorPane {
 
         AnchorPane.setLeftAnchor(playerScore, 65.0);
         AnchorPane.setTopAnchor(playerScore, 48.1015625);
-        playerScore.setFill(javafx.scene.paint.Color.WHITE);
+        playerScore.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
         playerScore.setLayoutX(75.0);
         playerScore.setLayoutY(74.0);
         playerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
@@ -335,24 +334,12 @@ public class FxmlOneVsComBase extends AnchorPane {
 
     }
 
+    //easy
     private void computerTurn() {
         if (!isWinner) {
             if (available.size() > 0) {
-                char[][] playBoard = new char[3][3];
-                for (int j = 0; j < 3; j++) {
-                    for (int i = 0; i < 3; i++) {
-                        if (board[j][i].getText().isEmpty()) {
-                            playBoard[j][i] = ' ';
-                            continue;
-                        }
-                        playBoard[j][i] = (board[j][i].getText()).charAt(0);
-                    }
-                }
-
-                int[] res = new int[2];
-                res = MiniMax.getBestMove(playBoard, 9);
-                int index = res[0] * 3 + res[1];
-                Button buttonChoosed = btns.get(index);
+                int index = (int) floor(random(available.size() - 1));
+                Button buttonChoosed = available.get(index);
                 buttonChoosed.setText(currentPlayer);
                 buttonChoosed.setTextFill(Color.TRANSPARENT);
                 buttonChoosed.setGraphic(createImageViewO());
