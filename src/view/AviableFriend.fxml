@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -10,42 +12,224 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane1" alignment="CENTER" stylesheets="@../Photo/paneCss.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="203.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="203.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-  </columnConstraints>
-  <rowConstraints>
-      <RowConstraints maxHeight="78.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="74.0" minHeight="0.0" prefHeight="55.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="65.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="85.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="110.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="113.0" minHeight="2.0" prefHeight="0.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="227.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="227.0" minHeight="7.0" prefHeight="0.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="227.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="227.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="0.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="0.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-  </rowConstraints>
-   <children>
-      <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+<ScrollPane fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: black;" styleClass="scroll-bar" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <GridPane id="myScreen" fx:id="gridPane1" alignment="CENTER" stylesheets="@../Photo/paneCss.css">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="203.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="203.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="78.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="74.0" minHeight="0.0" prefHeight="55.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="65.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="85.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="110.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="113.0" minHeight="2.0" prefHeight="0.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="227.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="227.0" minHeight="7.0" prefHeight="0.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="227.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="227.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="0.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="0.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+         </rowConstraints>
          <children>
-            <FlowPane prefHeight="36.0" prefWidth="161.0">
+            <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
-                  <Label alignment="CENTER" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="  vs" textAlignment="CENTER">
+                  <FlowPane prefHeight="36.0" prefWidth="161.0">
+                     <children>
+                        <Label id="usr" alignment="CENTER" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="  vs" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="23.0" />
+                           </font>
+                        </Label>
+                        <Label text="   " />
+                        <Label id="usr" fx:id="FristUserLabe" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="fristUSer">
+                           <font>
+                              <Font name="System Bold" size="25.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </FlowPane>
+               </children>
+            </FlowPane>
+            <Line endX="2000.0" endY="-3.3389225006103516" startX="-100.0" strokeMiterLimit="40.0" strokeWidth="3.0" GridPane.rowIndex="2" />
+            <Label alignment="CENTER" contentDisplay="BOTTOM" prefHeight="36.0" prefWidth="154.0" text="Online Friend" textAlignment="CENTER" textFill="#dd0606">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Button id="myButton" fx:id="AsktoplayFristUser" alignment="CENTER" cancelButton="true" mnemonicParsing="false" prefHeight="31.0" prefWidth="178.0" styleClass="myButton" text="Ask To Play" textAlignment="RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+               <stylesheets>
+                  <URL value="@../Photo/buttonStylemo.css" />
+                  <URL value="@../Photo/buttonStyle.css" />
+               </stylesheets>
+            </Button>
+            <Button id="myButton" fx:id="AsktoplaySecondUser" alignment="CENTER" mnemonicParsing="false" prefHeight="31.0" prefWidth="178.0" styleClass="myButton" text="Ask To Play" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+               <stylesheets>
+                  <URL value="@../Photo/buttonStylemo.css" />
+                  <URL value="@../Photo/buttonStyle.css" />
+               </stylesheets>
+            </Button>
+            <Line endX="2000.0" endY="-0.12100553512573242" startX="-100.0" strokeWidth="3.0" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Line>
+            <FlowPane prefHeight="43.0" prefWidth="200.0" GridPane.rowIndex="5">
+               <children>
+                  <Label id="usr" styleClass="labelstyle" text="  vs">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                     <stylesheets>
+                        <URL value="@../Photo/label.css" />
+                        <URL value="@../Photo/buttonStyle.css" />
+                     </stylesheets>
+                  </Label>
+                  <Label text="   " />
+                  <Label id="usr" fx:id="thirdUserLabel" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="ThridUser">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </FlowPane>
+            <Line endX="2000.0" endY="0.3591485023498535" startX="-100.0" strokeWidth="3.0" GridPane.rowIndex="6" />
+            <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="7">
+               <children>
+                  <Label id="usr" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="  vs">
                      <font>
                         <Font name="System Bold" size="23.0" />
                      </font>
                   </Label>
                   <Label text="   " />
-                  <Label fx:id="FristUserLabe" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="fristUSer">
+                  <Label id="usr" fx:id="fourthUserLabel" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="FourthUser">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </FlowPane>
+            <Line endX="2000.0" endY="-1.3049535751342773" startX="-100.0" strokeWidth="3.0" GridPane.rowIndex="8" />
+            <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="9">
+               <children>
+                  <Label id="usr" styleClass="labelstyle" text="  vs">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                     <stylesheets>
+                        <URL value="@../Photo/label.css" />
+                        <URL value="@../Photo/buttonStyle.css" />
+                     </stylesheets>
+                  </Label>
+                  <Label text="   " />
+                  <Label id="usr" fx:id="fifthUserLabel" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="FifthUser">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </FlowPane>
+            <Line endX="2000.0" endY="2.0323052406311035" startX="-100.0" strokeWidth="3.0" GridPane.rowIndex="10" />
+            <Button id="myButton" fx:id="AsktoplaythirdUser" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="178.0" styleClass="myButton" text="Ask To Play" GridPane.columnIndex="2" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+               <stylesheets>
+                  <URL value="@../Photo/buttonStylemo.css" />
+                  <URL value="@../Photo/buttonStyle.css" />
+               </stylesheets>
+            </Button>
+            <Button id="myButton" fx:id="AsktoplayfourthUser" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="178.0" styleClass="myButton" text="Ask To Play" GridPane.columnIndex="2" GridPane.rowIndex="7">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+               <stylesheets>
+                  <URL value="@../Photo/buttonStylemo.css" />
+                  <URL value="@../Photo/buttonStyle.css" />
+               </stylesheets>
+            </Button>
+            <Button id="myButton" fx:id="AsktoplayfifthUser" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="178.0" styleClass="myButton" text="Ask To Play" GridPane.columnIndex="2" GridPane.rowIndex="9">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+               <stylesheets>
+                  <URL value="@../Photo/buttonStylemo.css" />
+                  <URL value="@../Photo/buttonStyle.css" />
+                  <URL value="@../Photo/buttonStyle.css" />
+               </stylesheets>
+            </Button>
+            <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="11">
+               <children>
+                  <Label id="usr" styleClass="labelstyle" text="  vs">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                     <stylesheets>
+                        <URL value="@../Photo/label.css" />
+                        <URL value="@../Photo/buttonStyle.css" />
+                     </stylesheets>
+                  </Label>
+                  <Label text="   " />
+                  <Label id="usr" fx:id="sixthUserLabel" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="sixthUser">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </FlowPane>
+            <Line endX="2000.0" startX="-100.0" strokeWidth="3.0" GridPane.rowIndex="12" />
+            <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="13">
+               <children>
+                  <Label styleClass="labelstyle" stylesheets="@../Photo/label.css" text="  vs">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                  </Label>
+                  <Label text="   " />
+                  <Label fx:id="seventhUserLabel" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="sixthUser">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </FlowPane>
+            <Button fx:id="AsktoplayseventhUser" alignment="CENTER" mnemonicParsing="false" prefHeight="31.0" prefWidth="178.0" styleClass="myButton" stylesheets="@../Photo/buttonStylemo.css" text="Ask To Play" GridPane.columnIndex="2" GridPane.rowIndex="13">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </Button>
+            <Line endX="2000.0" startX="-100.0" strokeWidth="3.0" GridPane.rowIndex="14" />
+            <Button id="myButton" alignment="CENTER" mnemonicParsing="false" prefHeight="31.0" prefWidth="178.0" styleClass="myButton" text="Ask To Play" GridPane.columnIndex="2" GridPane.rowIndex="11">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+               <stylesheets>
+                  <URL value="@../Photo/buttonStylemo.css" />
+                  <URL value="@../Photo/buttonStyle.css" />
+               </stylesheets>
+            </Button>
+            <FlowPane prefHeight="36.0" prefWidth="161.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+               <children>
+                  <Label id="usr" alignment="CENTER" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="  vs" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                  </Label>
+                  <Label text="   " />
+                  <Label id="usr" fx:id="FristUserLabe1" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="fristUSer">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
@@ -53,141 +237,10 @@
                </children>
             </FlowPane>
          </children>
-      </FlowPane>
-      <Line endX="2000.0" endY="-3.3389225006103516" startX="-100.0" strokeMiterLimit="40.0" strokeWidth="3.0" GridPane.rowIndex="2" />
-      <Label alignment="CENTER" contentDisplay="BOTTOM" prefHeight="36.0" prefWidth="154.0" text="Online Friend" textAlignment="CENTER" textFill="#dd0606">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <Button fx:id="AsktoplayFristUser" alignment="CENTER" cancelButton="true" mnemonicParsing="false" prefHeight="31.0" prefWidth="178.0" styleClass="myButton" stylesheets="@../Photo/buttonStylemo.css" text="Ask To Play" textAlignment="RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="1">
-         <GridPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </GridPane.margin></Button>
-      <FlowPane prefHeight="55.0" prefWidth="369.0" GridPane.rowIndex="3">
-         <children>
-            <Label styleClass="labelstyle" stylesheets="@../Photo/label.css" text="  vs">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </Label>
-            <Label text="   " />
-            <Label fx:id="seconduserLabel" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="Seconduser">
-               <font>
-                  <Font name="System Bold" size="25.0" />
-               </font>
-            </Label>
-         </children>
-      </FlowPane>
-      <Button fx:id="AsktoplaySecondUser" alignment="CENTER" mnemonicParsing="false" prefHeight="31.0" prefWidth="178.0" styleClass="myButton" stylesheets="@../Photo/buttonStylemo.css" text="Ask To Play" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-         <GridPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </GridPane.margin></Button>
-      <Line endX="2000.0" endY="-0.12100553512573242" startX="-100.0" strokeWidth="3.0" GridPane.rowIndex="4">
-         <GridPane.margin>
-            <Insets />
-         </GridPane.margin></Line>
-      <FlowPane prefHeight="43.0" prefWidth="200.0" GridPane.rowIndex="5">
-         <children>
-            <Label styleClass="labelstyle" stylesheets="@../Photo/label.css" text="  vs">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </Label>
-            <Label text="   " />
-            <Label fx:id="thirdUserLabel" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="ThridUser">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </FlowPane>
-      <Line endX="2000.0" endY="0.3591485023498535" startX="-100.0" strokeWidth="3.0" GridPane.rowIndex="6" />
-      <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="7">
-         <children>
-            <Label styleClass="labelstyle" stylesheets="@../Photo/label.css" text="  vs">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </Label>
-            <Label text="   " />
-            <Label fx:id="fourthUserLabel" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="FourthUser">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </FlowPane>
-      <Line endX="2000.0" endY="-1.3049535751342773" startX="-100.0" strokeWidth="3.0" GridPane.rowIndex="8" />
-      <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="9">
-         <children>
-            <Label styleClass="labelstyle" stylesheets="@../Photo/label.css" text="  vs">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </Label>
-            <Label text="   " />
-            <Label fx:id="fifthUserLabel" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="FifthUser">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </FlowPane>
-      <Line endX="2000.0" endY="2.0323052406311035" startX="-100.0" strokeWidth="3.0" GridPane.rowIndex="10" />
-      <Button fx:id="AsktoplaythirdUser" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="178.0" styleClass="myButton" stylesheets="@../Photo/buttonStylemo.css" text="Ask To Play" GridPane.columnIndex="2" GridPane.rowIndex="5">
-         <GridPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </GridPane.margin></Button>
-      <Button fx:id="AsktoplayfourthUser" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="178.0" styleClass="myButton" stylesheets="@../Photo/buttonStylemo.css" text="Ask To Play" GridPane.columnIndex="2" GridPane.rowIndex="7">
-         <GridPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </GridPane.margin></Button>
-      <Button fx:id="AsktoplayfifthUser" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="178.0" styleClass="myButton" stylesheets="@../Photo/buttonStylemo.css" text="Ask To Play" GridPane.columnIndex="2" GridPane.rowIndex="9">
-         <GridPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </GridPane.margin></Button>
-      <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="11">
-         <children>
-            <Label styleClass="labelstyle" stylesheets="@../Photo/label.css" text="  vs">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </Label>
-            <Label text="   " />
-            <Label fx:id="sixthUserLabel" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="sixthUser">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </FlowPane>
-      <Line endX="2000.0" startX="-100.0" strokeWidth="3.0" GridPane.rowIndex="12" />
-      <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="13">
-         <children>
-            <Label styleClass="labelstyle" stylesheets="@../Photo/label.css" text="  vs">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </Label>
-            <Label text="   " />
-            <Label fx:id="seventhUserLabel" styleClass="labelstyle" stylesheets="@../Photo/label.css" text="sixthUser">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </FlowPane>
-      <Button fx:id="AsktoplayseventhUser" alignment="CENTER" mnemonicParsing="false" prefHeight="31.0" prefWidth="178.0" styleClass="myButton" stylesheets="@../Photo/buttonStylemo.css" text="Ask To Play" GridPane.columnIndex="2" GridPane.rowIndex="13">
-         <GridPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </GridPane.margin>
-      </Button>
-      <Line endX="2000.0" startX="-100.0" strokeWidth="3.0" GridPane.rowIndex="14" />
-      <Button alignment="CENTER" mnemonicParsing="false" prefHeight="31.0" prefWidth="178.0" styleClass="myButton" stylesheets="@../Photo/buttonStylemo.css" text="Ask To Play" GridPane.columnIndex="2" GridPane.rowIndex="11">
-         <GridPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </GridPane.margin>
-      </Button>
-   </children>
-</GridPane>
+      </GridPane>
+   </content>
+   <stylesheets>
+      <URL value="@../Photo/paneCss.css" />
+      <URL value="@../Photo/scroll.css" />
+   </stylesheets>
+</ScrollPane>

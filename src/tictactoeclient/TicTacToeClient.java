@@ -6,6 +6,7 @@
 package tictactoeclient;
 
 import controller.FxmlOneVsComBase;
+import controller.FxmlOneVsComputerLowBase;
 import controller.FxmlOneVsOneBase;
 import controller.FxmlOneVsOnlineBase;
 import controller.mainBase;
@@ -33,21 +34,26 @@ public class TicTacToeClient extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        //root-------------------------------------------------------------------------------
         FxmlSplashBase fxmlSplashBase = new FxmlSplashBase();
         mainBase rootMain = new mainBase();
         chooseXOBase OneVsOneChooseXOroot = new chooseXOBase();
         chooseXOBase OneVsCompChooseXOroot = new chooseXOBase();
-        SignBase signRoot=new SignBase();
-        signInBase signInRoot=new signInBase();
-        signUpBase signUpRoot=new signUpBase();
-        computerLevelBase computerLevelRoot=new computerLevelBase();
+        chooseXOBase OneVsCompLowChooseXOroot = new chooseXOBase();
+        SignBase signRoot = new SignBase();
+        signInBase signInRoot = new signInBase();
+        signUpBase signUpRoot = new signUpBase();
+        computerLevelBase computerLevelRoot = new computerLevelBase();
+        FxmlOneVsComputerLowBase oneVsComLowRoot = new FxmlOneVsComputerLowBase();
         FxmlOneVsOneBase oneVsOneRoot = new FxmlOneVsOneBase();
         FxmlOneVsComBase oneVsComRoot = new FxmlOneVsComBase();
         FxmlOneVsOnlineBase oneVsOnlineRoot = new FxmlOneVsOnlineBase();
+        //scene------------------------------------------------------------------------------
         Scene splashScene = new Scene(fxmlSplashBase);
         Scene MainScene = new Scene(rootMain);
         Scene oneVsOneChooseXOScene = new Scene(OneVsOneChooseXOroot);
         Scene OneVsComChooseXOScene = new Scene(OneVsCompChooseXOroot);
+        Scene OneVsComLowChooseXOScene = new Scene(OneVsCompLowChooseXOroot);
         Scene oneVsOneScene = new Scene(oneVsOneRoot);
         Scene oneVsComScene = new Scene(oneVsComRoot);
         Scene oneVsOnlineScene = new Scene(oneVsOnlineRoot);
@@ -55,6 +61,8 @@ public class TicTacToeClient extends Application {
         Scene signInScene = new Scene(signInRoot);
         Scene signUpScene = new Scene(signUpRoot);
         Scene computerLevelScene = new Scene(computerLevelRoot);
+        Scene oneVsComLowScene = new Scene(oneVsComLowRoot);
+        //scene conect to button--------------------------------------------------------------
         MainScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
         oneVsOneChooseXOScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
         OneVsComChooseXOScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
@@ -65,6 +73,9 @@ public class TicTacToeClient extends Application {
         signInScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
         signUpScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
         computerLevelScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+        oneVsComLowScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+        OneVsComLowChooseXOScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+        //spalsh--------------------------------------------------------------------------------
         try {
             primaryStage.setScene(splashScene);
             primaryStage.setResizable(false);
@@ -75,7 +86,7 @@ public class TicTacToeClient extends Application {
         }
         primaryStage.setScene(MainScene);
         primaryStage.setResizable(false);
-
+        //navgtion----------------------------------------------------------------------------------
         rootMain.btnPlayVsComputer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -99,7 +110,7 @@ public class TicTacToeClient extends Application {
         rootMain.btnPlayOverTheNetwork.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                 primaryStage.setScene(signScene);
+                primaryStage.setScene(signScene);
             }
         });
         OneVsOneChooseXOroot.btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
@@ -115,7 +126,7 @@ public class TicTacToeClient extends Application {
                 primaryStage.setScene(oneVsOneScene);
             }
         });
-        OneVsOneChooseXOroot.btnChooseX.setOnAction(new EventHandler<ActionEvent>() {
+        OneVsOneChooseXOroot.btnChooseO.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 xoFlag = 2;
@@ -135,14 +146,29 @@ public class TicTacToeClient extends Application {
                 primaryStage.setScene(oneVsComScene);
             }
         });
-        OneVsCompChooseXOroot.btnChooseX.setOnAction(new EventHandler<ActionEvent>() {
+        OneVsCompChooseXOroot.btnChooseO.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 xoFlag = 2;
                 primaryStage.setScene(oneVsComScene);
             }
         });
-         
+
+        OneVsCompLowChooseXOroot.btnChooseX.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                xoFlag = 1;
+                primaryStage.setScene(oneVsComLowScene);
+            }
+        });
+        OneVsCompLowChooseXOroot.btnChooseO.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                xoFlag = 2;
+                primaryStage.setScene(oneVsComLowScene);
+            }
+        });
+
         oneVsOneRoot.btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -173,6 +199,13 @@ public class TicTacToeClient extends Application {
                 primaryStage.setScene(OneVsComChooseXOScene);
             }
         });
+        computerLevelRoot.btnLow.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                primaryStage.setScene(OneVsComLowChooseXOScene);
+            }
+        });
+
     }
 
     /**

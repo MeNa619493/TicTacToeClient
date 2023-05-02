@@ -1,19 +1,20 @@
 package controller;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public  class signInBase extends AnchorPane {
+public class signInBase extends AnchorPane {
 
     protected final Text text;
     protected final Text text0;
     protected final Button btnSignIn;
     protected final Button btnHome;
     protected final TextField tfInEmail;
-    protected final TextField tfInPassword;
+    protected final PasswordField tfInPassword;
 
     public signInBase() {
 
@@ -22,7 +23,7 @@ public  class signInBase extends AnchorPane {
         btnSignIn = new Button();
         btnHome = new Button();
         tfInEmail = new TextField();
-        tfInPassword = new TextField();
+        tfInPassword = new PasswordField();
 
         setId("AnchorPane");
         setPrefHeight(400.0);
@@ -50,8 +51,7 @@ public  class signInBase extends AnchorPane {
         btnSignIn.setPrefHeight(51.0);
         btnSignIn.setPrefWidth(293.0);
         btnSignIn.setText("Sign In");
-        btnSignIn.setFont(new Font(24.0));
-        btnSignIn.setFont(new Font("System Bold", 12.0));
+        btnSignIn.setFont(new Font("System Bold", 24.0));
 
         btnHome.setLayoutX(467.0);
         btnHome.setLayoutY(359.0);
@@ -66,14 +66,14 @@ public  class signInBase extends AnchorPane {
         tfInEmail.setPrefHeight(32.0);
         tfInEmail.setPrefWidth(355.0);
         tfInEmail.setPromptText("Enter Your Email");
-        tfInEmail.setStyle("-fx-background-color: #323741;");
+        tfInEmail.setStyle("-fx-background-color: #323741; -fx-text-fill: White;");
 
         tfInPassword.setLayoutX(201.0);
         tfInPassword.setLayoutY(202.0);
         tfInPassword.setPrefHeight(32.0);
         tfInPassword.setPrefWidth(355.0);
         tfInPassword.setPromptText("Enter Your Password");
-        tfInPassword.setStyle("-fx-background-color: #323741;");
+        tfInPassword.setStyle("-fx-background-color: #323741; -fx-text-fill: White;");
 
         getChildren().add(text);
         getChildren().add(text0);
@@ -81,12 +81,11 @@ public  class signInBase extends AnchorPane {
         getChildren().add(btnHome);
         getChildren().add(tfInEmail);
         getChildren().add(tfInPassword);
-        setStyle("-fx-background-image: url('file:./src/Photo/bgGp.jpg');"
+
+        setStyle("-fx-background-image: url('file:./src/Photo/bg3.jpg');"
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
-        
         btnSignIn.setId("myButton");
         btnHome.setId("myButton");
-
     }
 }

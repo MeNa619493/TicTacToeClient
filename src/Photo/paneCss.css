@@ -1,7 +1,19 @@
-.root{
-    
-/*    -fx-background-images: url('../proje/backGround');*/
-    -fx-background-image:url('./bgGp.jpg');
-    -fx-background-size:cover ; 
-    
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : May 2, 2023, 12:59:40 PM
+    Author     : USER
+*/
+#myScreen{
+    -fx-background-image: url('bgGp.jpg');
+     -fx-background-color: #0d379e;
+}
+#vs{
+    -fx-text-fill: #e77272;
+}
+#usr{
+     -fx-text-fill: #eeeeff;
 }

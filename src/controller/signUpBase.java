@@ -17,11 +17,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+
 public class signUpBase extends AnchorPane {
     Socket server;
     DataInputStream dis;
     PrintStream ps;
-
     protected final Text text;
     protected final Text text0;
     protected final Button btnSignUp;
@@ -205,11 +205,12 @@ public class signUpBase extends AnchorPane {
         getChildren().add(tfUpEmail);
         getChildren().add(tfUpPassword);
         getChildren().add(tfUpConPassword);
-         setStyle("-fx-background-image: url('file:./src/Photo/bg3.jpg');"
+
+        setStyle("-fx-background-image: url('file:./src/Photo/bg3.jpg');"
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
         btnSignUp.setId("myButton");
-        btnUPHome.setId("myButton"); 
-        
+        btnUPHome.setId("myButton");
+
     }
 }
