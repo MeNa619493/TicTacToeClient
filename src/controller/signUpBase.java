@@ -1,5 +1,16 @@
 package controller;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -8,7 +19,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class signUpBase extends AnchorPane {
-
+    Socket server;
+    DataInputStream dis;
+    PrintStream ps;
     protected final Text text;
     protected final Text text0;
     protected final Button btnSignUp;
@@ -61,6 +74,74 @@ public class signUpBase extends AnchorPane {
         btnSignUp.setPrefWidth(293.0);
         btnSignUp.setText("Sign Up");
         btnSignUp.setFont(new Font("System Bold", 24.0));
+//        try {
+//             server= new Socket("127.0.0.1",5006);
+//              ps =new PrintStream(server.getOutputStream());
+//            dis=new DataInputStream(server.getInputStream());
+//         } catch (IOException ex) {
+//             System.out.println(ex.getMessage());
+//         }
+         btnSignUp.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+                public void handle(ActionEvent event) {
+                    String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+                    Pattern pattern = Pattern.compile(regex);
+                    Matcher matcher = pattern.matcher(tfUpEmail.getText());
+                    String name = tfUpUserName.getText();
+                    String email = tfUpEmail.getText();
+                    String password = tfUpPassword.getText();
+                    String passwordConfirm = tfUpConPassword.getText();
+        if (name.isEmpty() || email.isEmpty()
+                || password.isEmpty() || passwordConfirm.isEmpty()) {
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERROR");
+        alert.setHeaderText("Empty Field");
+        alert.setContentText("please Entry your Username password and Email ");
+        alert.showAndWait();
+
+
+        } else if (!matcher.matches()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+          
+            alert.setContentText("please Entry vaild Email ");
+            alert.showAndWait();
+             
+
+
+        }else if (password.length() < 5) {
+
+
+        } else if (!password.equals(passwordConfirm)) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("pasword Error");
+            alert.setContentText("The passwords does't matches ");
+            alert.showAndWait();
+        }
+//        
+//         ps.println(name);
+//         ps.println(email);
+//         ps.println(password);
+         new Thread(() -> {
+                try {
+//                    String replyMsg = dis.readLine();
+//                    System.out.println(replyMsg);
+                    
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                         }).start();
+
+
+        
+                }});
+
+           
+           
+     
+                
 
         btnUPHome.setLayoutX(514.0);
         btnUPHome.setLayoutY(354.0);
@@ -124,6 +205,7 @@ public class signUpBase extends AnchorPane {
         getChildren().add(tfUpEmail);
         getChildren().add(tfUpPassword);
         getChildren().add(tfUpConPassword);
+
         setStyle("-fx-background-image: url('file:./src/Photo/bg3.jpg');"
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
