@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<ScrollPane fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="scroll-bar" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <GridPane fx:id="gridPane1" alignment="CENTER" stylesheets="@../Photo/paneCss.css">
   <columnConstraints>
@@ -158,5 +158,11 @@
       </Button>
    </children>
 </GridPane>
-       </content>
+      </content>
+   <stylesheets>
+      <URL value="@../Photo/buttonStylemo.css" />
+      <URL value="@../Photo/paneCss.css" />
+      <URL value="@../Photo/scroll.css" />
+   </stylesheets>
 </ScrollPane>
+
