@@ -12,7 +12,7 @@
 }
 
 .scroll-bar {
-    -fx-background-color: #0d379e;
+    -fx-background-color: #0000;
     -fx-background-radius: 0px;
 }
 
@@ -29,7 +29,7 @@
 .scroll-bar:increment-arrow,
 .scroll-bar:decrement-arrow,
 .scroll-bar:thumb {
-    -fx-background-color: #0d379e;
+    -fx-background-color: #00000;
     -fx-background-radius: 0px;
 }
 
