@@ -1,23 +1,24 @@
 package controller;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public  class signUpBase extends AnchorPane {
+public class signUpBase extends AnchorPane {
 
     protected final Text text;
     protected final Text text0;
-    public final Button btnSignUp;
-    public final Button btnUPHome;
+    protected final Button btnSignUp;
+    protected final Button btnUPHome;
     protected final Text text1;
     protected final Text text2;
     protected final TextField tfUpUserName;
-    protected final TextField tfUpPassword;
     protected final TextField tfUpEmail;
-    protected final TextField tfUpConPassword;
+    protected final PasswordField tfUpPassword;
+    protected final PasswordField tfUpConPassword;
 
     public signUpBase() {
 
@@ -28,9 +29,9 @@ public  class signUpBase extends AnchorPane {
         text1 = new Text();
         text2 = new Text();
         tfUpUserName = new TextField();
-        tfUpPassword = new TextField();
         tfUpEmail = new TextField();
-        tfUpConPassword = new TextField();
+        tfUpPassword = new PasswordField();
+        tfUpConPassword = new PasswordField();
 
         setId("AnchorPane");
         setPrefHeight(400.0);
@@ -90,28 +91,28 @@ public  class signUpBase extends AnchorPane {
         tfUpUserName.setPrefHeight(32.0);
         tfUpUserName.setPrefWidth(355.0);
         tfUpUserName.setPromptText("Enter Your User Name");
-        tfUpUserName.setStyle("-fx-background-color: #323741;");
-
-        tfUpPassword.setLayoutX(209.0);
-        tfUpPassword.setLayoutY(154.0);
-        tfUpPassword.setPrefHeight(32.0);
-        tfUpPassword.setPrefWidth(355.0);
-        tfUpPassword.setPromptText("Enter Your Password");
-        tfUpPassword.setStyle("-fx-background-color: #323741;");
+        tfUpUserName.setStyle("-fx-background-color: #323741; -fx-text-fill: White;");
 
         tfUpEmail.setLayoutX(209.0);
         tfUpEmail.setLayoutY(102.0);
         tfUpEmail.setPrefHeight(32.0);
         tfUpEmail.setPrefWidth(355.0);
         tfUpEmail.setPromptText("Enter Your Email");
-        tfUpEmail.setStyle("-fx-background-color: #323741;");
+        tfUpEmail.setStyle("-fx-background-color: #323741; -fx-text-fill: White;");
+
+        tfUpPassword.setLayoutX(209.0);
+        tfUpPassword.setLayoutY(152.0);
+        tfUpPassword.setPrefHeight(32.0);
+        tfUpPassword.setPrefWidth(355.0);
+        tfUpPassword.setPromptText("Enter Your Password");
+        tfUpPassword.setStyle("-fx-background-color: #323741; -fx-text-fill: White;");
 
         tfUpConPassword.setLayoutX(209.0);
-        tfUpConPassword.setLayoutY(213.0);
+        tfUpConPassword.setLayoutY(212.0);
         tfUpConPassword.setPrefHeight(32.0);
         tfUpConPassword.setPrefWidth(355.0);
-        tfUpConPassword.setPromptText("Confirm your Password");
-        tfUpConPassword.setStyle("-fx-background-color: #323741;");
+        tfUpConPassword.setPromptText("Enter Your Password");
+        tfUpConPassword.setStyle("-fx-background-color: #323741; -fx-text-fill: White;");
 
         getChildren().add(text);
         getChildren().add(text0);
@@ -120,14 +121,14 @@ public  class signUpBase extends AnchorPane {
         getChildren().add(text1);
         getChildren().add(text2);
         getChildren().add(tfUpUserName);
-        getChildren().add(tfUpPassword);
         getChildren().add(tfUpEmail);
+        getChildren().add(tfUpPassword);
         getChildren().add(tfUpConPassword);
-        setStyle("-fx-background-image: url('file:./src/Photo/bgGp.jpg');"
+        setStyle("-fx-background-image: url('file:./src/Photo/bg3.jpg');"
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
-        
         btnSignUp.setId("myButton");
         btnUPHome.setId("myButton");
+
     }
 }

@@ -5,7 +5,6 @@
  */
 package tictactoeclient;
 
-
 import controller.mainBase;
 import controller.FxmlSplashBase;
 import java.util.logging.Level;
@@ -30,6 +29,7 @@ public class TicTacToeClient extends Application {
         
         MainScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
         
+
         try {
             primaryStage.setScene(splashScene);
             primaryStage.setResizable(false);

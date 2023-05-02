@@ -18,17 +18,17 @@ public class chooseXOBase extends AnchorPane {
     protected final Button btnChooseO;
     protected final Button btnEndGame;
     protected final ImageView ivLine;
+
     Stage primaryStage;
     Boolean isGoingToOneVsOne;
     
     public chooseXOBase(Stage primaryStage, Boolean isGoingToOneVsOne, Boolean isHard) {
-
         tvChoose = new Text();
         btnChooseX = new Button();
         btnChooseO = new Button();
         btnEndGame = new Button();
         ivLine = new ImageView();
-
+        
         setId("AnchorPane");
         setPrefHeight(400.0);
         setPrefWidth(600.0);
@@ -135,6 +135,7 @@ public class chooseXOBase extends AnchorPane {
                     primaryStage.setScene(oneVsComScene);
                     oneVsComScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
                 }
+
             }
         });
         
