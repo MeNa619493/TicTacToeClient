@@ -40,7 +40,7 @@ public class WatchVideoController implements Initializable{
             createMedia("/resources/lose.mp4");
         }else if (gameState.equals("tie")) {
             createMedia("/resources/draw.mp4");
-            System.out.println("tie");
+           
         }
     }
 
