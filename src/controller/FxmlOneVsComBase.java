@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import static jdk.nashorn.internal.objects.NativeMath.random;
 import utilities.MiniMax;
 import utilities.Navigation;
+import utilities.StreamHelper;
 
 public class FxmlOneVsComBase extends AnchorPane {
 
@@ -294,6 +295,9 @@ public class FxmlOneVsComBase extends AnchorPane {
                 + "-fx-background-position: center center;");
         btnEndGame.setId("myButton");
         btnReset.setId("myButton");
+        btnReset.setDisable(true);
+        
+        this.isHard = isHard;
         
         btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -312,7 +316,7 @@ public class FxmlOneVsComBase extends AnchorPane {
             }
         });
         
-        this.isHard = isHard;
+        createFile();
         
         btns = new ArrayList<>(Arrays.asList(btn1, btn2, btn3,btn4, btn5, btn6,btn7, btn8, btn9));
         intalizeButtons();
@@ -320,6 +324,14 @@ public class FxmlOneVsComBase extends AnchorPane {
         intalizeBorad();
         intalizeAvailablePlaces();
         setTextFields();
+    }
+    
+    private void createFile(){
+        new Thread(() -> {
+            StreamHelper.createFile("User", "Computer");
+            StreamHelper.writeOnFile("User.");
+            StreamHelper.writeOnFile("Computer.");
+        }).start();
     }
 
     private ImageView createImageViewX() {
@@ -372,7 +384,8 @@ public class FxmlOneVsComBase extends AnchorPane {
                 Button buttonChoosed = available.get(index);
                 buttonChoosed.setText(currentPlayer);
                 buttonChoosed.setTextFill(Color.TRANSPARENT);
-                buttonChoosed.setGraphic(createImageViewO());    
+                buttonChoosed.setGraphic(createImageViewO());
+                writeOnFile(buttonChoosed);
                 isUserTurn = true;
                 currentPlayer = "X";
                 buttonChoosed.setDisable(true);
@@ -404,6 +417,7 @@ public class FxmlOneVsComBase extends AnchorPane {
                 buttonChoosed.setText(currentPlayer);
                 buttonChoosed.setTextFill(Color.TRANSPARENT);
                 buttonChoosed.setGraphic(createImageViewO());
+                writeOnFile(buttonChoosed);
                 isUserTurn = true;
                 currentPlayer = "X";
                 buttonChoosed.setDisable(true);
@@ -422,6 +436,7 @@ public class FxmlOneVsComBase extends AnchorPane {
             }else{
                 state = GameState.LOSE;
             }
+            btnReset.setDisable(false);
             return true;
         }
         return false;
@@ -452,6 +467,7 @@ public class FxmlOneVsComBase extends AnchorPane {
 
         if (!isWinner && available.isEmpty()) {
             state = GameState.TIE;
+            btnReset.setDisable(false);
         } 
         
         showResultVideo();
@@ -486,6 +502,7 @@ public class FxmlOneVsComBase extends AnchorPane {
                         buttonPressed.setText(currentPlayer);
                         buttonPressed.setTextFill(Color.TRANSPARENT);
                         buttonPressed.setGraphic(createImageViewX());
+                        writeOnFile(buttonPressed);
                         isUserTurn = false;
                         currentPlayer = "O";
                         buttonPressed.setDisable(true);
@@ -496,6 +513,23 @@ public class FxmlOneVsComBase extends AnchorPane {
                 }
             }
         }
+    }
+    
+    private void writeOnFile(Button buttonPressed){
+        new Thread(() -> {
+            StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed)+buttonPressed.getText()+".");
+        }).start();
+    }
+    
+    private int findButtonPlaceFromBoard(Button buttonPressed){
+        int index = 0;
+        for(int i=0; i < btns.size()-1; i++){
+            if(btns.get(i) == buttonPressed){
+                index = i;
+                break;
+            }
+        }
+        return index+1;
     }
     
     private void computerTurn(){
@@ -512,6 +546,7 @@ public class FxmlOneVsComBase extends AnchorPane {
             btn.setGraphic(null);
             btn.setDisable(false);
         }
+        createFile();
         available.clear();
         intalizeAvailablePlaces();
         isUserTurn = true;
