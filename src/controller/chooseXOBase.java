@@ -135,7 +135,6 @@ public class chooseXOBase extends AnchorPane {
                     primaryStage.setScene(oneVsComScene);
                     oneVsComScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
                 }
-
             }
         });
         
