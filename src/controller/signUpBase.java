@@ -111,6 +111,11 @@ public class signUpBase extends AnchorPane {
 
 
         }else if (password.length() < 5) {
+             Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("pasword Error");
+            alert.setContentText("Pasword must not less than 5");
+            alert.showAndWait();
 
 
         } else if (!password.equals(passwordConfirm)) {
