@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -22,7 +23,9 @@ public class WatchVideoController implements Initializable{
     private MediaView videoPlayer;
     private String gameState;
     public static MediaPlayer mediaPlayer;
-
+    @FXML
+    private  Label checkWinnerLabel; 
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         
@@ -36,8 +39,10 @@ public class WatchVideoController implements Initializable{
     private void displayVideo() {
         if(gameState.equals("win")) {
             createMedia("/resources/win.mp4");
+            checkWinnerLabel.setText("Winner is X");
         } else if (gameState.equals("lose")) {
             createMedia("/resources/lose.mp4");
+            checkWinnerLabel.setText("Winner is O");
         }else if (gameState.equals("tie")) {
             createMedia("/resources/draw.mp4");
            
