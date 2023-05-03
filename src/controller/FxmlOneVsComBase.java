@@ -62,8 +62,8 @@ public class FxmlOneVsComBase extends AnchorPane {
     protected final Button btn3;
     protected final Button btn2;
     protected final Button btn1;
-    public final Button btnEndGame;
-    public final Button btnReset;
+    protected final Button btnEndGame;
+    protected final Button btnReset;
 
     public FxmlOneVsComBase(Stage primaryStage, Boolean isHard) {
 

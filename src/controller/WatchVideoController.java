@@ -45,7 +45,6 @@ public class WatchVideoController implements Initializable{
             checkWinnerLabel.setText("Winner is O");
         }else if (gameState.equals("tie")) {
             createMedia("/resources/draw.mp4");
-           
         }
     }
 

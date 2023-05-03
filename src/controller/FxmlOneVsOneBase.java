@@ -42,8 +42,8 @@ public class FxmlOneVsOneBase extends AnchorPane {
     protected final Button btn02;
     protected final Button btn01;
     protected final Button btn00;
-    public final Button btnEndGame;
-    public final Button btnReset;
+    protected final Button btnEndGame;
+    protected final Button btnReset;
     int x =1;
     int y = 1;
     int flag = 0;
