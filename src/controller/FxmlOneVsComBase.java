@@ -27,7 +27,7 @@ public class FxmlOneVsComBase extends AnchorPane {
 
     private Boolean isUserTurn = true;
     private boolean isWinner = false;
-    private String winnerSymbol = null;
+    GameState state = GameState.NONE;
     private Boolean isHard;
     Integer compScore = 0;
     Integer userScore = 0;
@@ -36,6 +36,9 @@ public class FxmlOneVsComBase extends AnchorPane {
     ArrayList<Button> btns;
     Button[][] board = new Button[3][3];
     ArrayList<Button> available = new ArrayList();
+    
+    Image imgX;
+    Image imgO;
 
     protected final Text text;
     protected final Text playerScore;
@@ -320,19 +323,15 @@ public class FxmlOneVsComBase extends AnchorPane {
     }
 
     private ImageView createImageViewX() {
-        Image imgX = new Image("file:./src/Photo/x.png");
+        imgX = new Image("file:./src/Photo/x2.png");
         ImageView viewX = new ImageView(imgX);
-        viewX.setFitHeight(80);
-        viewX.setFitWidth(80);
         viewX.setPreserveRatio(true);
         return viewX;
     }
 
     private ImageView createImageViewO() {
-        Image imgO = new Image("file:./src/Photo/o.png");
+        imgO = new Image("file:./src/Photo/o2.png");
         ImageView viewO = new ImageView(imgO);
-        viewO.setFitHeight(80);
-        viewO.setFitWidth(80);
         viewO.setPreserveRatio(true);
         return viewO;
     }
@@ -418,7 +417,11 @@ public class FxmlOneVsComBase extends AnchorPane {
         if (!a.getText().isEmpty()
                 && a.getText().equals(b.getText())
                 && b.getText().equals(c.getText())) {
-            winnerSymbol = a.getText();
+            if(a.getText().equals("X")){
+                state = GameState.WIN;
+            }else{
+                state = GameState.LOSE;
+            }
             return true;
         }
         return false;
@@ -448,22 +451,26 @@ public class FxmlOneVsComBase extends AnchorPane {
         }
 
         if (!isWinner && available.isEmpty()) {
-            showResultVideo();
-        } else if (isWinner) {
-            showResultVideo();
-        }
+            state = GameState.TIE;
+        } 
+        
+        showResultVideo();
     }
 
     private void showResultVideo() {
         Navigation nav = new Navigation();
-        if (winnerSymbol == null) {
-            nav.navigatToWatchVideo("tie");
-        }else if(winnerSymbol.equals("O")){
-            compScore++;
-            nav.navigatToWatchVideo("lose");
-        }else if(winnerSymbol.equals("X")){
-            userScore++;
-            nav.navigatToWatchVideo("win");
+        switch(state){
+            case TIE:
+                nav.navigatToWatchVideo("tie");
+                break;
+            case LOSE:
+                compScore++;
+                nav.navigatToWatchVideo("lose");
+                break;
+            case WIN:
+                userScore++;
+                nav.navigatToWatchVideo("win");
+                break;
         }
         setTextFields();
     }
@@ -509,7 +516,14 @@ public class FxmlOneVsComBase extends AnchorPane {
         intalizeAvailablePlaces();
         isUserTurn = true;
         isWinner = false;
-        winnerSymbol = null;
+        state = GameState.NONE;
         currentPlayer = "X";
     }
+}
+
+enum GameState {
+    NONE,
+    WIN,
+    LOSE,
+    TIE;
 }
