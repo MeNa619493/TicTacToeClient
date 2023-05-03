@@ -42,13 +42,13 @@ public class FxmlOneVsOneBase extends AnchorPane {
     protected final Button btn02;
     protected final Button btn01;
     protected final Button btn00;
-    public final Button btnEndGame;
-    public final Button btnReset;
+    protected final Button btnEndGame;
+    protected final Button btnReset;
     int x =1;
     int y = 1;
     int flag = 0;
-    Image imgx;
-    Image imgo;
+    Image imgX;
+    Image imgO;
     int playerScoorNum;
     int computerScoreNum;
     
@@ -355,18 +355,6 @@ public class FxmlOneVsOneBase extends AnchorPane {
                 x = 1;
             }
         });
-//        chooseXO.btnChooseX.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                x=1;
-//            }
-//        });
-//        chooseXO.btnChooseO.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                x=0;
-//            }
-//        });
         GridPane.setHalignment(btn00, javafx.geometry.HPos.CENTER);
         GridPane.setValignment(btn00, javafx.geometry.VPos.CENTER);
         GridPane.setHalignment(btn01, javafx.geometry.HPos.CENTER);
@@ -401,14 +389,14 @@ public class FxmlOneVsOneBase extends AnchorPane {
     }
 
     public void draw(Button btn) {
-        imgx = new Image("file:./src/Photo/x2.png");
-        imgo = new Image("file:./src/Photo/o2.png");
+        imgX = new Image("file:./src/Photo/x2.png");
+        imgO = new Image("file:./src/Photo/o2.png");
         ImageView viewX;
-        viewX = new ImageView(imgx);
+        viewX = new ImageView(imgX);
         //viewX.setFitHeight(70);
         viewX.setPreserveRatio(true);
         ImageView viewO;
-        viewO = new ImageView(imgo);
+        viewO = new ImageView(imgO);
         //viewO.setFitHeight(70);
         viewO.setPreserveRatio(true);
         if (btn.getText() == "") {
@@ -553,6 +541,5 @@ public class FxmlOneVsOneBase extends AnchorPane {
         btn20.setDisable(false);
         btn21.setDisable(false);
         btn22.setDisable(false);
-
     }
 }
