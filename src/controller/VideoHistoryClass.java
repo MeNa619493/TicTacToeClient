@@ -45,7 +45,7 @@ public class VideoHistoryClass extends AnchorPane {
     protected final Button btn02;
     protected final Button btn01;
     protected final Button btn00;
-    protected final Button btnEndVideo;
+    protected final Button btnEndVideo; 
     int x = 1;
     Image imgX;
     Image imgO;
@@ -93,7 +93,7 @@ public class VideoHistoryClass extends AnchorPane {
         text.setLayoutY(40.0);
         text.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text.setStrokeWidth(0.0);
-        text.setText("Your Score");
+        text.setText("");
         text.setFont(new Font(24.0));
 
         AnchorPane.setLeftAnchor(playerScore, 65.0);
@@ -103,7 +103,7 @@ public class VideoHistoryClass extends AnchorPane {
         playerScore.setLayoutY(74.0);
         playerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         playerScore.setStrokeWidth(0.0);
-        playerScore.setText("1");
+        playerScore.setText("X");
         playerScore.setFont(new Font(24.0));
 
         AnchorPane.setRightAnchor(text0, 24.0);
@@ -113,7 +113,7 @@ public class VideoHistoryClass extends AnchorPane {
         text0.setLayoutY(40.0);
         text0.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text0.setStrokeWidth(0.0);
-        text0.setText("Friend Score");
+        text0.setText("");
         text0.setFont(new Font(24.0));
 
         AnchorPane.setRightAnchor(computerScore, 80.0);
@@ -123,7 +123,7 @@ public class VideoHistoryClass extends AnchorPane {
         computerScore.setLayoutY(75.0);
         computerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         computerScore.setStrokeWidth(0.0);
-        computerScore.setText("1");
+        computerScore.setText("O");
         computerScore.setFont(new Font(24.0));
 
         stackPane.setLayoutX(133.0);
@@ -241,7 +241,7 @@ public class VideoHistoryClass extends AnchorPane {
         btnEndVideo.setLayoutX(514.0);
         btnEndVideo.setLayoutY(12.0);
         btnEndVideo.setMnemonicParsing(false);
-        btnEndVideo.setText("End Game");
+        btnEndVideo.setText("End Video");
         btnEndVideo.setFont(new Font(14.0));
 
         getChildren().add(text);
@@ -284,12 +284,15 @@ public class VideoHistoryClass extends AnchorPane {
 
         String dir = ".\\src\\records\\";
         this.fileName = fileName;
-        int[] buttonPosition = StreamHelper.readButtonPositionsFromFile(dir + fileName);
-       
+        String[] dataArray = StreamHelper.readFile(dir + fileName);
+       int [] buttonPositions = new int[dataArray.length - 2]; 
+            for (int i = 2; i < dataArray.length; i++) {
+                buttonPositions[i - 2] = Integer.parseInt(dataArray[i]);
+            }
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i : buttonPosition) {
+                for (int i : buttonPositions) {
                     try {
                         Thread.sleep(1000);
                         Platform.runLater(new Runnable() {
@@ -309,10 +312,11 @@ public class VideoHistoryClass extends AnchorPane {
         btnEndVideo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                nav.navigatToScene(new mainBase());
+                nav.navigatToScene(new GameHistoryBase());
             }
         });
-
+        text.setText(dataArray[0]);
+        text0.setText(dataArray[1]);
     }
 
     public void draw(Button btn) {
@@ -324,16 +328,12 @@ public class VideoHistoryClass extends AnchorPane {
         ImageView viewO;
         viewO = new ImageView(imgO);
         viewO.setPreserveRatio(true);
+        
             if (x % 2 != 0) {
                 btn.setGraphic(viewX);
-                btn.setTextFill(Color.TRANSPARENT);
-                btn.setText("X");
             } else {
                 btn.setGraphic(viewO);
-                btn.setTextFill(Color.TRANSPARENT);
-                btn.setText("O");
             }
             x++;
     }
-
 }
