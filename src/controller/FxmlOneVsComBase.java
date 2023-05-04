@@ -6,7 +6,6 @@ import java.util.Arrays;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,7 +17,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import static jdk.nashorn.internal.objects.NativeMath.random;
 import utilities.MiniMax;
 import utilities.Navigation;
@@ -40,6 +38,8 @@ public class FxmlOneVsComBase extends AnchorPane {
     
     Image imgX;
     Image imgO;
+    
+    Navigation nav = Navigation.getInstance();
 
     protected final Text text;
     protected final Text playerScore;
@@ -66,7 +66,7 @@ public class FxmlOneVsComBase extends AnchorPane {
     protected final Button btnEndGame;
     protected final Button btnReset;
 
-    public FxmlOneVsComBase(Stage primaryStage, Boolean isHard) {
+    public FxmlOneVsComBase(Boolean isHard) {
 
         text = new Text();
         playerScore = new Text();
@@ -302,10 +302,7 @@ public class FxmlOneVsComBase extends AnchorPane {
         btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                mainBase rootMain = new mainBase(primaryStage);
-                Scene MainScene = new Scene(rootMain);
-                MainScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
-                primaryStage.setScene(MainScene);
+                nav.navigatToScene(new mainBase());
             }
         });
         
@@ -474,7 +471,7 @@ public class FxmlOneVsComBase extends AnchorPane {
     }
 
     private void showResultVideo() {
-        Navigation nav = new Navigation();
+        Navigation nav = Navigation.getInstance();
         switch(state){
             case TIE:
                 nav.navigatToWatchVideo("tie");

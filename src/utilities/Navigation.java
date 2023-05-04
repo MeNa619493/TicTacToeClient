@@ -5,7 +5,10 @@
  */
 package utilities;
 
+import controller.FxmlOneVsComBase;
+import controller.VideoHistoryClass;
 import controller.WatchVideoController;
+import controller.chooseXOBase;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,6 +21,23 @@ import javafx.stage.Stage;
  * @author Mina
  */
 public class Navigation {
+    private static Navigation instance = null;
+    private Stage primaryStage;
+    
+    private Navigation(){}
+    
+    public static synchronized Navigation getInstance(){
+        if (instance == null){
+            instance = new Navigation();
+        }
+       
+        return instance;
+    }
+    
+    public void setPrimaryStage(Stage primaryStage){
+        this.primaryStage = primaryStage;
+    }
+    
     public void navigatToWatchVideo(String gameState){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/FxmlWatchVideo.fxml"));
@@ -42,6 +62,33 @@ public class Navigation {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void navigatToScene(Parent parent){
+        Scene computerLevelScene = new Scene(parent);
+        computerLevelScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+        primaryStage.setScene(computerLevelScene);
+    }
+    
+    public void navigatToChooseXO(boolean isGoingToOneVsOne, boolean isHard){
+        chooseXOBase OneVsOneChooseXOroot = new chooseXOBase(isGoingToOneVsOne, isHard);
+        Scene oneVsOneChooseXOScene = new Scene(OneVsOneChooseXOroot);
+        primaryStage.setScene(oneVsOneChooseXOScene);
+        oneVsOneChooseXOScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+    }
+    
+    public void navigatToOneVsComp(boolean isHard){
+        FxmlOneVsComBase oneVsComRoot = new FxmlOneVsComBase(isHard);
+        Scene oneVsComScene = new Scene(oneVsComRoot);
+        primaryStage.setScene(oneVsComScene);
+        oneVsComScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+    }
+    
+    public void navigateToGameReplay(String fileName){
+        VideoHistoryClass videoHistoryRoot = new VideoHistoryClass(fileName);
+        Scene videoHistoryScene = new Scene(videoHistoryRoot);
+        primaryStage.setScene(videoHistoryScene);
+        videoHistoryScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
     }
     
 }
