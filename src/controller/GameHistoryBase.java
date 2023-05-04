@@ -8,11 +8,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import static javafx.scene.paint.Color.color;
+import static javafx.scene.paint.Color.color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class GameHistoryBase extends AnchorPane {
-    ArrayList <String> gameNames = new ArrayList<>();
+
+    ArrayList<String> gameNames = new ArrayList<>();
     File[] files;
 
     protected final Label label;
@@ -49,58 +52,59 @@ public class GameHistoryBase extends AnchorPane {
 
         gamesListView.setPrefHeight(321.0);
         gamesListView.setPrefWidth(498.0);
-        gamesListView.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;");
+
         scrollPane.setContent(gamesListView);
 
         getChildren().add(label);
         getChildren().add(scrollPane);
-        
-        setStyle("-fx-background-color: black;"
+
+        setStyle("-fx-background-image: url('file:./src/Photo/bg3.jpg');"
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
-        
-        gamesListView.setStyle("-fx-background-image: url('file:./src/Photo/bgGp.jpg');");
-        
+
+        gamesListView.setStyle("-fx-background-color: #232832;");
+        scrollPane.setStyle("-fx-color: #232832;");
+
         gamesListView.setCellFactory(new GameCellFactory());
         populateDataIntoListView();
-        
+
         gamesListView.setOnMouseClicked((MouseEvent event) -> {
             System.out.println("list view clicked");
             int selectedItem = gamesListView.getSelectionModel().getSelectedIndex();
-            System.out.println("clicked "+ selectedItem);
+            System.out.println("clicked " + selectedItem);
             System.out.println("files = " + files.length);
             System.out.println(files[selectedItem].getName());
-            VideoHistoryClass videoHistoryRoot=new VideoHistoryClass(files[selectedItem].getName());
+            VideoHistoryClass videoHistoryRoot = new VideoHistoryClass(files[selectedItem].getName());
             Scene videoHistoryScene = new Scene(videoHistoryRoot);
             videoHistoryScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
             primaryStage.setScene(videoHistoryScene);
         });
     }
-    
-    private boolean isFolderExist(){
+
+    private boolean isFolderExist() {
         File dir = new File(".\\src\\records");
         files = dir.listFiles();
-        if(dir.exists() && files.length > 0){
+        if (dir.exists() && files.length > 0) {
             return true;
         }
         return false;
     }
-    
-    private void populateDataIntoListView(){
-        if(isFolderExist()){
+
+    private void populateDataIntoListView() {
+        if (isFolderExist()) {
             for (int i = 0; i < files.length; i++) {
                 if (files[i].isFile()) {
                     gameNames.add(ModifyStringToView(files[i].getName()));
-                } 
+                }
             }
             gamesListView.getItems().addAll(gameNames);
         }
     }
-    
-    private String ModifyStringToView(String str){
+
+    private String ModifyStringToView(String str) {
         String fileNameWithOutExt = str.replaceFirst("[.][^.]+$", "");
         String[] splited = fileNameWithOutExt.split(" ");
         String modifiedDate = splited[4].replaceAll("-", ":");
-        return splited[0]+" "+splited[1]+" "+ splited[2]+" "+splited[3]+" "+modifiedDate;
+        return splited[0] + " " + splited[1] + " " + splited[2] + " " + splited[3] + " " + modifiedDate;
     }
 }
