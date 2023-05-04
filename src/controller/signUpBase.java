@@ -17,11 +17,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import utilities.SocketClient;
 
 public class signUpBase extends AnchorPane {
     Socket server;
     DataInputStream dis;
     PrintStream ps;
+    boolean sign;
     protected final Text text;
     protected final Text text0;
     protected final Button btnSignUp;
@@ -129,11 +131,34 @@ public class signUpBase extends AnchorPane {
 //         ps.println(name);
 //         ps.println(email);
 //         ps.println(password);
+            ps.println("SignUp###"+name+"###"+email+"###"+password);
          new Thread(() -> {
                 try {
-//                    String replyMsg = dis.readLine();
-//                    System.out.println(replyMsg);
-                    
+                    String replyMsg = dis.readLine();
+
+                
+                    if (replyMsg.equals("username_notAvailable")) {
+                        try {
+                            
+                            ps.close();
+                            dis.close();
+                            SocketClient.getInstant().CloseSocket();
+                            sign = false;
+
+                        } catch (Exception ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                    } else if (replyMsg.equals("success_signup")) {
+                        try {
+                            ps.close();
+                            dis.close();
+                            SocketClient.getInstant().CloseSocket();
+                            sign = true;
+
+                        } catch (Exception ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                    }
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
