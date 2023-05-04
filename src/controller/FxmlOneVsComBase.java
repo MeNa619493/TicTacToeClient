@@ -517,7 +517,7 @@ public class FxmlOneVsComBase extends AnchorPane {
     
     private void writeOnFile(Button buttonPressed){
         new Thread(() -> {
-            StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed)+buttonPressed.getText()+".");
+            StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed)+".");
         }).start();
     }
     

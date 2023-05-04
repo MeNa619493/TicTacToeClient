@@ -49,19 +49,19 @@ public class StreamHelper {
         }
     }
     
-   public static int[] readButtonPositionsFromFile(String fileName) {
-    int[] buttonPositions = null;
-    try {
-        String data = new String(Files.readAllBytes(Paths.get(fileName)));
-        String[] dataArray = data.split("\\.");
-        buttonPositions = new int[dataArray.length - 2]; 
-        for (int i = 2; i < dataArray.length; i++) {
-            buttonPositions[i - 2] = Integer.parseInt(dataArray[i]);
+    public static int[] readButtonPositionsFromFile(String fileName) {
+        int[] buttonPositions = null;
+        try {
+            String data = new String(Files.readAllBytes(Paths.get(fileName)));
+            String[] dataArray = data.split("\\.");
+            buttonPositions = new int[dataArray.length - 2]; 
+            for (int i = 2; i < dataArray.length; i++) {
+                buttonPositions[i - 2] = Integer.parseInt(dataArray[i]);
+            }
+            System.out.println("File content read successfully.");
+        } catch (IOException ex) {
+            System.err.println("Error reading file: " + ex.getMessage());
         }
-        System.out.println("File content read successfully.");
-    } catch (IOException ex) {
-        System.err.println("Error reading file: " + ex.getMessage());
+        return buttonPositions;
     }
-    return buttonPositions;
-}
 }
