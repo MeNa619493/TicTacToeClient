@@ -111,7 +111,7 @@ public class mainBase extends AnchorPane {
         btnGameHistory.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GameHistoryBaseTwo gameHistory = new GameHistoryBaseTwo();
+                GameHistoryBase gameHistory = new GameHistoryBase();
                 Scene gameHistoryScene = new Scene(gameHistory);
                 gameHistoryScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
                 primaryStage.setScene(gameHistoryScene);
