@@ -281,14 +281,23 @@ public  class VideoHistoryClass extends AnchorPane {
         this.fileName = fileName;
         int [] buttonPosition=StreamHelper.readButtonPositionsFromFile(dir+fileName);
         
-        for(int i : buttonPosition){
+        int  buttonPosition[]=StreamHelper.readButtonPositionsFromFile("");
+        Thread th=new Thread (new Runnable() {
+            @Override
+            public void run() {
+                for(int i : buttonPosition){
             try {
+                
                 Thread.sleep(1000);
                 draw(buttonList.get(i));
             } catch (InterruptedException ex) {
                 Logger.getLogger(VideoHistoryClass.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+        th.start();
         
     }
         public void draw(Button btn) {
@@ -314,4 +323,6 @@ public  class VideoHistoryClass extends AnchorPane {
         }
     
     }
+
+    
 }
