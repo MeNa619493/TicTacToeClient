@@ -111,11 +111,12 @@ public class mainBase extends AnchorPane {
         btnGameHistory.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GameHistoryBase gameHistory = new GameHistoryBase();
+                GameHistoryBase gameHistory = new GameHistoryBase(primaryStage);
                 Scene gameHistoryScene = new Scene(gameHistory);
                 gameHistoryScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
                 primaryStage.setScene(gameHistoryScene);
             }
         });
     }
+    
 }

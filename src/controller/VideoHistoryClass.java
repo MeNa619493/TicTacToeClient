@@ -45,8 +45,9 @@ public  class VideoHistoryClass extends AnchorPane {
     int x=1;
     Image imgX;
     Image imgO;
+    String fileName;
 
-    public VideoHistoryClass() {
+    public VideoHistoryClass(String fileName) {
 
         text = new Text();
         playerScore = new Text();
@@ -128,7 +129,7 @@ public  class VideoHistoryClass extends AnchorPane {
         imageView.setFitHeight(318.0);
         imageView.setFitWidth(335.0);
         imageView.setPickOnBounds(true);
-        imageView.setImage(new Image(getClass().getResource("../Photo/graph.png").toExternalForm()));
+        imageView.setImage(new Image(getClass().getResource("/Photo/graph.png").toExternalForm()));
 
         StackPane.setAlignment(gridPane, javafx.geometry.Pos.CENTER);
         gridPane.setPrefHeight(318.0);
@@ -276,7 +277,9 @@ public  class VideoHistoryClass extends AnchorPane {
         buttonList.add(btn21);
         buttonList.add(btn22);
         
-        int [] buttonPosition=StreamHelper.readButtonPositionsFromFile("");
+        String dir = "C:\\Users\\Mina\\Documents\\NetBeansProjects\\TicTacToeClient\\src\\records\\";
+        this.fileName = fileName;
+        int [] buttonPosition=StreamHelper.readButtonPositionsFromFile(dir+fileName);
         
         for(int i : buttonPosition){
             try {

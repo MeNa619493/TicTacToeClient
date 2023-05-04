@@ -2,11 +2,14 @@ package controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class GameHistoryBase extends AnchorPane {
     ArrayList <String> gameNames = new ArrayList<>();
@@ -16,7 +19,7 @@ public class GameHistoryBase extends AnchorPane {
     protected final ScrollPane scrollPane;
     protected final ListView gamesListView;
 
-    public GameHistoryBase() {
+    public GameHistoryBase(Stage primaryStage) {
 
         label = new Label();
         scrollPane = new ScrollPane();
@@ -60,7 +63,18 @@ public class GameHistoryBase extends AnchorPane {
         
         gamesListView.setCellFactory(new GameCellFactory());
         populateDataIntoListView();
-
+        
+        gamesListView.setOnMouseClicked((MouseEvent event) -> {
+            System.out.println("list view clicked");
+            int selectedItem = gamesListView.getSelectionModel().getSelectedIndex();
+            System.out.println("clicked "+ selectedItem);
+            System.out.println("files = " + files.length);
+            System.out.println(files[selectedItem].getName());
+            VideoHistoryClass videoHistoryRoot=new VideoHistoryClass(files[selectedItem].getName());
+            Scene videoHistoryScene = new Scene(videoHistoryRoot);
+            videoHistoryScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+            primaryStage.setScene(videoHistoryScene);
+        });
     }
     
     private boolean isFolderExist(){
