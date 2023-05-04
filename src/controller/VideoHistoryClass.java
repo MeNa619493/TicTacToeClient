@@ -128,7 +128,7 @@ public  class VideoHistoryClass extends AnchorPane {
         imageView.setFitHeight(318.0);
         imageView.setFitWidth(335.0);
         imageView.setPickOnBounds(true);
-        imageView.setImage(new Image(getClass().getResource("../Photo/graph.png").toExternalForm()));
+        imageView.setImage(new Image(getClass().getResource("/Photo/graph.png").toExternalForm()));
 
         StackPane.setAlignment(gridPane, javafx.geometry.Pos.CENTER);
         gridPane.setPrefHeight(318.0);
