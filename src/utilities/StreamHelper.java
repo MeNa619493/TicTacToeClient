@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javafx.scene.control.Button;
 
 /**
  *
@@ -48,14 +49,19 @@ public class StreamHelper {
         }
     }
     
-    public static String readFromFile(String fileName) {
-        String data = "";
-        try {
-            data = new String(Files.readAllBytes(Paths.get(fileName)));
-            System.out.println("File content read successfully.");
-        } catch (IOException ex) {
-            System.err.println("Error reading file: " + ex.getMessage());
+   public static int[] readButtonPositionsFromFile(String fileName) {
+    int[] buttonPositions = null;
+    try {
+        String data = new String(Files.readAllBytes(Paths.get(fileName)));
+        String[] dataArray = data.split("\\.");
+        buttonPositions = new int[dataArray.length - 2]; 
+        for (int i = 2; i < dataArray.length; i++) {
+            buttonPositions[i - 2] = Integer.parseInt(dataArray[i]);
         }
-        return data;   
+        System.out.println("File content read successfully.");
+    } catch (IOException ex) {
+        System.err.println("Error reading file: " + ex.getMessage());
     }
+    return buttonPositions;
+}
 }
