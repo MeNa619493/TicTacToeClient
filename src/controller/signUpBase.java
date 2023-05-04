@@ -1,23 +1,41 @@
 package controller;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import utilities.SocketClient;
 
-public  class signUpBase extends AnchorPane {
-
+public class signUpBase extends AnchorPane {
+    Socket server;
+    DataInputStream dis;
+    PrintStream ps;
+    boolean sign;
     protected final Text text;
     protected final Text text0;
-    public final Button btnSignUp;
-    public final Button btnUPHome;
+    protected final Button btnSignUp;
+    protected final Button btnUPHome;
     protected final Text text1;
     protected final Text text2;
     protected final TextField tfUpUserName;
-    protected final TextField tfUpPassword;
     protected final TextField tfUpEmail;
-    protected final TextField tfUpConPassword;
+    protected final PasswordField tfUpPassword;
+    protected final PasswordField tfUpConPassword;
 
     public signUpBase() {
 
@@ -28,9 +46,9 @@ public  class signUpBase extends AnchorPane {
         text1 = new Text();
         text2 = new Text();
         tfUpUserName = new TextField();
-        tfUpPassword = new TextField();
         tfUpEmail = new TextField();
-        tfUpConPassword = new TextField();
+        tfUpPassword = new PasswordField();
+        tfUpConPassword = new PasswordField();
 
         setId("AnchorPane");
         setPrefHeight(400.0);
@@ -60,6 +78,101 @@ public  class signUpBase extends AnchorPane {
         btnSignUp.setPrefWidth(293.0);
         btnSignUp.setText("Sign Up");
         btnSignUp.setFont(new Font("System Bold", 24.0));
+        try {
+            dis = new DataInputStream(SocketClient.getInstant().getSocket().getInputStream());
+             ps = new PrintStream(SocketClient.getInstant().getSocket().getOutputStream());
+
+        } catch (IOException ex) {
+            Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         btnSignUp.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+                public void handle(ActionEvent event) {
+                    String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+                    Pattern pattern = Pattern.compile(regex);
+                    Matcher matcher = pattern.matcher(tfUpEmail.getText());
+                    String name = tfUpUserName.getText();
+                    String email = tfUpEmail.getText();
+                    String password = tfUpPassword.getText();
+                    String passwordConfirm = tfUpConPassword.getText();
+        if (name.isEmpty() || email.isEmpty()
+                || password.isEmpty() || passwordConfirm.isEmpty()) {
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERROR");
+        alert.setHeaderText("Empty Field");
+        alert.setContentText("please Entry your Username password and Email ");
+        alert.showAndWait();
+
+
+        } else if (!matcher.matches()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+          
+            alert.setContentText("please Entry vaild Email ");
+            alert.showAndWait();
+             
+
+
+        }else if (password.length() < 5) {
+             Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("pasword Error");
+            alert.setContentText("Pasword must not less than 5");
+            alert.showAndWait();
+
+
+        } else if (!password.equals(passwordConfirm)) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("pasword Error");
+            alert.setContentText("The passwords does't matches ");
+            alert.showAndWait();
+        }
+//        
+//         ps.println(name);
+//         ps.println(email);
+//         ps.println(password);
+            ps.println("SignUp###"+name+"###"+email+"###"+password);
+         new Thread(() -> {
+                try {
+                    String replyMsg = dis.readLine();
+
+                
+                    if (replyMsg.equals("username_notAvailable")) {
+                        try {
+                            
+                           SocketClient.getInstant().CloseSocket();
+
+                            sign = false;
+
+                        } catch (Exception ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                    } else if (replyMsg.equals("success_signup")) {
+                        try {
+                            SocketClient.getInstant().CloseSocket();
+
+                            sign = true;
+
+                        } catch (Exception ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                    }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                
+                         }).start();
+
+
+        
+                }});
+
+           
+           
+     
+                
 
         btnUPHome.setLayoutX(514.0);
         btnUPHome.setLayoutY(354.0);
@@ -90,28 +203,28 @@ public  class signUpBase extends AnchorPane {
         tfUpUserName.setPrefHeight(32.0);
         tfUpUserName.setPrefWidth(355.0);
         tfUpUserName.setPromptText("Enter Your User Name");
-        tfUpUserName.setStyle("-fx-background-color: #323741;");
-
-        tfUpPassword.setLayoutX(209.0);
-        tfUpPassword.setLayoutY(154.0);
-        tfUpPassword.setPrefHeight(32.0);
-        tfUpPassword.setPrefWidth(355.0);
-        tfUpPassword.setPromptText("Enter Your Password");
-        tfUpPassword.setStyle("-fx-background-color: #323741;");
+        tfUpUserName.setStyle("-fx-background-color: #323741; -fx-text-fill: White;");
 
         tfUpEmail.setLayoutX(209.0);
         tfUpEmail.setLayoutY(102.0);
         tfUpEmail.setPrefHeight(32.0);
         tfUpEmail.setPrefWidth(355.0);
         tfUpEmail.setPromptText("Enter Your Email");
-        tfUpEmail.setStyle("-fx-background-color: #323741;");
+        tfUpEmail.setStyle("-fx-background-color: #323741; -fx-text-fill: White;");
+
+        tfUpPassword.setLayoutX(209.0);
+        tfUpPassword.setLayoutY(152.0);
+        tfUpPassword.setPrefHeight(32.0);
+        tfUpPassword.setPrefWidth(355.0);
+        tfUpPassword.setPromptText("Enter Your Password");
+        tfUpPassword.setStyle("-fx-background-color: #323741; -fx-text-fill: White;");
 
         tfUpConPassword.setLayoutX(209.0);
-        tfUpConPassword.setLayoutY(213.0);
+        tfUpConPassword.setLayoutY(212.0);
         tfUpConPassword.setPrefHeight(32.0);
         tfUpConPassword.setPrefWidth(355.0);
-        tfUpConPassword.setPromptText("Confirm your Password");
-        tfUpConPassword.setStyle("-fx-background-color: #323741;");
+        tfUpConPassword.setPromptText("Enter Your Password");
+        tfUpConPassword.setStyle("-fx-background-color: #323741; -fx-text-fill: White;");
 
         getChildren().add(text);
         getChildren().add(text0);
@@ -120,14 +233,15 @@ public  class signUpBase extends AnchorPane {
         getChildren().add(text1);
         getChildren().add(text2);
         getChildren().add(tfUpUserName);
-        getChildren().add(tfUpPassword);
         getChildren().add(tfUpEmail);
+        getChildren().add(tfUpPassword);
         getChildren().add(tfUpConPassword);
-        setStyle("-fx-background-image: url('file:./src/Photo/bgGp.jpg');"
+
+        setStyle("-fx-background-image: url('file:./src/Photo/bg3.jpg');"
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
-        
         btnSignUp.setId("myButton");
         btnUPHome.setId("myButton");
+
     }
 }

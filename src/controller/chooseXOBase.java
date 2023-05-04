@@ -2,29 +2,34 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import utilities.Navigation;
 
 public class chooseXOBase extends AnchorPane {
-
+    boolean isGoingToOneVsOne;
+    boolean isHard;
+    Navigation nav = Navigation.getInstance();
+    
     protected final Text tvChoose;
-    public final Button btnChooseX;
-    public final Button btnChooseO;
-    public final Button btnEndGame;
+    protected final Button btnChooseX;
+    protected final Button btnChooseO;
+    protected final Button btnEndGame;
     protected final ImageView ivLine;
-
-    public chooseXOBase() {
-
+    
+    public chooseXOBase(boolean isGoingToOneVsOne, boolean isHard) {
         tvChoose = new Text();
         btnChooseX = new Button();
         btnChooseO = new Button();
         btnEndGame = new Button();
         ivLine = new ImageView();
-
+        
         setId("AnchorPane");
         setPrefHeight(400.0);
         setPrefWidth(600.0);
@@ -88,5 +93,36 @@ public class chooseXOBase extends AnchorPane {
         Image imgLine = new Image("file:./src/Photo/line.png", true);
         ivLine.setImage(imgLine);
         
+        this.isGoingToOneVsOne = isGoingToOneVsOne;
+        this.isHard = isHard;
+        
+        btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                nav.navigatToScene(new mainBase());
+            }
+        });
+        
+        btnChooseX.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                handleNavigation();
+            }
+        });
+        
+        btnChooseO.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                handleNavigation();
+            }
+        });
+    }
+    
+    private void handleNavigation(){
+        if(isGoingToOneVsOne){
+            nav.navigatToScene(new FxmlOneVsOneBase());
+        }else{
+            nav.navigatToOneVsComp(isHard);
+        }
     }
 }

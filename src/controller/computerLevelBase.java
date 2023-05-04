@@ -1,15 +1,22 @@
 package controller;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import utilities.Navigation;
 
 public class computerLevelBase extends AnchorPane {
+    
+    Navigation nav = Navigation.getInstance();
 
-    public final Button btnLow;
-    public final Button btnHigh;
-    public final Button btnEndGame;
+    protected final Button btnLow;
+    protected final Button btnHigh;
+    protected final Button btnEndGame;
     protected final Text text;
 
     public computerLevelBase() {
@@ -65,5 +72,26 @@ public class computerLevelBase extends AnchorPane {
         btnLow.setId("myButton");
         btnHigh.setId("myButton");
         btnEndGame.setId("myButton");
+        
+        btnHigh.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                nav.navigatToChooseXO(false, true);
+            }
+        });
+        
+        btnLow.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                nav.navigatToChooseXO(false, false);
+            }
+        });
+        
+        btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                nav.navigatToScene(new mainBase());
+            }
+        });
     }
 }

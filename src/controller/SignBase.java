@@ -1,11 +1,18 @@
 package controller;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import utilities.Navigation;
 
 public  class SignBase extends AnchorPane {
 
+    Navigation nav = Navigation.getInstance();
+    
     public final Button btnSignUp;
     public final Button btnSignIn;
     public final Button btnSignHome;
@@ -55,5 +62,26 @@ public  class SignBase extends AnchorPane {
         btnSignUp.setId("myButton");
         btnSignIn.setId("myButton");
         btnSignHome.setId("myButton");
+        
+        btnSignIn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                nav.navigatToScene(new signInBase());
+            }
+        });
+        
+        btnSignUp.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                nav.navigatToScene(new signUpBase());
+            }
+        });
+        
+        btnSignHome.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                nav.navigatToScene(new mainBase());
+            }
+        });
     }
 }
