@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,11 +19,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import utilities.SocketClient;
 
 public class signUpBase extends AnchorPane {
     Socket server;
     DataInputStream dis;
     PrintStream ps;
+    boolean sign;
     protected final Text text;
     protected final Text text0;
     protected final Button btnSignUp;
@@ -74,13 +78,13 @@ public class signUpBase extends AnchorPane {
         btnSignUp.setPrefWidth(293.0);
         btnSignUp.setText("Sign Up");
         btnSignUp.setFont(new Font("System Bold", 24.0));
-//        try {
-//             server= new Socket("127.0.0.1",5006);
-//              ps =new PrintStream(server.getOutputStream());
-//            dis=new DataInputStream(server.getInputStream());
-//         } catch (IOException ex) {
-//             System.out.println(ex.getMessage());
-//         }
+        try {
+            dis = new DataInputStream(SocketClient.getInstant().getSocket().getInputStream());
+             ps = new PrintStream(SocketClient.getInstant().getSocket().getOutputStream());
+
+        } catch (IOException ex) {
+            Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
          btnSignUp.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
                 public void handle(ActionEvent event) {
@@ -111,6 +115,11 @@ public class signUpBase extends AnchorPane {
 
 
         }else if (password.length() < 5) {
+             Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("pasword Error");
+            alert.setContentText("Pasword must not less than 5");
+            alert.showAndWait();
 
 
         } else if (!password.equals(passwordConfirm)) {
@@ -124,14 +133,36 @@ public class signUpBase extends AnchorPane {
 //         ps.println(name);
 //         ps.println(email);
 //         ps.println(password);
+            ps.println("SignUp###"+name+"###"+email+"###"+password);
          new Thread(() -> {
                 try {
-//                    String replyMsg = dis.readLine();
-//                    System.out.println(replyMsg);
-                    
+                    String replyMsg = dis.readLine();
+
+                
+                    if (replyMsg.equals("username_notAvailable")) {
+                        try {
+                            
+                           SocketClient.getInstant().CloseSocket();
+
+                            sign = false;
+
+                        } catch (Exception ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                    } else if (replyMsg.equals("success_signup")) {
+                        try {
+                            SocketClient.getInstant().CloseSocket();
+
+                            sign = true;
+
+                        } catch (Exception ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                    }
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
+                
                          }).start();
 
 
