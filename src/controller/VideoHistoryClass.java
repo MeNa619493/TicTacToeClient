@@ -309,6 +309,7 @@ public class VideoHistoryClass extends AnchorPane {
         btnEndVideo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                th.stop();
                 nav.navigatToScene(new mainBase());
             }
         });
