@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -76,13 +78,13 @@ public class signUpBase extends AnchorPane {
         btnSignUp.setPrefWidth(293.0);
         btnSignUp.setText("Sign Up");
         btnSignUp.setFont(new Font("System Bold", 24.0));
-//        try {
-//             server= new Socket("127.0.0.1",5006);
-//              ps =new PrintStream(server.getOutputStream());
-//            dis=new DataInputStream(server.getInputStream());
-//         } catch (IOException ex) {
-//             System.out.println(ex.getMessage());
-//         }
+        try {
+            dis = new DataInputStream(SocketClient.getInstant().getSocket().getInputStream());
+             ps = new PrintStream(SocketClient.getInstant().getSocket().getOutputStream());
+
+        } catch (IOException ex) {
+            Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
          btnSignUp.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
                 public void handle(ActionEvent event) {
@@ -140,9 +142,8 @@ public class signUpBase extends AnchorPane {
                     if (replyMsg.equals("username_notAvailable")) {
                         try {
                             
-                            ps.close();
-                            dis.close();
-                            SocketClient.getInstant().CloseSocket();
+                           SocketClient.getInstant().CloseSocket();
+
                             sign = false;
 
                         } catch (Exception ex) {
@@ -150,9 +151,8 @@ public class signUpBase extends AnchorPane {
                         }
                     } else if (replyMsg.equals("success_signup")) {
                         try {
-                            ps.close();
-                            dis.close();
                             SocketClient.getInstant().CloseSocket();
+
                             sign = true;
 
                         } catch (Exception ex) {
@@ -162,6 +162,7 @@ public class signUpBase extends AnchorPane {
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
+                
                          }).start();
 
 
