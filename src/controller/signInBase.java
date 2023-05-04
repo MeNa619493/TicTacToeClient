@@ -1,5 +1,13 @@
 package controller;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -7,14 +15,16 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public  class signInBase extends AnchorPane {
-
+   
     protected final Text text;
     protected final Text text0;
     protected final Button btnSignIn;
     protected final Button btnHome;
     protected final TextField tfInEmail;
     protected final TextField tfInPassword;
-
+    DataInputStream dis;
+     PrintStream ps;
+    Boolean stream = false;
     public signInBase() {
 
         text = new Text();
@@ -88,5 +98,48 @@ public  class signInBase extends AnchorPane {
         btnSignIn.setId("myButton");
         btnHome.setId("myButton");
 
+         btnSignIn.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                  String Email = tfInEmail.getText();
+                    String pass = tfInPassword.getText();
+                    long type = 2;
+                try {
+                    dis = new DataInputStream(SocketClient.getInstant().getSocket().getInputStream());
+                    ps = new PrintStream(SocketClient.getInstant().getSocket().getOutputStream());
+                     stream = true;
+                } catch (IOException ex) {
+                    Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                 ps.println(Email+"###"+pass);
+             System.out.println("1");
+              new Thread(() -> {
+                      
+                      try {
+                          System.out.println("waiting for server response");
+                          String replyMsg = dis.readLine();
+                          System.out.println(replyMsg);
+                          if (replyMsg.equals("success_login")) {                    
+                              Platform.runLater(() -> {
+                                  //platform playerslist
+                              });
+                          } else {
+                              Platform.runLater(() -> {
+                                  try {
+                                      ps.close();
+                                      dis.close();
+                                      SocketClient.getInstant().CloseSocket();
+                                  } catch (IOException ex) {
+                                      Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
+                                  }
+                                  
+                              });     
+                          }
+                      } catch (IOException ex) {
+                          Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
+                      }
+                      });
+                }
+         });
     }
 }
