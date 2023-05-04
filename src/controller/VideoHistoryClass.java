@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,6 +18,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import utilities.Navigation;
 import utilities.StreamHelper;
 
 public class VideoHistoryClass extends AnchorPane {
@@ -47,6 +50,7 @@ public class VideoHistoryClass extends AnchorPane {
     Image imgX;
     Image imgO;
     String fileName;
+    Navigation nav = Navigation.getInstance();
 
     public VideoHistoryClass(String fileName) {
 
@@ -301,6 +305,13 @@ public class VideoHistoryClass extends AnchorPane {
             }
         });
         th.start();
+        
+        btnEndVideo.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                nav.navigatToScene(new mainBase());
+            }
+        });
 
     }
 
