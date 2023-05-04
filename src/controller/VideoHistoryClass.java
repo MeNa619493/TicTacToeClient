@@ -4,6 +4,7 @@ import static java.lang.System.in;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,7 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import utilities.StreamHelper;
 
-public  class VideoHistoryClass extends AnchorPane {
+public class VideoHistoryClass extends AnchorPane {
 
     protected final Text text;
     protected final Text playerScore;
@@ -42,7 +43,7 @@ public  class VideoHistoryClass extends AnchorPane {
     protected final Button btn01;
     protected final Button btn00;
     protected final Button btnEndVideo;
-    int x=1;
+    int x = 1;
     Image imgX;
     Image imgO;
     String fileName;
@@ -266,7 +267,7 @@ public  class VideoHistoryClass extends AnchorPane {
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
         btnEndVideo.setId("myButton");
-        ArrayList<Button> buttonList=new ArrayList<Button>();
+        ArrayList<Button> buttonList = new ArrayList<Button>();
         buttonList.add(btn00);
         buttonList.add(btn01);
         buttonList.add(btn02);
@@ -276,30 +277,34 @@ public  class VideoHistoryClass extends AnchorPane {
         buttonList.add(btn20);
         buttonList.add(btn21);
         buttonList.add(btn22);
-        
-        String dir = "C:\\Users\\Mina\\Documents\\NetBeansProjects\\TicTacToeClient\\src\\records\\";
+
+        String dir = ".\\src\\records\\";
         this.fileName = fileName;
-        int [] buttonPosition=StreamHelper.readButtonPositionsFromFile(dir+fileName);
-        
-        Thread th=new Thread (new Runnable() {
+        int[] buttonPosition = StreamHelper.readButtonPositionsFromFile(dir + fileName);
+       
+        Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                for(int i : buttonPosition){
-                    if (i >= 0 && i < buttonList.size() && buttonList.get(i) != null) {
+                for (int i : buttonPosition) {
                     try {
                         Thread.sleep(1000);
-                        draw(buttonList.get(i));
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                draw(buttonList.get(i-1));
+                            }
+                        });
                     } catch (InterruptedException ex) {
                         Logger.getLogger(VideoHistoryClass.class.getName()).log(Level.SEVERE, null, ex);
-                    }
                     }
                 }
             }
         });
         th.start();
-        
+
     }
-        public void draw(Button btn) {
+
+    public void draw(Button btn) {
         imgX = new Image("file:./src/Photo/x2.png");
         imgO = new Image("file:./src/Photo/o2.png");
         ImageView viewX;
@@ -308,7 +313,6 @@ public  class VideoHistoryClass extends AnchorPane {
         ImageView viewO;
         viewO = new ImageView(imgO);
         viewO.setPreserveRatio(true);
-        if (btn.getText() == "") {
             if (x % 2 != 0) {
                 btn.setGraphic(viewX);
                 btn.setTextFill(Color.TRANSPARENT);
@@ -319,9 +323,6 @@ public  class VideoHistoryClass extends AnchorPane {
                 btn.setText("O");
             }
             x++;
-        }
-    
     }
 
-    
 }

@@ -22,7 +22,7 @@ public class StreamHelper {
     
     public static void createFile(String player1, String player2) {
         DateHelper c = new DateHelper();
-        File dir = new File("C:\\Users\\Mina\\Documents\\NetBeansProjects\\TicTacToeClient\\src\\records");
+        File dir = new File(".\\src\\records");
         dir.mkdirs();
         file = new File(dir, String.format("%s vs %s %s.txt", player1, player2, c.getCurrentDateTime()));
 
@@ -57,11 +57,14 @@ public class StreamHelper {
             buttonPositions = new int[dataArray.length - 2]; 
             for (int i = 2; i < dataArray.length; i++) {
                 buttonPositions[i - 2] = Integer.parseInt(dataArray[i]);
+                
             }
+           
             System.out.println("File content read successfully.");
         } catch (IOException ex) {
             System.err.println("Error reading file: " + ex.getMessage());
         }
         return buttonPositions;
     }
+     
 }

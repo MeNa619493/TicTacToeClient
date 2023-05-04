@@ -78,7 +78,7 @@ public class GameHistoryBase extends AnchorPane {
     }
     
     private boolean isFolderExist(){
-        File dir = new File("C:\\Users\\Mina\\Documents\\NetBeansProjects\\TicTacToeClient\\src\\records");
+        File dir = new File(".\\src\\records");
         files = dir.listFiles();
         if(dir.exists() && files.length > 0){
             return true;
