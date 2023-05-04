@@ -102,7 +102,7 @@
             </GridPane>
          </children>
       </StackPane>
-      <Button fx:id="btnEndVideo" layoutX="514.0" layoutY="12.0" mnemonicParsing="false" text="Home" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+      <Button fx:id="btnEndVideo" layoutX="514.0" layoutY="12.0" mnemonicParsing="false" text="End Video" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
             <font>
                <Font size="14.0" />
             </font>
