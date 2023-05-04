@@ -285,11 +285,13 @@ public  class VideoHistoryClass extends AnchorPane {
             @Override
             public void run() {
                 for(int i : buttonPosition){
+                    if (i >= 0 && i < buttonList.size() && buttonList.get(i) != null) {
                     try {
                         Thread.sleep(1000);
                         draw(buttonList.get(i));
                     } catch (InterruptedException ex) {
                         Logger.getLogger(VideoHistoryClass.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     }
                 }
             }
