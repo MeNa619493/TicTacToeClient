@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import utilities.Navigation;
 
 /**
  *
@@ -21,8 +22,11 @@ public class TicTacToeClient extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        Navigation nav = Navigation.getInstance();
+        nav.setPrimaryStage(primaryStage);
+        
         FxmlSplashBase fxmlSplashBase = new FxmlSplashBase();
-        mainBase rootMain = new mainBase(primaryStage);
+        mainBase rootMain = new mainBase();
         
         Scene splashScene = new Scene(fxmlSplashBase);
         Scene MainScene = new Scene(rootMain);

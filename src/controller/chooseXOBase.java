@@ -10,19 +10,20 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import utilities.Navigation;
 
 public class chooseXOBase extends AnchorPane {
-
+    boolean isGoingToOneVsOne;
+    boolean isHard;
+    Navigation nav = Navigation.getInstance();
+    
     protected final Text tvChoose;
     protected final Button btnChooseX;
     protected final Button btnChooseO;
     protected final Button btnEndGame;
     protected final ImageView ivLine;
-
-    Stage primaryStage;
-    Boolean isGoingToOneVsOne;
     
-    public chooseXOBase(Stage primaryStage, Boolean isGoingToOneVsOne, Boolean isHard) {
+    public chooseXOBase(boolean isGoingToOneVsOne, boolean isHard) {
         tvChoose = new Text();
         btnChooseX = new Button();
         btnChooseO = new Button();
@@ -91,52 +92,37 @@ public class chooseXOBase extends AnchorPane {
         btnEndGame.setId("myButton");
         Image imgLine = new Image("file:./src/Photo/line.png", true);
         ivLine.setImage(imgLine);
-        this.primaryStage = primaryStage;
+        
         this.isGoingToOneVsOne = isGoingToOneVsOne;
+        this.isHard = isHard;
         
         btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                mainBase rootMain = new mainBase(primaryStage);
-                Scene MainScene = new Scene(rootMain);
-                MainScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
-                primaryStage.setScene(MainScene);
+                nav.navigatToScene(new mainBase());
             }
         });
         
         btnChooseX.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(isGoingToOneVsOne){
-                    FxmlOneVsOneBase oneVsOneRoot = new FxmlOneVsOneBase(primaryStage);
-                    Scene oneVsOneScene = new Scene(oneVsOneRoot);
-                    primaryStage.setScene(oneVsOneScene);
-                    oneVsOneScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
-                }else{
-                    FxmlOneVsComBase oneVsComRoot = new FxmlOneVsComBase(primaryStage, isHard);
-                    Scene oneVsComScene = new Scene(oneVsComRoot);
-                    primaryStage.setScene(oneVsComScene);
-                    oneVsComScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
-                }
+                handleNavigation();
             }
         });
         
         btnChooseO.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(isGoingToOneVsOne){
-                    FxmlOneVsOneBase oneVsOneRoot = new FxmlOneVsOneBase(primaryStage);
-                    Scene oneVsOneScene = new Scene(oneVsOneRoot);
-                    primaryStage.setScene(oneVsOneScene);
-                    oneVsOneScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
-                }else{
-                    FxmlOneVsComBase oneVsComRoot = new FxmlOneVsComBase(primaryStage, isHard);
-                    Scene oneVsComScene = new Scene(oneVsComRoot);
-                    primaryStage.setScene(oneVsComScene);
-                    oneVsComScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
-                }
+                handleNavigation();
             }
         });
-        
+    }
+    
+    private void handleNavigation(){
+        if(isGoingToOneVsOne){
+            nav.navigatToScene(new FxmlOneVsOneBase());
+        }else{
+            nav.navigatToOneVsComp(isHard);
+        }
     }
 }

@@ -1,18 +1,11 @@
 package controller;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import utilities.Navigation;
 
 public class mainBase extends AnchorPane {
 
@@ -21,7 +14,9 @@ public class mainBase extends AnchorPane {
     protected final Button btnPlayOverTheNetwork;
     protected final Button btnGameHistory;
     
-    public mainBase(Stage primaryStage) {
+    Navigation nav = Navigation.getInstance();
+    
+    public mainBase() {
 
         btnPlayVsComputer = new Button();
         btnPlayVsFriend = new Button();
@@ -81,40 +76,28 @@ public class mainBase extends AnchorPane {
         btnPlayVsFriend.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                chooseXOBase OneVsOneChooseXOroot = new chooseXOBase(primaryStage, true, false);
-                Scene oneVsOneChooseXOScene = new Scene(OneVsOneChooseXOroot);
-                primaryStage.setScene(oneVsOneChooseXOScene);
-                oneVsOneChooseXOScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
+                nav.navigatToChooseXO(true, false);
             }
         });
         
         btnPlayVsComputer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                computerLevelBase computerLevelRoot=new computerLevelBase(primaryStage);
-                Scene computerLevelScene = new Scene(computerLevelRoot);
-                computerLevelScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
-                primaryStage.setScene(computerLevelScene);
+                nav.navigatToScene(new computerLevelBase());
             }
         });
         
         btnPlayOverTheNetwork.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                SignBase signRoot=new SignBase(primaryStage);
-                Scene signScene = new Scene(signRoot);
-                signScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
-                primaryStage.setScene(signScene);
+                nav.navigatToScene(new SignBase());
             }
         });
         
         btnGameHistory.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                GameHistoryBase gameHistory = new GameHistoryBase(primaryStage);
-                Scene gameHistoryScene = new Scene(gameHistory);
-                gameHistoryScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
-                primaryStage.setScene(gameHistoryScene);
+                nav.navigatToScene(new GameHistoryBase());
             }
         });
     }
