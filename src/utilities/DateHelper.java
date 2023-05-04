@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
  * @author Mina
  */
 public class DateHelper {
-    private  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd  HH-mm-ss");
+    private  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss");
     private  LocalDateTime now = LocalDateTime.now();
     public  String getCurrentDateTime(){
         return dtf.format(now);

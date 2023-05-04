@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javafx.scene.control.Button;
 
 /**
  *
@@ -21,7 +22,7 @@ public class StreamHelper {
     
     public static void createFile(String player1, String player2) {
         DateHelper c = new DateHelper();
-        File dir = new File("C:\\Users\\Mina\\Documents\\NetBeansProjects\\TicTacToeClient\\src\\records");
+        File dir = new File(".\\src\\records");
         dir.mkdirs();
         file = new File(dir, String.format("%s vs %s %s.txt", player1, player2, c.getCurrentDateTime()));
 
@@ -48,14 +49,22 @@ public class StreamHelper {
         }
     }
     
-    public static String readFromFile(String fileName) {
-        String data = "";
+    public static int[] readButtonPositionsFromFile(String fileName) {
+        int[] buttonPositions = null;
         try {
-            data = new String(Files.readAllBytes(Paths.get(fileName)));
+            String data = new String(Files.readAllBytes(Paths.get(fileName)));
+            String[] dataArray = data.split("\\.");
+            buttonPositions = new int[dataArray.length - 2]; 
+            for (int i = 2; i < dataArray.length; i++) {
+                buttonPositions[i - 2] = Integer.parseInt(dataArray[i]);
+                
+            }
+           
             System.out.println("File content read successfully.");
         } catch (IOException ex) {
             System.err.println("Error reading file: " + ex.getMessage());
         }
-        return data;   
+        return buttonPositions;
     }
+     
 }
