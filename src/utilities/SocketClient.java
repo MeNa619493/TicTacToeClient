@@ -38,8 +38,7 @@ public class SocketClient {
         if (!isInitialized) {
             try {
                 mySocket = new Socket("127.0.0.1", 5005);
-                dis = new DataInputStream(mySocket.getInputStream());
-                ps = new PrintStream(mySocket.getOutputStream());
+                
                 System.out.println("new Socket");
                 isInitialized = true;
             } catch (IOException ex) {
@@ -66,11 +65,5 @@ public class SocketClient {
         return isInitialized;
     }
 
-    public DataInputStream getDataInputStream() {
-        return dis;
-    }
-
-    public PrintStream getPrintStream() {
-        return ps;
-    }
+ 
 }
