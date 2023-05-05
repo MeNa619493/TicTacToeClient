@@ -171,7 +171,7 @@ public class signUpBase extends AnchorPane {
                     if (replyMsg.equals("username_notAvailable")) {
                         try {
                             
-
+                            System.out.println("fAILD");
                             sign = false;
 
                         } catch (Exception ex) {

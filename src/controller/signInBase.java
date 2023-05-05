@@ -116,7 +116,6 @@ public  class signInBase extends AnchorPane {
                  ps.println(player.getEmail()+"###"+player.getPassword());
              System.out.println("1");
               new Thread(() -> {
-                      
                       try {
                           System.out.println("waiting for server response");
                           String replyMsg = dis.readLine();
