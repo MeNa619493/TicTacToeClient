@@ -145,8 +145,10 @@ public class signUpBase extends AnchorPane {
             alert.setHeaderText("pasword Error");
             alert.setContentText("The passwords does't matches ");
             alert.showAndWait();
-        }
+        } 
+        ps.println("dasdsa");
 
+            
               JSONObject obj = new JSONObject();
                 try {
                     obj.put("userName", name);
@@ -157,12 +159,11 @@ public class signUpBase extends AnchorPane {
                     Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
                 }
                
-                ps.print(obj);
+                
           
       
          new Thread(() -> {
                 try {
-                    
                         replyMsg = dis.readLine();
                     
 
