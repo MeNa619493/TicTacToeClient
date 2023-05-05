@@ -90,20 +90,18 @@ public class signUpBase extends AnchorPane {
         btnSignUp.setText("Sign Up");
         btnSignUp.setFont(new Font("System Bold", 24.0));
 
-        SocketClient socketClient = SocketClient.getInstance();
-        try {
-             Socket socket = socketClient.getSocket();
-              if (socket != null) {
-                   DataInputStream dis = new DataInputStream(socket.getInputStream());
-                    PrintStream ps = new PrintStream(socket.getOutputStream());
-                    
         
-              }
-        } catch (IOException e) {
-            e.printStackTrace();
-            }  catch (Exception ex) {
+              
+        try {
+            server= new Socket("127.0.0.1",5006);
+              ps =new PrintStream(server.getOutputStream());
+            dis=new DataInputStream(server.getInputStream());
+        } catch (IOException ex) {
             Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
         }
+          
+                    
+        
          btnSignUp.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
                 public void handle(ActionEvent event) {
@@ -158,14 +156,13 @@ public class signUpBase extends AnchorPane {
                 } catch (JSONException ex) {
                     Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                if(ps!= null){
-                ps.print(obj);}
+               
+                ps.print(obj);
           
       
          new Thread(() -> {
                 try {
                     
-                    if(dis!= null){
                         replyMsg = dis.readLine();
                     
 
@@ -182,7 +179,7 @@ public class signUpBase extends AnchorPane {
                     } else if (replyMsg.equals("success_signup")) {
                         sign = true;
                        }
-                    }
+                    
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
