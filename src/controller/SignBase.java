@@ -73,24 +73,14 @@ public  class SignBase extends AnchorPane {
         btnSignUp.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
-                signUpBase signUpRoot=new signUpBase( primaryStage);
-                Scene signUpScene = new Scene(signUpRoot);
-                signUpScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
-                primaryStage.setScene(signUpScene);
-
-               
-
+               nav.navigatToScene(new signUpBase());
             }
         });
         
         btnSignHome.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                mainBase rootMain = new mainBase(primaryStage);
-                Scene MainScene = new Scene(rootMain);
-                MainScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
-                primaryStage.setScene(MainScene);
+                nav.navigatToScene(new mainBase());
             }
         });
     }
