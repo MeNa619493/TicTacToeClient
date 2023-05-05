@@ -5,8 +5,11 @@
  */
 package utilities;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.Socket;
+import java.util.logging.Level;
 
 /**
  *
@@ -14,50 +17,60 @@ import java.net.Socket;
  */
 public class SocketClient {
     private Socket mySocket;
-  
+    private DataInputStream dis;
+    private PrintStream ps;
     private boolean isInitialized;
-    static private SocketClient socketClient ;
+    static private SocketClient socketClient;
+
     static {
         socketClient = new SocketClient();
     }
-    
+
     private SocketClient() {
-       
-            isInitialized=false;
-       
+        isInitialized = false;
     }
-    
-    static  public SocketClient getInstant(){
-       return  socketClient;
+
+    static public SocketClient getInstance() {
+        return socketClient;
     }
- 
-    public Socket getSocket()  {
-        if(!isInitialized){
+
+    public Socket getSocket() {
+        if (!isInitialized) {
             try {
                 mySocket = new Socket("127.0.0.1", 5005);
-                
+                dis = new DataInputStream(mySocket.getInputStream());
+                ps = new PrintStream(mySocket.getOutputStream());
+                System.out.println("new Socket");
                 isInitialized = true;
             } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-                
             }
-          
         }
 
-        return  mySocket;
-    }
-    public void CloseSocket() throws IOException{
-        if(isInitialized){
-            mySocket.close();
-            isInitialized = false;
-            
-        }
-              
+        return mySocket;
     }
 
-    public boolean isIsInitialized() {
+    public void closeSocket() {
+        if (isInitialized) {
+            try {
+                dis.close();
+                ps.close();
+                mySocket.close();
+                isInitialized = false;
+                System.out.println("Socket is closed");
+            } catch (IOException ex) {
+            }
+        }
+    }
+
+    public boolean isInitialized() {
         return isInitialized;
     }
-    
-    
+
+    public DataInputStream getDataInputStream() {
+        return dis;
+    }
+
+    public PrintStream getPrintStream() {
+        return ps;
+    }
 }
