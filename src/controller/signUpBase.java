@@ -21,11 +21,19 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import utilities.SocketClient;
 
+import javafx.stage.Stage;
+import utilities.Navigation;
+
+
 public class signUpBase extends AnchorPane {
     Socket server;
     DataInputStream dis;
     PrintStream ps;
     boolean sign;
+
+    String replyMsg ;
+    Navigation nav = Navigation.getInstance();
+    
     protected final Text text;
     protected final Text text0;
     protected final Button btnSignUp;
@@ -38,6 +46,8 @@ public class signUpBase extends AnchorPane {
     protected final PasswordField tfUpConPassword;
 
     public signUpBase() {
+
+        sign = false;
 
         text = new Text();
         text0 = new Text();
@@ -162,6 +172,15 @@ public class signUpBase extends AnchorPane {
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
+
+                if(sign==true){
+                    Platform.runLater(()->{
+                    nav.navigatToScene(new signInBase());
+                    });
+                    
+          
+                        }
+
                 
                          }).start();
 
