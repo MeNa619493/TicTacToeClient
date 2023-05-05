@@ -1,8 +1,12 @@
 package controller;
 
+import static java.lang.System.in;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,8 +19,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import utilities.Navigation;
+import utilities.StreamHelper;
 
-public class FxmlOneVsOneBase extends AnchorPane {
+public class VideoHistoryClass extends AnchorPane {
 
     protected final Text text;
     protected final Text playerScore;
@@ -40,21 +45,15 @@ public class FxmlOneVsOneBase extends AnchorPane {
     protected final Button btn02;
     protected final Button btn01;
     protected final Button btn00;
-    protected final Button btnEndGame;
-    protected final Button btnReset;
-    int x =1;
-    int y = 1;
-    int flag = 0;
+    protected final Button btnEndVideo; 
+    int x = 1;
     Image imgX;
     Image imgO;
-    int playerScoorNum;
-    int computerScoreNum;
+    String fileName;
     Navigation nav = Navigation.getInstance();
 
-    public FxmlOneVsOneBase() {
-        
-        playerScoorNum = 0;
-        computerScoreNum = 0;
+    public VideoHistoryClass(String fileName) {
+
         text = new Text();
         playerScore = new Text();
         text0 = new Text();
@@ -77,8 +76,7 @@ public class FxmlOneVsOneBase extends AnchorPane {
         btn02 = new Button();
         btn01 = new Button();
         btn00 = new Button();
-        btnEndGame = new Button();
-        btnReset = new Button();
+        btnEndVideo = new Button();
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -95,7 +93,7 @@ public class FxmlOneVsOneBase extends AnchorPane {
         text.setLayoutY(40.0);
         text.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text.setStrokeWidth(0.0);
-        text.setText("Your Score");
+        text.setText("");
         text.setFont(new Font(24.0));
 
         AnchorPane.setLeftAnchor(playerScore, 65.0);
@@ -105,7 +103,7 @@ public class FxmlOneVsOneBase extends AnchorPane {
         playerScore.setLayoutY(74.0);
         playerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         playerScore.setStrokeWidth(0.0);
-        playerScore.setText("1");
+        playerScore.setText("X");
         playerScore.setFont(new Font(24.0));
 
         AnchorPane.setRightAnchor(text0, 24.0);
@@ -115,7 +113,7 @@ public class FxmlOneVsOneBase extends AnchorPane {
         text0.setLayoutY(40.0);
         text0.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text0.setStrokeWidth(0.0);
-        text0.setText("Friend Score");
+        text0.setText("");
         text0.setFont(new Font(24.0));
 
         AnchorPane.setRightAnchor(computerScore, 80.0);
@@ -125,7 +123,7 @@ public class FxmlOneVsOneBase extends AnchorPane {
         computerScore.setLayoutY(75.0);
         computerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         computerScore.setStrokeWidth(0.0);
-        computerScore.setText("1");
+        computerScore.setText("O");
         computerScore.setFont(new Font(24.0));
 
         stackPane.setLayoutX(133.0);
@@ -213,7 +211,7 @@ public class FxmlOneVsOneBase extends AnchorPane {
         btn10.setMnemonicParsing(false);
         btn10.setPrefHeight(100.0);
         btn10.setPrefWidth(107.0);
-        btn10.setStyle("-fx-background-color: transparent;;");
+        btn10.setStyle("-fx-background-color: transparent;");
         btn10.setFont(new Font("Phosphate Inline", 46.0));
 
         GridPane.setColumnIndex(btn02, 2);
@@ -238,21 +236,13 @@ public class FxmlOneVsOneBase extends AnchorPane {
         btn00.setWrapText(true);
         btn00.setFont(new Font("Phosphate Inline", 50.0));
 
-        AnchorPane.setBottomAnchor(btnEndGame, 20.0);
-        AnchorPane.setRightAnchor(btnEndGame, 20.0);
-        btnEndGame.setLayoutX(514.0);
-        btnEndGame.setLayoutY(12.0);
-        btnEndGame.setMnemonicParsing(false);
-        btnEndGame.setText("End Game");
-        btnEndGame.setFont(new Font(14.0));
-
-        AnchorPane.setBottomAnchor(btnReset, 20.0);
-        AnchorPane.setRightAnchor(btnReset, 470.0);
-        btnReset.setLayoutX(20.0);
-        btnReset.setLayoutY(12.0);
-        btnReset.setMnemonicParsing(false);
-        btnReset.setText("New Round");
-        btnReset.setFont(new Font(14.0));
+        AnchorPane.setBottomAnchor(btnEndVideo, 20.0);
+        AnchorPane.setRightAnchor(btnEndVideo, 20.0);
+        btnEndVideo.setLayoutX(514.0);
+        btnEndVideo.setLayoutY(12.0);
+        btnEndVideo.setMnemonicParsing(false);
+        btnEndVideo.setText("End Video");
+        btnEndVideo.setFont(new Font(14.0));
 
         getChildren().add(text);
         getChildren().add(playerScore);
@@ -276,111 +266,57 @@ public class FxmlOneVsOneBase extends AnchorPane {
         gridPane.getChildren().add(btn00);
         stackPane.getChildren().add(gridPane);
         getChildren().add(stackPane);
-        getChildren().add(btnEndGame);
-        getChildren().add(btnReset);
+        getChildren().add(btnEndVideo);
         setStyle("-fx-background-image: url('file:./src/Photo/bgGp.jpg');"
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
-        btnEndGame.setId("myButton");
-        btnReset.setId("myButton");
-        btn00.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                draw(btn00);
-            }
-        });
+        btnEndVideo.setId("myButton");
+        ArrayList<Button> buttonList = new ArrayList<Button>();
+        buttonList.add(btn00);
+        buttonList.add(btn01);
+        buttonList.add(btn02);
+        buttonList.add(btn10);
+        buttonList.add(btn11);
+        buttonList.add(btn12);
+        buttonList.add(btn20);
+        buttonList.add(btn21);
+        buttonList.add(btn22);
 
-        btn01.setOnAction(new EventHandler<ActionEvent>() {
+        String dir = ".\\src\\records\\";
+        this.fileName = fileName;
+        String[] dataArray = StreamHelper.readFile(dir + fileName);
+       int [] buttonPositions = new int[dataArray.length - 2]; 
+            for (int i = 2; i < dataArray.length; i++) {
+                buttonPositions[i - 2] = Integer.parseInt(dataArray[i]);
+            }
+        Thread th = new Thread(new Runnable() {
             @Override
-            public void handle(ActionEvent event) {
-                draw(btn01);
+            public void run() {
+                for (int i : buttonPositions) {
+                    try {
+                        Thread.sleep(1000);
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                draw(buttonList.get(i-1));
+                            }
+                        });
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(VideoHistoryClass.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
         });
-        btn02.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                draw(btn02);
-            }
-        });
-        btn10.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                draw(btn10);
-            }
-        });
-        btn11.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                draw(btn11);
-            }
-        });
-        btn12.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                draw(btn12);
-            }
-        });
-        btn20.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                draw(btn20);
-
-            }
-        });
-        btn21.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                draw(btn21);
-            }
-        });
-        btn22.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                draw(btn22);
-            }
-        });
-        btnReset.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                resetLayout();
-                x = 1;
-            }
-        });
-        btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                resetLayout();
-                x = 1;
-            }
-        });
-        GridPane.setHalignment(btn00, javafx.geometry.HPos.CENTER);
-        GridPane.setValignment(btn00, javafx.geometry.VPos.CENTER);
-        GridPane.setHalignment(btn01, javafx.geometry.HPos.CENTER);
-        GridPane.setValignment(btn01, javafx.geometry.VPos.CENTER);
-        GridPane.setHalignment(btn02, javafx.geometry.HPos.CENTER);
-        GridPane.setValignment(btn02, javafx.geometry.VPos.CENTER);
-        GridPane.setHalignment(btn10, javafx.geometry.HPos.CENTER);
-        GridPane.setValignment(btn10, javafx.geometry.VPos.CENTER);
-        GridPane.setHalignment(btn11, javafx.geometry.HPos.CENTER);
-        GridPane.setValignment(btn11, javafx.geometry.VPos.CENTER);
-        GridPane.setHalignment(btn12, javafx.geometry.HPos.CENTER);
-        GridPane.setValignment(btn12, javafx.geometry.VPos.CENTER);
-        GridPane.setHalignment(btn20, javafx.geometry.HPos.CENTER);
-        GridPane.setValignment(btn20, javafx.geometry.VPos.CENTER);
-        GridPane.setHalignment(btn21, javafx.geometry.HPos.CENTER);
-        GridPane.setValignment(btn21, javafx.geometry.VPos.CENTER);
-        GridPane.setHalignment(btn22, javafx.geometry.HPos.CENTER);
-        GridPane.setValignment(btn22, javafx.geometry.VPos.CENTER);
-        btnReset.setDisable(true);
-        playerScore.setText("" + playerScoorNum);
-        computerScore.setText("" + computerScoreNum);
+        th.start();
         
-        btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
+        btnEndVideo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                nav.navigatToScene(new mainBase());
+                nav.navigatToScene(new GameHistoryBase());
             }
         });
+        text.setText(dataArray[0]);
+        text0.setText(dataArray[1]);
     }
 
     public void draw(Button btn) {
@@ -388,151 +324,16 @@ public class FxmlOneVsOneBase extends AnchorPane {
         imgO = new Image("file:./src/Photo/o2.png");
         ImageView viewX;
         viewX = new ImageView(imgX);
-        //viewX.setFitHeight(70);
         viewX.setPreserveRatio(true);
         ImageView viewO;
         viewO = new ImageView(imgO);
-        //viewO.setFitHeight(70);
         viewO.setPreserveRatio(true);
-        if (btn.getText() == "") {
+        
             if (x % 2 != 0) {
                 btn.setGraphic(viewX);
-                btn.setTextFill(Color.TRANSPARENT);
-                btn.setText("X");
             } else {
                 btn.setGraphic(viewO);
-                btn.setTextFill(Color.TRANSPARENT);
-                btn.setText("O");
             }
             x++;
-            checkWinner();
-        }
-    }
-
-    public void checkWinner() {
-        if (btn00.getText().equals(btn01.getText()) && btn00.getText().equals(btn02.getText()) && btn00.getText() != "" && btn01.getText() != "" && btn02.getText() != "") {
-            endApp();
-            showResultVideo();
-            btnReset.setDisable(false);
-
-        } else if (btn10.getText().equals(btn11.getText()) && btn10.getText().equals(btn12.getText()) && btn10.getText() != "" && btn11.getText() != "" && btn12.getText() != "") {
-            endApp();
-            showResultVideo();
-            btnReset.setDisable(false);
-        } else if (btn20.getText().equals(btn21.getText()) && btn20.getText().equals(btn22.getText()) && btn20.getText() != "" && btn21.getText() != "" && btn22.getText() != "") {
-            endApp();
-            showResultVideo();
-            btnReset.setDisable(false);
-        } else if (btn00.getText().equals(btn10.getText()) && btn00.getText().equals(btn20.getText()) && btn00.getText() != "" && btn10.getText() != "" && btn20.getText() != "") {
-            endApp();
-            showResultVideo();
-            btnReset.setDisable(false);
-        } else if (btn01.getText().equals(btn11.getText()) && btn01.getText().equals(btn21.getText()) && btn01.getText() != "" && btn11.getText() != "" && btn21.getText() != "") {
-            endApp();
-            showResultVideo();
-            btnReset.setDisable(false);
-        } else if (btn02.getText().equals(btn12.getText()) && btn02.getText().equals(btn22.getText()) && btn02.getText() != "" && btn12.getText() != "" && btn22.getText() != "") {
-            endApp();
-            showResultVideo();
-            btnReset.setDisable(false);
-        } else if (btn00.getText().equals(btn11.getText()) && btn00.getText().equals(btn22.getText()) && btn00.getText() != "" && btn11.getText() != "" && btn22.getText() != "") {
-            endApp();
-            showResultVideo();
-            btnReset.setDisable(false);
-        } else if (btn02.getText().equals(btn11.getText()) && btn02.getText().equals(btn20.getText()) && btn01.getText() != "" && btn11.getText() != "" && btn20.getText() != "") {
-            endApp();
-            showResultVideo();
-            btnReset.setDisable(false);
-        } else {
-            if (checkNull() == 1) {
-                showDrawVideo();
-                btnReset.setDisable(false);
-            }
-        }
-
-    }
-
-    private void showResultVideo() {
-        
-        --x;
-        if (x % 2 != 0) {
-            nav.navigatToWatchVideo("win");
-            playerScore.setText("" + (++playerScoorNum));
-        } else {
-            nav.navigatToWatchVideo("lose");
-            computerScore.setText("" + (++computerScoreNum));
-        }
-    }
-
-    private void showDrawVideo() {
-        nav.navigatToWatchVideo("tie");
-    }
-
-//    private void winerDialog() {
-//        Alert alert = new Alert(Alert.AlertType.WARNING);
-//        alert.setTitle("Winner");
-//        --x;
-//        if (x % 2 != 0) {
-//            alert.setContentText("winer is X");
-//            alert.showAndWait();
-//        } else {
-//            alert.setContentText("winer is O");
-//            alert.showAndWait();
-//        }
-//    }
-//
-//    private void drawDialog() {
-//        Alert alert = new Alert(Alert.AlertType.WARNING);
-//        alert.setTitle("Draw");
-//        alert.setContentText("No One Win (Draw)");
-//        alert.showAndWait();
-//    }
-    public void endApp() {
-        btn00.setDisable(true);
-        btn01.setDisable(true);
-        btn02.setDisable(true);
-        btn10.setDisable(true);
-        btn11.setDisable(true);
-        btn12.setDisable(true);
-        btn20.setDisable(true);
-        btn21.setDisable(true);
-        btn22.setDisable(true);
-    }
-
-    public int checkNull() {
-        if (btn00.getText() != "" && btn01.getText() != "" && btn02.getText() != "" && btn10.getText() != "" && btn11.getText() != "" && btn12.getText() != "" && btn20.getText() != "" && btn21.getText() != "" && btn22.getText() != "") {
-            flag = 1;
-        }
-        return flag;
-    }
-
-    public void resetLayout() {
-        btn00.setText("");
-        btn01.setText("");
-        btn02.setText("");
-        btn10.setText("");
-        btn11.setText("");
-        btn12.setText("");
-        btn20.setText("");
-        btn21.setText("");
-        btn22.setText("");
-        btn00.setGraphic(null);
-        btn01.setGraphic(null);
-        btn02.setGraphic(null);
-        btn10.setGraphic(null);
-        btn11.setGraphic(null);
-        btn12.setGraphic(null);
-        btn20.setGraphic(null);
-        btn21.setGraphic(null);
-        btn22.setGraphic(null);
-        btn00.setDisable(false);
-        btn01.setDisable(false);
-        btn02.setDisable(false);
-        btn10.setDisable(false);
-        btn11.setDisable(false);
-        btn12.setDisable(false);
-        btn20.setDisable(false);
-        btn21.setDisable(false);
-        btn22.setDisable(false);
     }
 }

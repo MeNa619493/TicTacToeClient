@@ -6,7 +6,6 @@ import java.util.Arrays;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,10 +17,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import static jdk.nashorn.internal.objects.NativeMath.random;
 import utilities.MiniMax;
 import utilities.Navigation;
+import utilities.StreamHelper;
 
 public class FxmlOneVsComBase extends AnchorPane {
 
@@ -39,6 +38,8 @@ public class FxmlOneVsComBase extends AnchorPane {
     
     Image imgX;
     Image imgO;
+    
+    Navigation nav = Navigation.getInstance();
 
     protected final Text text;
     protected final Text playerScore;
@@ -65,7 +66,7 @@ public class FxmlOneVsComBase extends AnchorPane {
     protected final Button btnEndGame;
     protected final Button btnReset;
 
-    public FxmlOneVsComBase(Stage primaryStage, Boolean isHard) {
+    public FxmlOneVsComBase(Boolean isHard) {
 
         text = new Text();
         playerScore = new Text();
@@ -294,14 +295,14 @@ public class FxmlOneVsComBase extends AnchorPane {
                 + "-fx-background-position: center center;");
         btnEndGame.setId("myButton");
         btnReset.setId("myButton");
+        btnReset.setDisable(true);
+        
+        this.isHard = isHard;
         
         btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                mainBase rootMain = new mainBase(primaryStage);
-                Scene MainScene = new Scene(rootMain);
-                MainScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
-                primaryStage.setScene(MainScene);
+                nav.navigatToScene(new mainBase());
             }
         });
         
@@ -312,7 +313,7 @@ public class FxmlOneVsComBase extends AnchorPane {
             }
         });
         
-        this.isHard = isHard;
+        createFile();
         
         btns = new ArrayList<>(Arrays.asList(btn1, btn2, btn3,btn4, btn5, btn6,btn7, btn8, btn9));
         intalizeButtons();
@@ -320,6 +321,14 @@ public class FxmlOneVsComBase extends AnchorPane {
         intalizeBorad();
         intalizeAvailablePlaces();
         setTextFields();
+    }
+    
+    private void createFile(){
+        new Thread(() -> {
+            StreamHelper.createFile("User", "Computer");
+            StreamHelper.writeOnFile("User.");
+            StreamHelper.writeOnFile("Computer.");
+        }).start();
     }
 
     private ImageView createImageViewX() {
@@ -372,7 +381,8 @@ public class FxmlOneVsComBase extends AnchorPane {
                 Button buttonChoosed = available.get(index);
                 buttonChoosed.setText(currentPlayer);
                 buttonChoosed.setTextFill(Color.TRANSPARENT);
-                buttonChoosed.setGraphic(createImageViewO());    
+                buttonChoosed.setGraphic(createImageViewO());
+                writeOnFile(buttonChoosed);
                 isUserTurn = true;
                 currentPlayer = "X";
                 buttonChoosed.setDisable(true);
@@ -404,6 +414,7 @@ public class FxmlOneVsComBase extends AnchorPane {
                 buttonChoosed.setText(currentPlayer);
                 buttonChoosed.setTextFill(Color.TRANSPARENT);
                 buttonChoosed.setGraphic(createImageViewO());
+                writeOnFile(buttonChoosed);
                 isUserTurn = true;
                 currentPlayer = "X";
                 buttonChoosed.setDisable(true);
@@ -422,6 +433,7 @@ public class FxmlOneVsComBase extends AnchorPane {
             }else{
                 state = GameState.LOSE;
             }
+            btnReset.setDisable(false);
             return true;
         }
         return false;
@@ -452,13 +464,14 @@ public class FxmlOneVsComBase extends AnchorPane {
 
         if (!isWinner && available.isEmpty()) {
             state = GameState.TIE;
+            btnReset.setDisable(false);
         } 
         
         showResultVideo();
     }
 
     private void showResultVideo() {
-        Navigation nav = new Navigation();
+        Navigation nav = Navigation.getInstance();
         switch(state){
             case TIE:
                 nav.navigatToWatchVideo("tie");
@@ -486,6 +499,7 @@ public class FxmlOneVsComBase extends AnchorPane {
                         buttonPressed.setText(currentPlayer);
                         buttonPressed.setTextFill(Color.TRANSPARENT);
                         buttonPressed.setGraphic(createImageViewX());
+                        writeOnFile(buttonPressed);
                         isUserTurn = false;
                         currentPlayer = "O";
                         buttonPressed.setDisable(true);
@@ -496,6 +510,23 @@ public class FxmlOneVsComBase extends AnchorPane {
                 }
             }
         }
+    }
+    
+    private void writeOnFile(Button buttonPressed){
+        new Thread(() -> {
+            StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed)+".");
+        }).start();
+    }
+    
+    private int findButtonPlaceFromBoard(Button buttonPressed){
+        int index = 0;
+        for(int i=0; i < btns.size()-1; i++){
+            if(btns.get(i) == buttonPressed){
+                index = i;
+                break;
+            }
+        }
+        return index+1;
     }
     
     private void computerTurn(){
@@ -512,6 +543,7 @@ public class FxmlOneVsComBase extends AnchorPane {
             btn.setGraphic(null);
             btn.setDisable(false);
         }
+        createFile();
         available.clear();
         intalizeAvailablePlaces();
         isUserTurn = true;
