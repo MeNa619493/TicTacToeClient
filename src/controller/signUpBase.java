@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import utilities.SocketClient;
 import javafx.stage.Stage;
+import utilities.Navigation;
 
 
 public class signUpBase extends AnchorPane {
@@ -32,7 +33,9 @@ public class signUpBase extends AnchorPane {
     DataInputStream dis;
     PrintStream ps;
     boolean sign;
-     String replyMsg ;
+    String replyMsg ;
+    Navigation nav = Navigation.getInstance();
+    
     protected final Text text;
     protected final Text text0;
     protected final Button btnSignUp;
@@ -44,7 +47,7 @@ public class signUpBase extends AnchorPane {
     protected final PasswordField tfUpPassword;
     protected final PasswordField tfUpConPassword;
 
-    public signUpBase(Stage primaryStage) {
+    public signUpBase() {
         sign = false;
 
         text = new Text();
@@ -185,11 +188,7 @@ public class signUpBase extends AnchorPane {
                         }
                 if(sign==true){
                     Platform.runLater(()->{
-                    
-                    signInBase signInRoot=new signInBase();
-                    Scene signInScene = new Scene(signInRoot);
-                    signInScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
-                    primaryStage.setScene(signInScene);
+                    nav.navigatToScene(new signInBase());
                     });
                     
           
