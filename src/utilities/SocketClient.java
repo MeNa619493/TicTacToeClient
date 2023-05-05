@@ -9,7 +9,6 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.logging.Level;
 
 /**
  *
@@ -21,49 +20,52 @@ public class SocketClient {
     private PrintStream ps;
     private boolean isInitialized;
     static private SocketClient socketClient;
-
+  
+    private boolean isInitprivateialized;
     static {
         socketClient = new SocketClient();
     }
-
+    
     private SocketClient() {
-        isInitialized = false;
+       
+            isInitialized=false;
+       
     }
-
-    static public SocketClient getInstance() {
-        return socketClient;
+    
+    static  public SocketClient getInstant(){
+       return  socketClient;
     }
-
-    public Socket getSocket() {
-        if (!isInitialized) {
+ 
+    public Socket getSocket()  {
+        if(!isInitialized){
             try {
                 mySocket = new Socket("127.0.0.1", 5005);
                 
+
                 System.out.println("new Socket");
+
                 isInitialized = true;
             } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+                
             }
+          
         }
 
-        return mySocket;
+        return  mySocket;
     }
-
-    public void closeSocket() {
-        if (isInitialized) {
-            try {
-                dis.close();
-                ps.close();
-                mySocket.close();
-                isInitialized = false;
-                System.out.println("Socket is closed");
-            } catch (IOException ex) {
-            }
+    public void CloseSocket() throws IOException{
+        if(isInitialized){
+            mySocket.close();
+            isInitialized = false;
+            
         }
+              
     }
 
-    public boolean isInitialized() {
+    public boolean isIsInitialized() {
         return isInitialized;
     }
 
- 
+    
 }
