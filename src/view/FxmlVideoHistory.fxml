@@ -13,99 +13,99 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="604.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-                 <Text fill="#0070fc" layoutX="45.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Score" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="16.0">
-                    <font>
-                       <Font size="24.0" />
-                    </font>
-                 </Text>
-                 <Text fx:id="playerScore" fill="WHITE" layoutX="75.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X" AnchorPane.leftAnchor="65.0" AnchorPane.topAnchor="48.1015625">
-                    <font>
-                       <Font size="24.0" />
-                    </font>
-                 </Text>
-                 <Text fill="#0070fc" layoutX="504.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Friend Score" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="16.0">
-                    <font>
-                       <Font size="24.0" />
-                    </font>
-                 </Text>
-                 <Text fx:id="computerScore" fill="WHITE" layoutX="483.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="O" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="48.1015625">
-                    <font>
-                       <Font size="24.0" />
-                    </font>
-                 </Text>
-                 
-                 <StackPane layoutX="133.0" layoutY="64.0" prefHeight="309.0" prefWidth="303.0">
-         <children>
-            <ImageView fitHeight="318.0" fitWidth="335.0" pickOnBounds="true">
-               <image>
-                  <Image url="@../Photo/graph.png" />
-               </image>
-            </ImageView>
-            <GridPane prefHeight="318.0" prefWidth="302.0" StackPane.alignment="CENTER">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="112.0" minWidth="10.0" prefWidth="112.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="111.0" minWidth="10.0" prefWidth="111.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="112.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <Button fx:id="btn22" mnemonicParsing="false" prefHeight="100.0" prefWidth="108.0" style="-fx-background-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="Phosphate Inline" size="46.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btn21" mnemonicParsing="false" prefHeight="100.0" prefWidth="108.0" style="-fx-background-color: transparent;" textFill="#ffe591" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="Phosphate Inline" size="46.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btn20" mnemonicParsing="false" prefHeight="100.0" prefWidth="109.0" style="-fx-background-color: transparent;" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="Phosphate Inline" size="46.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btn12" mnemonicParsing="false" prefHeight="100.0" prefWidth="111.0" style="-fx-background-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="Phosphate Inline" size="46.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btn11" mnemonicParsing="false" prefHeight="100.0" prefWidth="107.0" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="Phosphate Inline" size="46.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btn10" mnemonicParsing="false" prefHeight="100.0" prefWidth="107.0" style="-fx-background-color: transparent;" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="Phosphate Inline" size="46.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btn02" mnemonicParsing="false" prefHeight="100.0" prefWidth="110.0" style="-fx-background-color: transparent;" GridPane.columnIndex="2">
-                     <font>
-                        <Font name="Phosphate Inline" size="46.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btn01" mnemonicParsing="false" prefHeight="100.0" prefWidth="106.0" style="-fx-background-color: transparent;" GridPane.columnIndex="1">
-                     <font>
-                        <Font name="Phosphate Inline" size="46.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btn00" mnemonicParsing="false" prefHeight="100.0" prefWidth="106.0" style="-fx-background-color: transparent;" textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font name="Phosphate Inline" size="50.0" />
-                     </font>
-                  </Button>
-               </children>
-            </GridPane>
-         </children>
-      </StackPane>
-      <Button fx:id="btnEndVideo" layoutX="514.0" layoutY="12.0" mnemonicParsing="false" text="End Video" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+        <Text fill="#0070fc" layoutX="45.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Score" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="16.0">
             <font>
-               <Font size="14.0" />
+                <Font size="24.0" />
             </font>
-      </Button>
+        </Text>
+        <Text fx:id="playerScore" fill="WHITE" layoutX="75.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X" AnchorPane.leftAnchor="65.0" AnchorPane.topAnchor="48.1015625">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Text>
+        <Text fill="#0070fc" layoutX="504.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Friend Score" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="16.0">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Text>
+        <Text fx:id="computerScore" fill="WHITE" layoutX="483.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="O" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="48.1015625">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Text>
+                 
+        <StackPane layoutX="133.0" layoutY="64.0" prefHeight="309.0" prefWidth="303.0">
+            <children>
+                <ImageView fitHeight="318.0" fitWidth="335.0" pickOnBounds="true">
+                    <image>
+                        <Image url="@../Photo/graph.png" />
+                    </image>
+                </ImageView>
+                <GridPane prefHeight="318.0" prefWidth="302.0" StackPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="112.0" minWidth="10.0" prefWidth="112.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="111.0" minWidth="10.0" prefWidth="111.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="112.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Button fx:id="btn22" mnemonicParsing="false" prefHeight="100.0" prefWidth="108.0" style="-fx-background-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                            <font>
+                                <Font name="Phosphate Inline" size="46.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn21" mnemonicParsing="false" prefHeight="100.0" prefWidth="108.0" style="-fx-background-color: transparent;" textFill="#ffe591" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <font>
+                                <Font name="Phosphate Inline" size="46.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn20" mnemonicParsing="false" prefHeight="100.0" prefWidth="109.0" style="-fx-background-color: transparent;" GridPane.rowIndex="2">
+                            <font>
+                                <Font name="Phosphate Inline" size="46.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn12" mnemonicParsing="false" prefHeight="100.0" prefWidth="111.0" style="-fx-background-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                            <font>
+                                <Font name="Phosphate Inline" size="46.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn11" mnemonicParsing="false" prefHeight="100.0" prefWidth="107.0" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <font>
+                                <Font name="Phosphate Inline" size="46.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn10" mnemonicParsing="false" prefHeight="100.0" prefWidth="107.0" style="-fx-background-color: transparent;" GridPane.rowIndex="1">
+                            <font>
+                                <Font name="Phosphate Inline" size="46.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn02" mnemonicParsing="false" prefHeight="100.0" prefWidth="110.0" style="-fx-background-color: transparent;" GridPane.columnIndex="2">
+                            <font>
+                                <Font name="Phosphate Inline" size="46.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn01" mnemonicParsing="false" prefHeight="100.0" prefWidth="106.0" style="-fx-background-color: transparent;" GridPane.columnIndex="1">
+                            <font>
+                                <Font name="Phosphate Inline" size="46.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn00" mnemonicParsing="false" prefHeight="100.0" prefWidth="106.0" style="-fx-background-color: transparent;" textAlignment="CENTER" wrapText="true">
+                            <font>
+                                <Font name="Phosphate Inline" size="50.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </GridPane>
+            </children>
+        </StackPane>
+        <Button fx:id="btnEndVideo" layoutX="514.0" layoutY="12.0" mnemonicParsing="false" text="End Video" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
     </children>
 </AnchorPane>
