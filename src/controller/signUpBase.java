@@ -9,9 +9,11 @@ import java.util.logging.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -19,13 +21,21 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import org.json.JSONException;
+import org.json.JSONObject;
 import utilities.SocketClient;
+import javafx.stage.Stage;
+import utilities.Navigation;
+
 
 public class signUpBase extends AnchorPane {
     Socket server;
     DataInputStream dis;
     PrintStream ps;
     boolean sign;
+    String replyMsg ;
+    Navigation nav = Navigation.getInstance();
+    
     protected final Text text;
     protected final Text text0;
     protected final Button btnSignUp;
@@ -38,6 +48,7 @@ public class signUpBase extends AnchorPane {
     protected final PasswordField tfUpConPassword;
 
     public signUpBase() {
+        sign = false;
 
         text = new Text();
         text0 = new Text();
@@ -78,13 +89,19 @@ public class signUpBase extends AnchorPane {
         btnSignUp.setPrefWidth(293.0);
         btnSignUp.setText("Sign Up");
         btnSignUp.setFont(new Font("System Bold", 24.0));
-        try {
-            dis = new DataInputStream(SocketClient.getInstant().getSocket().getInputStream());
-             ps = new PrintStream(SocketClient.getInstant().getSocket().getOutputStream());
 
+        
+              
+        try {
+            server= new Socket("127.0.0.1",5006);
+              ps =new PrintStream(server.getOutputStream());
+            dis=new DataInputStream(server.getInputStream());
         } catch (IOException ex) {
             Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
         }
+          
+                    
+        
          btnSignUp.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
                 public void handle(ActionEvent event) {
@@ -128,21 +145,32 @@ public class signUpBase extends AnchorPane {
             alert.setHeaderText("pasword Error");
             alert.setContentText("The passwords does't matches ");
             alert.showAndWait();
-        }
-//        
-//         ps.println(name);
-//         ps.println(email);
-//         ps.println(password);
-            ps.println("SignUp###"+name+"###"+email+"###"+password);
+        } 
+        ps.println("dasdsa");
+
+            
+              JSONObject obj = new JSONObject();
+                try {
+                    obj.put("userName", name);
+                     obj.put("email", email);
+                   obj.put("password", password);
+                   obj.put("type", 1);
+                } catch (JSONException ex) {
+                    Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+               
+                
+          
+      
          new Thread(() -> {
                 try {
-                    String replyMsg = dis.readLine();
+                        replyMsg = dis.readLine();
+                    
 
                 
                     if (replyMsg.equals("username_notAvailable")) {
                         try {
                             
-                           SocketClient.getInstant().CloseSocket();
 
                             sign = false;
 
@@ -150,17 +178,18 @@ public class signUpBase extends AnchorPane {
                             System.out.println(ex.getMessage());
                         }
                     } else if (replyMsg.equals("success_signup")) {
-                        try {
-                            SocketClient.getInstant().CloseSocket();
-
-                            sign = true;
-
-                        } catch (Exception ex) {
-                            System.out.println(ex.getMessage());
-                        }
-                    }
+                        sign = true;
+                       }
+                    
                         } catch (Exception ex) {
                             ex.printStackTrace();
+                        }
+                if(sign==true){
+                    Platform.runLater(()->{
+                    nav.navigatToScene(new signInBase());
+                    });
+                    
+          
                         }
                 
                          }).start();

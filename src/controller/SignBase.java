@@ -73,7 +73,7 @@ public  class SignBase extends AnchorPane {
         btnSignUp.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                nav.navigatToScene(new signUpBase());
+               nav.navigatToScene(new signUpBase());
             }
         });
         

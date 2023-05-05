@@ -550,6 +550,5 @@ public  class AviableFriend extends GridPane {
         getChildren().add(AsktoplayseventhUser);
         getChildren().add(line5);
         getChildren().add(button);
-
     }
 }
