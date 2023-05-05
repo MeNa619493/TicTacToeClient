@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -89,8 +90,9 @@ public class signUpBase extends AnchorPane {
         btnSignUp.setText("Sign Up");
         btnSignUp.setFont(new Font("System Bold", 24.0));
         try {
-            dis = new DataInputStream(SocketClient.getInstant().getSocket().getInputStream());
-             ps = new PrintStream(SocketClient.getInstant().getSocket().getOutputStream());
+           server= new Socket("127.0.0.1",5006);
+            ps =new PrintStream(server.getOutputStream());
+            dis=new DataInputStream(server.getInputStream());
 
         } catch (IOException ex) {
             Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
