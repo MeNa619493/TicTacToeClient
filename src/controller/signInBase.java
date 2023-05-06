@@ -17,16 +17,20 @@ import model.Player;
 import utilities.Navigation;
 
 public  class signInBase extends AnchorPane {
-   Player player;
+    
+    //Player player;
+    DataInputStream dis;
+    PrintStream ps;
+    //Boolean stream = false;
+    Navigation nav = Navigation.getInstance();
+   
     protected final Text text;
     protected final Text text0;
     protected final Button btnSignIn;
     protected final Button btnHome;
     protected final TextField tfInEmail;
     protected final TextField tfInPassword;
-    DataInputStream dis;
-     PrintStream ps;
-    Boolean stream = false;
+    
     public signInBase() {
 
         text = new Text();
@@ -103,18 +107,18 @@ public  class signInBase extends AnchorPane {
          btnSignIn.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                  player.setEmail(tfInEmail.getText());
-                  player.setPassword(tfInPassword.getText());
-                    long type = 2;
+//                 player.setEmail(tfInEmail.getText());
+//                 player.setPassword(tfInPassword.getText());
+//                 long type = 2;
                 try {
                     dis = new DataInputStream(SocketClient.getInstant().getSocket().getInputStream());
                     ps = new PrintStream(SocketClient.getInstant().getSocket().getOutputStream());
-                     stream = true;
+                    //stream = true;
                 } catch (IOException ex) {
                     Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                 ps.println(player.getEmail()+"###"+player.getPassword());
-             System.out.println("1");
+                //ps.println("SignIn###"+player.getEmail()+"###"+player.getPassword());
+                ps.println("SignIn###"+tfInEmail.getText()+"###"+tfInPassword.getText());
               new Thread(() -> {
                       
                       try {
@@ -122,9 +126,10 @@ public  class signInBase extends AnchorPane {
                           String replyMsg = dis.readLine();
                           System.out.println(replyMsg);
                           if (replyMsg.equals("success_login")) {
-                           player.setActive(true);
+                              //player.setActive(true);
                               Platform.runLater(() -> {
-                           // Avilable Friends fxml by abstract class generated from availableFriends.fxml
+                                    nav.navigatToScene(new AvailableFriendBase());
+                                    // Avilable Friends fxml by abstract class generated from availableFriends.fxml
                               });
                           } else {
                               Platform.runLater(() -> {
@@ -135,13 +140,12 @@ public  class signInBase extends AnchorPane {
                                   } catch (IOException ex) {
                                       Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
                                   }
-                                  
                               });     
                           }
                       } catch (IOException ex) {
                           Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
                       }
-                      });
+                      }).start();
                 }
          });
     }
