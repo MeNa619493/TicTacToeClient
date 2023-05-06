@@ -16,6 +16,8 @@ public class Player {
     private boolean isActive;
     private boolean isPlay;
     private int score;
+    
+    public Player(){}
 
     public Player(String username, String email, String password) {
         this.username = username;
