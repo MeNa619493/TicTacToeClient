@@ -24,6 +24,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import utilities.SocketClient;
 import javafx.stage.Stage;
+//import org.json.JSONException;
+//import org.json.JSONObject;
 import utilities.Navigation;
 
 
@@ -146,9 +148,8 @@ public class signUpBase extends AnchorPane {
             alert.showAndWait();
         } 
 
-            
-
          ps.println("SignUp###"+name+"###"+email+"###"+password);
+
           
       
          new Thread(() -> {
