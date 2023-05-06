@@ -22,8 +22,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import org.json.JSONException;
-import org.json.JSONObject;
 import utilities.SocketClient;
 import javafx.stage.Stage;
 import utilities.Navigation;
