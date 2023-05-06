@@ -23,8 +23,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import utilities.SocketClient;
 import javafx.stage.Stage;
-import org.json.JSONException;
-import org.json.JSONObject;
+//import org.json.JSONException;
+//import org.json.JSONObject;
 import utilities.Navigation;
 
 
@@ -149,17 +149,17 @@ public class signUpBase extends AnchorPane {
             alert.showAndWait();
         }
 
-              JSONObject obj = new JSONObject();
-                try {
-                    obj.put("userName", name);
-                     obj.put("email", email);
-                   obj.put("password", password);
-                   obj.put("type", 1);
-                } catch (JSONException ex) {
-                    Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                if(ps!= null){
-                ps.print(obj);}
+//              JSONObject obj = new JSONObject();
+//                try {
+//                    obj.put("userName", name);
+//                     obj.put("email", email);
+//                   obj.put("password", password);
+//                   obj.put("type", 1);
+//                } catch (JSONException ex) {
+//                    Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                if(ps!= null){
+//                ps.print(obj);}
           
       
          new Thread(() -> {
