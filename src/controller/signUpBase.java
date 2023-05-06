@@ -22,8 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 import utilities.SocketClient;
 import javafx.stage.Stage;
 import utilities.Navigation;
@@ -94,7 +93,7 @@ public class signUpBase extends AnchorPane {
         
               
         try {
-            server= new Socket("127.0.0.1",5006);
+            server= new Socket("127.0.0.1",5005);
               ps =new PrintStream(server.getOutputStream());
             dis=new DataInputStream(server.getInputStream());
         } catch (IOException ex) {
@@ -156,8 +155,8 @@ public class signUpBase extends AnchorPane {
          new Thread(() -> {
                 try {
                         replyMsg = dis.readLine();
-                            StringTokenizer token = new StringTokenizer(replyMsg,"###");
-                            String msg = token.nextToken();
+                        System.out.println(replyMsg);
+                            
                     
 
                 
