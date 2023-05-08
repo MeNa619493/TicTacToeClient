@@ -25,6 +25,7 @@ public class signInBase extends AnchorPane {
     protected final Button btnHome;
     protected final TextField tfInEmail;
     protected final TextField tfInPassword;
+    public static String username;
     DataInputStream dis;
     PrintStream ps;
     Boolean stream = false;
@@ -131,7 +132,8 @@ public class signInBase extends AnchorPane {
                         StringTokenizer token = new StringTokenizer(replyMsg, "###");
                         String msg = token.nextToken();
                         if (replyMsg.equals("Login Successful")) {
-                            
+                            username = dis.readLine();
+                            System.out.println("my username = " + username);
                             Platform.runLater(() -> {
                                 nav.navigatToScene(new AvailableFriendBase());
                             });
