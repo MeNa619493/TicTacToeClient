@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 import utilities.SocketClient;
 
 public class AvailableFriendBase extends AnchorPane {
+
     private SocketClient serverSocket = SocketClient.getInstance();
     private StringTokenizer token;
     private ObservableList<String> friendsList;
@@ -60,7 +61,7 @@ public class AvailableFriendBase extends AnchorPane {
 
         getChildren().add(label);
         getChildren().add(scrollPane);
-        
+
         setStyle("-fx-background-image: url('file:./src/Photo/bg3.jpg');"
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
@@ -69,41 +70,38 @@ public class AvailableFriendBase extends AnchorPane {
         scrollPane.setStyle("-fx-color: #232832;");
 
         friendsListView.setCellFactory(new OnlineFriendCellFactory());
-       
+
         friendsList = FXCollections.observableArrayList();
         friendsList.addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
-               friendsListView.getItems().addAll(friendsList);
+                friendsListView.getItems().addAll(friendsList);
             }
         });
-        
+
         serverSocket.getPrintStream().println("playerlist");
         String data = null;
         try {
-            while(true){
+            while (true) {
                 data = serverSocket.getDataInputStream().readLine();
-                if(data.equals("null")){
+                if (data.equals("null")) {
                     break;
                 }
                 readOnlineList(data);
-             }
+            }
         } catch (IOException ex) {
             System.out.println("throw IOException while reading player list");
             ex.printStackTrace();
         }
-        
+
     }
-    
-    private void readOnlineList(String data){
-        System.out.println("data in read online list :"+data);
+
+    private void readOnlineList(String data) {
+        System.out.println("data in read online list :" + data);
         token = new StringTokenizer(data, "###");
         //should check user email so did't add him to the list
-            System.out.println("Add to list");
-            friendsList.add(token.nextToken());
+        System.out.println("Add to list");
+        friendsList.add(token.nextToken());
     }
-    
-    
-    
-    
+
 }
