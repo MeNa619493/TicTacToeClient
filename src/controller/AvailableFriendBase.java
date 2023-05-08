@@ -126,11 +126,12 @@ public class AvailableFriendBase extends AnchorPane {
     private void getOnlinefriends(String data) {
         System.out.println("data in read online list :" + data);
         token = new StringTokenizer(data, "###");
-        //should check user email so did't add him to the list
         String username = token.nextToken();
-        if (!friendsList.contains(username)) {
-            System.out.println("Add to list");
-            friendsList.add(username);
+        if(!signInBase.username.equals(username)){
+            if (!friendsList.contains(username)) {
+                System.out.println("Add to list");
+                friendsList.add(username);
+            }
         }
     }
 
