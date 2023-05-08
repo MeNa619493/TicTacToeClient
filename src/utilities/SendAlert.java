@@ -13,7 +13,7 @@ import javafx.scene.control.Alert.AlertType;
  */
 public class SendAlert {
 
-    public void showAlert(String title, String headerText, String contentText, AlertType alertType) {
+    public static void showAlert(String title, String headerText, String contentText, AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(headerText);
