@@ -5,6 +5,7 @@
  */
 package utilities;
 
+import controller.PushIpXmlClass;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -16,11 +17,12 @@ import java.util.logging.Level;
  * @author moham
  */
 public class SocketClient {
-    private Socket mySocket;
+    private Socket serverSocket;
     private DataInputStream dis;
     private PrintStream ps;
     private boolean isInitialized;
     static private SocketClient socketClient;
+    
 
     static {
         socketClient = new SocketClient();
@@ -37,16 +39,17 @@ public class SocketClient {
     public Socket getSocket() {
         if (!isInitialized) {
             try {
-                mySocket = new Socket("127.0.0.1", 5005);
-                dis = new DataInputStream(mySocket.getInputStream());
-                ps = new PrintStream(mySocket.getOutputStream());
+
+                mySocket = new Socket(PushIpXmlClass.ip, 5005);
+                dis = new DataInputStream(serverSocket.getInputStream());
+                ps = new PrintStream(serverSocket.getOutputStream());
                 System.out.println("new Socket");
                 isInitialized = true;
             } catch (IOException ex) {
             }
         }
 
-        return mySocket;
+        return serverSocket;
     }
 
     public void closeSocket() {
@@ -54,7 +57,7 @@ public class SocketClient {
             try {
                 dis.close();
                 ps.close();
-                mySocket.close();
+                serverSocket.close();
                 isInitialized = false;
                 System.out.println("Socket is closed");
             } catch (IOException ex) {
