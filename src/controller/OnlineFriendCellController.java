@@ -6,6 +6,9 @@
 package controller;
 
 import java.io.IOException;
+import java.net.Socket;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -22,6 +25,9 @@ import model.Player;
  */
 public class OnlineFriendCellController extends ListCell<String> {
 
+    private utilities.SocketClient socketClient = utilities.SocketClient.getInstance();
+    private Socket serverSocket = socketClient.getSocket();
+
     @FXML
     private Label lblFriendName;
 
@@ -30,6 +36,15 @@ public class OnlineFriendCellController extends ListCell<String> {
 
     public OnlineFriendCellController() {
         loadFXML();
+
+        btnAsk.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String opponant = getItem();
+
+                socketClient.getPrintStream().println("request###"+"###"+opponant);
+            }
+        });
     }
 
     private void loadFXML() {
@@ -38,8 +53,7 @@ public class OnlineFriendCellController extends ListCell<String> {
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -48,11 +62,10 @@ public class OnlineFriendCellController extends ListCell<String> {
     protected void updateItem(String item, boolean empty) {
         super.updateItem(item, empty);
 
-        if(empty || item == null) {
+        if (empty || item == null) {
             setText(null);
             setContentDisplay(ContentDisplay.TEXT_ONLY);
-        }
-        else {
+        } else {
             lblFriendName.setText(item);
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }

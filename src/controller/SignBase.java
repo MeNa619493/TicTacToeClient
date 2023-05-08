@@ -80,7 +80,7 @@ public  class SignBase extends AnchorPane {
         btnSignHome.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                nav.navigatToScene(new mainBase());
+                nav.navigatToScene(new AvailableFriendBase());
             }
         });
     }
