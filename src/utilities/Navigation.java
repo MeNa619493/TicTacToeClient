@@ -6,6 +6,7 @@
 package utilities;
 
 import controller.FxmlOneVsComBase;
+import controller.PushIpXmlClass;
 import controller.VideoHistoryClass;
 import controller.WatchVideoController;
 import controller.chooseXOBase;
@@ -21,32 +22,36 @@ import javafx.stage.Stage;
  * @author Mina
  */
 public class Navigation {
+
     private static Navigation instance = null;
     private Stage primaryStage;
-    
-    private Navigation(){}
-    
-    public static synchronized Navigation getInstance(){
-        if (instance == null){
+
+    private Navigation() {
+    }
+
+    public static synchronized Navigation getInstance() {
+        if (instance == null) {
             instance = new Navigation();
         }
-       
+
         return instance;
     }
-    
-    public void setPrimaryStage(Stage primaryStage){
+
+    public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
-    
-    public void navigatToWatchVideo(String gameState){
+
+    public void navigatToWatchVideo(String gameState) {
         try {
+            PushIpXmlClass pushIp = new PushIpXmlClass();
+            pushIp.getStylesheets().add("file:./src/Photo/buttonStyle.css");
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/FxmlWatchVideo.fxml"));
-            Parent root = (Parent)fxmlLoader.load();        
+            Parent root = (Parent) fxmlLoader.load();
             WatchVideoController controller = fxmlLoader.getController();
             controller.setGameState(gameState);
             Scene RegisterScene = new Scene(root);
             fxmlLoader.setController(controller);
-          
+
             Stage window = new Stage();
             window.initModality(Modality.APPLICATION_MODAL);
             window.setScene(RegisterScene);
@@ -54,41 +59,41 @@ public class Navigation {
             window.setMinWidth(500);
             window.setResizable(false);
             window.show();
-                              
+
             window.setOnCloseRequest((event) -> {
                 WatchVideoController.mediaPlayer.stop();
             });
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
-    public void navigatToScene(Parent parent){
+
+    public void navigatToScene(Parent parent) {
         Scene computerLevelScene = new Scene(parent);
         computerLevelScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
         primaryStage.setScene(computerLevelScene);
     }
-    
-    public void navigatToChooseXO(boolean isGoingToOneVsOne, boolean isHard){
+
+    public void navigatToChooseXO(boolean isGoingToOneVsOne, boolean isHard) {
         chooseXOBase OneVsOneChooseXOroot = new chooseXOBase(isGoingToOneVsOne, isHard);
         Scene oneVsOneChooseXOScene = new Scene(OneVsOneChooseXOroot);
         primaryStage.setScene(oneVsOneChooseXOScene);
         oneVsOneChooseXOScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
     }
-    
-    public void navigatToOneVsComp(boolean isHard){
+
+    public void navigatToOneVsComp(boolean isHard) {
         FxmlOneVsComBase oneVsComRoot = new FxmlOneVsComBase(isHard);
         Scene oneVsComScene = new Scene(oneVsComRoot);
         primaryStage.setScene(oneVsComScene);
         oneVsComScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
     }
-    
-    public void navigateToGameReplay(String fileName){
+
+    public void navigateToGameReplay(String fileName) {
         VideoHistoryClass videoHistoryRoot = new VideoHistoryClass(fileName);
         Scene videoHistoryScene = new Scene(videoHistoryRoot);
         primaryStage.setScene(videoHistoryScene);
         videoHistoryScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
     }
-    
+
 }

@@ -16,6 +16,7 @@ import utilities.SocketClient;
 
 public class AvailableFriendBase extends AnchorPane {
 
+
     private SocketClient socketClient = SocketClient.getInstance();
     private Socket serverSocket = socketClient.getSocket();
     private StringTokenizer token;
@@ -132,7 +133,5 @@ public class AvailableFriendBase extends AnchorPane {
             friendsList.add(username);
         }
     }
-
-
 
 }
