@@ -3,6 +3,8 @@ package controller;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.Socket;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -13,11 +15,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import model.Player;
 import utilities.Navigation;
 
-public  class signInBase extends AnchorPane {
-   Player player;
+public class signInBase extends AnchorPane {
+
     protected final Text text;
     protected final Text text0;
     protected final Button btnSignIn;
@@ -25,8 +26,11 @@ public  class signInBase extends AnchorPane {
     protected final TextField tfInEmail;
     protected final TextField tfInPassword;
     DataInputStream dis;
-     PrintStream ps;
+    PrintStream ps;
     Boolean stream = false;
+    Socket server;
+    Navigation nav = Navigation.getInstance();
+
     public signInBase() {
 
         text = new Text();
@@ -96,52 +100,62 @@ public  class signInBase extends AnchorPane {
         setStyle("-fx-background-image: url('file:./src/Photo/bgGp.jpg');"
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
-        
+
         btnSignIn.setId("myButton");
         btnHome.setId("myButton");
+        try {
+            server = new Socket("127.0.0.1", 5005);
+            ps = new PrintStream(server.getOutputStream());
+            dis = new DataInputStream(server.getInputStream());
+        } catch (IOException ex) {
+            Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-         btnSignIn.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+        btnHome.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                  player.setEmail(tfInEmail.getText());
-                  player.setPassword(tfInPassword.getText());
-                    long type = 2;
-                try {
-                    dis = new DataInputStream(SocketClient.getInstant().getSocket().getInputStream());
-                    ps = new PrintStream(SocketClient.getInstant().getSocket().getOutputStream());
-                     stream = true;
-                } catch (IOException ex) {
-                    Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                 ps.println(player.getEmail()+"###"+player.getPassword());
-             System.out.println("1");
-              new Thread(() -> {
-                      try {
-                          System.out.println("waiting for server response");
-                          String replyMsg = dis.readLine();
-                          System.out.println(replyMsg);
-                          if (replyMsg.equals("Login Successful")) {
-                           player.setActive(true);
-                              Platform.runLater(() -> {
-                           // Avilable Friends fxml by abstract class generated from availableFriends.fxml
-                              });
-                          } else {
-                              Platform.runLater(() -> {
-                                  try {
-                                      ps.close();
-                                      dis.close();
-                                      SocketClient.getInstant().CloseSocket();
-                                  } catch (IOException ex) {
-                                      Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
-                                  }
-                                  
-                              });     
-                          }
-                      } catch (IOException ex) {
-                          Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
-                      }
-                      });
-                }
-         });
+
+                nav.navigatToScene(new mainBase());
+            }
+        });
+
+        btnSignIn.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ps.println("SignIn###" + tfInEmail.getText() + "###" + tfInPassword.getText());
+                new Thread(() -> {
+
+                    try {
+                        System.out.println("waiting for server response");
+                        String replyMsg = dis.readLine();
+                        System.out.println(replyMsg);
+                        StringTokenizer token = new StringTokenizer(replyMsg, "###");
+                        String msg = token.nextToken();
+                        if (replyMsg.equals("Login Successful")) {
+                            
+                            Platform.runLater(() -> {
+                                nav.navigatToScene(new AvailableFriendBase());
+                            });
+
+                        } else if (replyMsg.equals("Invalid Email or Password")) {
+                            Platform.runLater(() -> {
+                                //show alert
+                            });
+                        } else {
+                            try {
+                                ps.close();
+                                dis.close();
+                                SocketClient.getInstant().CloseSocket();
+                            } catch (IOException ex) {
+                                Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }).start();
+            }
+        });
+
     }
 }

@@ -2,13 +2,11 @@ package controller;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-
 import java.util.StringTokenizer;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -18,9 +16,16 @@ import utilities.SocketClient;
 
 public class AvailableFriendBase extends AnchorPane {
 
-    private SocketClient serverSocket = SocketClient.getInstance();
+
+    private SocketClient socketClient = SocketClient.getInstance();
+    private Socket serverSocket = socketClient.getSocket();
     private StringTokenizer token;
     private ObservableList<String> friendsList;
+    private Thread thread;
+    boolean isListUpdated = false;
+    private Alert alert;
+    public static int opponentScore;
+    public static String opponentUsername;
 
     protected final Label label;
     protected final ScrollPane scrollPane;
@@ -72,36 +77,62 @@ public class AvailableFriendBase extends AnchorPane {
         friendsListView.setCellFactory(new OnlineFriendCellFactory());
 
         friendsList = FXCollections.observableArrayList();
-        friendsList.addListener(new InvalidationListener() {
+        friendsListView.setItems(friendsList);
+
+        socketClient.getPrintStream().println("playerlist");
+        isListUpdated = true;
+
+        thread = new Thread(new Runnable() {
             @Override
-            public void invalidated(Observable observable) {
-                friendsListView.getItems().addAll(friendsList);
+
+            public void run() {
+                while (true) {
+                    do {
+                        try {
+                            String data = socketClient.getDataInputStream().readLine();
+                            if (data.equals("null")) {
+                                break;
+                            }
+                            switch (data) {
+                                case "requestPlaying":
+                                    //recievedRequest();
+                                    break;
+                                case "decline":
+                                    //refuseAlert();
+                                    break;
+                                case "gameOn":
+                                    //navigate
+                                    break;
+                                default:
+                                    System.out.println("default" + data);
+                                    getOnlinefriends(data);
+                            }
+                        } catch (IOException ex) {
+                            //serverClosed();
+                        }
+                    } while (true);
+
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException ex) {
+                        thread.stop();
+                    }
+
+                }
             }
         });
-
-        serverSocket.getPrintStream().println("playerlist");
-        String data = null;
-        try {
-            while (true) {
-                data = serverSocket.getDataInputStream().readLine();
-                if (data.equals("null")) {
-                    break;
-                }
-                readOnlineList(data);
-            }
-        } catch (IOException ex) {
-            System.out.println("throw IOException while reading player list");
-            ex.printStackTrace();
-        }
-
+        thread.start();
     }
 
-    private void readOnlineList(String data) {
+    private void getOnlinefriends(String data) {
         System.out.println("data in read online list :" + data);
         token = new StringTokenizer(data, "###");
         //should check user email so did't add him to the list
-        System.out.println("Add to list");
-        friendsList.add(token.nextToken());
+        String username = token.nextToken();
+        if (!friendsList.contains(username)) {
+            System.out.println("Add to list");
+            friendsList.add(username);
+        }
     }
 
 }

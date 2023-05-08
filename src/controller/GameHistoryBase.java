@@ -68,15 +68,6 @@ public class GameHistoryBase extends AnchorPane {
 
         gamesListView.setCellFactory(new GameCellFactory());
         populateDataIntoListView();
-
-        gamesListView.setOnMouseClicked((MouseEvent event) -> {
-            System.out.println("list view clicked");
-            int selectedItem = gamesListView.getSelectionModel().getSelectedIndex();
-            System.out.println("clicked " + selectedItem);
-            System.out.println("files = " + files.length);
-            System.out.println(files[selectedItem].getName());
-            nav.navigateToGameReplay(files[selectedItem].getName());
-        });
     }
 
     private boolean isFolderExist() {
