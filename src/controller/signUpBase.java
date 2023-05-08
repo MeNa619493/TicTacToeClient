@@ -100,6 +100,7 @@ public class signUpBase extends AnchorPane {
 
         btnSignUp.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
+
             public void handle(ActionEvent event) {
                 String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
                 Pattern pattern = Pattern.compile(regex);
@@ -147,8 +148,6 @@ public class signUpBase extends AnchorPane {
                         replyMsg = dis.readLine();
                         StringTokenizer token = new StringTokenizer(replyMsg, "###");
                         String msg = token.nextToken();
-
-
                         if (replyMsg.equals("already signed-up")) {
                             //show alert to user
                         } else if (replyMsg.equals("Registered Successfully")) {
