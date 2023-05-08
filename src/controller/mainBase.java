@@ -90,8 +90,8 @@ public class mainBase extends AnchorPane {
         btnPlayOverTheNetwork.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //nav.navigatToScene(new SignBase());
-                nav.navigatToScene(new AvailableFriendBase());
+                nav.navigatToScene(new SignBase());
+               // nav.navigatToScene(new AvailableFriendBase());
             }
         });
         
