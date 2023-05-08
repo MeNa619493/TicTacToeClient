@@ -78,14 +78,14 @@ public  class signInBase extends AnchorPane {
         tfInEmail.setPrefHeight(32.0);
         tfInEmail.setPrefWidth(355.0);
         tfInEmail.setPromptText("Enter Your Email");
-        tfInEmail.setStyle("-fx-background-color: #323741;");
+        tfInEmail.setStyle("-fx-background-color: #323741;-fx-text-fill:#ffffff;");
 
         tfInPassword.setLayoutX(201.0);
         tfInPassword.setLayoutY(202.0);
         tfInPassword.setPrefHeight(32.0);
         tfInPassword.setPrefWidth(355.0);
         tfInPassword.setPromptText("Enter Your Password");
-        tfInPassword.setStyle("-fx-background-color: #323741;");
+        tfInPassword.setStyle("-fx-background-color: #323741;-fx-text-fill:#ffffff;");
 
         getChildren().add(text);
         getChildren().add(text0);
@@ -120,7 +120,7 @@ public  class signInBase extends AnchorPane {
                           System.out.println("waiting for server response");
                           String replyMsg = dis.readLine();
                           System.out.println(replyMsg);
-                          if (replyMsg.equals("success_login")) {
+                          if (replyMsg.equals("Login Successful")) {
                            player.setActive(true);
                               Platform.runLater(() -> {
                            // Avilable Friends fxml by abstract class generated from availableFriends.fxml

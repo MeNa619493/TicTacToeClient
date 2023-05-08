@@ -14,26 +14,27 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
+import model.Player;
 
 /**
  *
  * @author Mina
  */
-public class GameCellController extends ListCell<String> {
+public class OnlineFriendCellController extends ListCell<String> {
 
     @FXML
-    private Label lblGame;
+    private Label lblFriendName;
 
     @FXML
-    private Button btnWatch;
+    private Button btnAsk;
 
-    public GameCellController() {
+    public OnlineFriendCellController() {
         loadFXML();
     }
 
     private void loadFXML() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FxmlGameCell.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FxmlOnlineFriendCell.fxml"));
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
@@ -52,16 +53,16 @@ public class GameCellController extends ListCell<String> {
             setContentDisplay(ContentDisplay.TEXT_ONLY);
         }
         else {
-            lblGame.setText(item);
+            lblFriendName.setText(item);
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }
     }
 }
 
-class GameCellFactory implements Callback<ListView<String>, ListCell<String>> {
+class OnlineFriendCellFactory implements Callback<ListView<String>, ListCell<String>> {
 
     @Override
     public ListCell<String> call(ListView<String> param) {
-        return new GameCellController();
+        return new OnlineFriendCellController();
     }
 }

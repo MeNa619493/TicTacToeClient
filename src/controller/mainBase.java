@@ -91,6 +91,7 @@ public class mainBase extends AnchorPane {
             @Override
             public void handle(ActionEvent event) {
                 nav.navigatToScene(new SignBase());
+               // nav.navigatToScene(new AvailableFriendBase());
             }
         });
         

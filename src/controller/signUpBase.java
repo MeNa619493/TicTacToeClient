@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +24,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import utilities.SocketClient;
 import javafx.stage.Stage;
+//import org.json.JSONException;
+//import org.json.JSONObject;
 import utilities.Navigation;
 
 
@@ -144,25 +147,17 @@ public class signUpBase extends AnchorPane {
             alert.setContentText("The passwords does't matches ");
             alert.showAndWait();
         } 
-        ps.println("dasdsa");
 
-//            
-//              JSONObject obj = new JSONObject();
-//                try {
-//                    obj.put("userName", name);
-//                     obj.put("email", email);
-//                   obj.put("password", password);
-//                   obj.put("type", 1);
-//                } catch (JSONException ex) {
-//                    Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-               
-                
+
+         ps.println("SignUp###"+name+"###"+email+"###"+password);
+
           
       
          new Thread(() -> {
                 try {
                         replyMsg = dis.readLine();
+                            StringTokenizer token = new StringTokenizer(replyMsg,"###");
+                            String msg = token.nextToken();
                     
 
                 
