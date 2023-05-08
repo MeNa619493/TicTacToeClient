@@ -40,8 +40,8 @@ public class SocketClient {
         if (!isInitialized) {
             try {
 
-               // serverSocket = new Socket(PushIpXmlClass.ip, 5005);
-               serverSocket = new Socket("127.0.0.1", 5005);
+                serverSocket = new Socket(PushIpXmlClass.ip, 5005);
+               //serverSocket = new Socket("127.0.0.1", 5005);
                 dis = new DataInputStream(serverSocket.getInputStream());
                 ps = new PrintStream(serverSocket.getOutputStream());
                 System.out.println("new Socket");
