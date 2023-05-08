@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.application.Platform;
@@ -28,15 +27,15 @@ import javafx.stage.Stage;
 //import org.json.JSONObject;
 import utilities.Navigation;
 
-
 public class signUpBase extends AnchorPane {
+
     Socket server;
     DataInputStream dis;
     PrintStream ps;
     boolean sign;
-    String replyMsg ;
+    String replyMsg;
     Navigation nav = Navigation.getInstance();
-    
+
     protected final Text text;
     protected final Text text0;
     protected final Button btnSignUp;
@@ -91,109 +90,81 @@ public class signUpBase extends AnchorPane {
         btnSignUp.setText("Sign Up");
         btnSignUp.setFont(new Font("System Bold", 24.0));
 
-        
-              
         try {
-            server= new Socket("127.0.0.1",5005);
-              ps =new PrintStream(server.getOutputStream());
-            dis=new DataInputStream(server.getInputStream());
+            server = new Socket("127.0.0.1", 5005);
+            ps = new PrintStream(server.getOutputStream());
+            dis = new DataInputStream(server.getInputStream());
         } catch (IOException ex) {
             Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
         }
-          
-                    
-        
-         btnSignUp.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+
+        btnSignUp.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
-                public void handle(ActionEvent event) {
-                    String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-                    Pattern pattern = Pattern.compile(regex);
-                    Matcher matcher = pattern.matcher(tfUpEmail.getText());
-                    String name = tfUpUserName.getText();
-                    String email = tfUpEmail.getText();
-                    String password = tfUpPassword.getText();
-                    String passwordConfirm = tfUpConPassword.getText();
-        if (name.isEmpty() || email.isEmpty()
-                || password.isEmpty() || passwordConfirm.isEmpty()) {
-            
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("ERROR");
-        alert.setHeaderText("Empty Field");
-        alert.setContentText("please Entry your Username password and Email ");
-        alert.showAndWait();
+            public void handle(ActionEvent event) {
+                String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(tfUpEmail.getText());
+                String name = tfUpUserName.getText();
+                String email = tfUpEmail.getText();
+                String password = tfUpPassword.getText();
+                String passwordConfirm = tfUpConPassword.getText();
+                if (name.isEmpty() || email.isEmpty()
+                        || password.isEmpty() || passwordConfirm.isEmpty()) {
 
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText("Empty Field");
+                    alert.setContentText("please Entry your Username password and Email ");
+                    alert.showAndWait();
 
-        } else if (!matcher.matches()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ERROR");
-          
-            alert.setContentText("please Entry vaild Email ");
-            alert.showAndWait();
-             
+                } else if (!matcher.matches()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR");
 
+                    alert.setContentText("please Entry vaild Email ");
+                    alert.showAndWait();
 
-        }else if (password.length() < 5) {
-             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ERROR");
-            alert.setHeaderText("pasword Error");
-            alert.setContentText("Pasword must not less than 5");
-            alert.showAndWait();
+                } else if (password.length() < 5) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText("pasword Error");
+                    alert.setContentText("Pasword must not less than 5");
+                    alert.showAndWait();
 
+                } else if (!password.equals(passwordConfirm)) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText("pasword Error");
+                    alert.setContentText("The passwords does't matches ");
+                    alert.showAndWait();
+                }
 
-        } else if (!password.equals(passwordConfirm)) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ERROR");
-            alert.setHeaderText("pasword Error");
-            alert.setContentText("The passwords does't matches ");
-            alert.showAndWait();
-        } 
+                ps.println("SignUp###" + name + "###" + email + "###" + password);
 
-         ps.println("SignUp###"+name+"###"+email+"###"+password);
-
-          
-      
-         new Thread(() -> {
-                try {
+                new Thread(() -> {
+                    try {
                         replyMsg = dis.readLine();
-                            StringTokenizer token = new StringTokenizer(replyMsg,"###");
-                            String msg = token.nextToken();
-                    
+                        StringTokenizer token = new StringTokenizer(replyMsg, "###");
+                        String msg = token.nextToken();
 
-                
-                    if (replyMsg.equals("username_notAvailable")) {
-                        try {
-                            
-
-                            sign = false;
-
-                        } catch (Exception ex) {
-                            System.out.println(ex.getMessage());
+                        if (replyMsg.equals("already signed-up")) {
+                            //show alert to user
+                        } else if (replyMsg.equals("Registered Successfully")) {
+                            sign = true;
                         }
-                    } else if (replyMsg.equals("success_signup")) {
-                        sign = true;
-                       }
-                    
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                if(sign==true){
-                    Platform.runLater(()->{
-                    nav.navigatToScene(new signInBase());
-                    });
-                    
-          
-                        }
-                
-                         }).start();
 
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    if (sign == true) {
+                        Platform.runLater(() -> {
+                            nav.navigatToScene(new signInBase());
+                        });
+                    }
+                }).start();
 
-        
-                }});
-
-           
-           
-     
-                
+            }
+        });
 
         btnUPHome.setLayoutX(514.0);
         btnUPHome.setLayoutY(354.0);
@@ -263,7 +234,7 @@ public class signUpBase extends AnchorPane {
                 + "-fx-background-position: center center;");
         btnSignUp.setId("myButton");
         btnUPHome.setId("myButton");
-        
+
         btnUPHome.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

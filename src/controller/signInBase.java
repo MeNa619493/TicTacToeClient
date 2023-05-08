@@ -19,7 +19,6 @@ import utilities.Navigation;
 
 public class signInBase extends AnchorPane {
 
-    
     protected final Text text;
     protected final Text text0;
     protected final Button btnSignIn;
@@ -137,9 +136,9 @@ public class signInBase extends AnchorPane {
                                 nav.navigatToScene(new AvailableFriendBase());
                             });
 
-                        } else if (replyMsg.equals("You Registered first")) {
+                        } else if (replyMsg.equals("Invalid Email or Password")) {
                             Platform.runLater(() -> {
-                                nav.navigatToScene(new signUpBase());
+                                //show alert
                             });
                         } else {
                             try {
@@ -149,7 +148,6 @@ public class signInBase extends AnchorPane {
                             } catch (IOException ex) {
                                 Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
                             }
-
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
