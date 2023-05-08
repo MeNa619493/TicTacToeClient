@@ -21,8 +21,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import org.json.JSONException;
-import org.json.JSONObject;
 import utilities.SocketClient;
 import javafx.stage.Stage;
 import utilities.Navigation;
@@ -148,16 +146,16 @@ public class signUpBase extends AnchorPane {
         } 
         ps.println("dasdsa");
 
-            
-              JSONObject obj = new JSONObject();
-                try {
-                    obj.put("userName", name);
-                     obj.put("email", email);
-                   obj.put("password", password);
-                   obj.put("type", 1);
-                } catch (JSONException ex) {
-                    Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
+//            
+//              JSONObject obj = new JSONObject();
+//                try {
+//                    obj.put("userName", name);
+//                     obj.put("email", email);
+//                   obj.put("password", password);
+//                   obj.put("type", 1);
+//                } catch (JSONException ex) {
+//                    Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
+//                }
                
                 
           
