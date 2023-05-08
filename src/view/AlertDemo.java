@@ -23,14 +23,19 @@ public class AlertDemo extends Application {
             alert.setTitle("Game Request");
             alert.setHeaderText("Player A is requesting to play a game with you.");
             alert.setContentText("Do you accept?");
+            
+            // Set IDs for the various nodes
+            Region region = (Region) alert.getDialogPane().lookup(".alert");
+            region.setId("my-alert");
+            alert.getDialogPane().lookup(".header-panel").setId("my-header");
+            alert.getDialogPane().lookup(".content.label").setId("my-content");
+            
             alert.show();
 
-            // Set the background color and text color using CSS styling
-            Region region = (Region) alert.getDialogPane().lookup(".alert");
+            // Apply CSS styles based on the IDs
             region.setBackground(new Background(new BackgroundFill(Color.web("#0d379e"), null, null)));
-          //if put styling on the alerts 
-          // alert.getDialogPane().lookup(".header-panel").setStyle("-fx-background-color: #0d379e; -fx-text-fill: white;");
-           // alert.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: white;");
+            alert.getDialogPane().lookup("#my-header").setStyle("-fx-background-color: #0d379e; -fx-text-fill: white;");
+            alert.getDialogPane().lookup("#my-content").setStyle("-fx-text-fill: white;");
 
             // Automatically close after 30 seconds
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(30), e -> alert.close()));
