@@ -92,6 +92,7 @@ public class mainBase extends AnchorPane {
             public void handle(ActionEvent event) {
                 nav.navigatToScene(new PushIpXmlClass());
                // nav.navigatToScene(new AvailableFriendBase());
+
             }
         });
         
