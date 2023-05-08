@@ -17,8 +17,9 @@ import javafx.scene.text.Font;
 import utilities.SocketClient;
 
 public class AvailableFriendBase extends AnchorPane {
-    private SocketClient serverSocket = SocketClient.getInstance();
-    private StringTokenizer token;
+    
+private SocketClient socketClient = SocketClient.getInstance();
+   private Socket serverSocket = socketClient.getSocket();    private StringTokenizer token;
     private ObservableList<String> friendsList;
 
     protected final Label label;
@@ -78,11 +79,11 @@ public class AvailableFriendBase extends AnchorPane {
             }
         });
         
-        serverSocket.getPrintStream().println("playerlist");
+        socketClient.getPrintStream().println("playerlist");
         String data = null;
         try {
             while(true){
-                data = serverSocket.getDataInputStream().readLine();
+                data = socketClient.getDataInputStream().readLine();
                 if(data.equals("null")){
                     break;
                 }
