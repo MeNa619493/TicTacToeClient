@@ -94,7 +94,7 @@ public class signUpBase extends AnchorPane {
         
               
         try {
-            server= new Socket("127.0.0.1",5006);
+            server= new Socket("127.0.0.1",5005);
               ps =new PrintStream(server.getOutputStream());
             dis=new DataInputStream(server.getInputStream());
         } catch (IOException ex) {
@@ -162,10 +162,7 @@ public class signUpBase extends AnchorPane {
                 
                     if (replyMsg.equals("username_notAvailable")) {
                         try {
-                            
-
                             sign = false;
-
                         } catch (Exception ex) {
                             System.out.println(ex.getMessage());
                         }

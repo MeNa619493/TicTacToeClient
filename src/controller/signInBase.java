@@ -3,6 +3,8 @@ package controller;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.Socket;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -27,6 +29,9 @@ public  class signInBase extends AnchorPane {
     DataInputStream dis;
      PrintStream ps;
     Boolean stream = false;
+    Socket server;
+    Navigation nav = Navigation.getInstance();
+    
     public signInBase() {
 
         text = new Text();
@@ -99,21 +104,34 @@ public  class signInBase extends AnchorPane {
         
         btnSignIn.setId("myButton");
         btnHome.setId("myButton");
-
+            try{
+            server= new Socket("127.0.0.1",5005);
+             ps =new PrintStream(server.getOutputStream());
+            dis=new DataInputStream(server.getInputStream());
+            } catch (IOException ex) {
+            Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        btnHome.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                nav.navigatToScene(new mainBase());
+            }
+        });
+        
          btnSignIn.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                  player.setEmail(tfInEmail.getText());
-                  player.setPassword(tfInPassword.getText());
-                    long type = 2;
-                try {
-                    dis = new DataInputStream(SocketClient.getInstant().getSocket().getInputStream());
-                    ps = new PrintStream(SocketClient.getInstant().getSocket().getOutputStream());
-                     stream = true;
-                } catch (IOException ex) {
-                    Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                 ps.println(player.getEmail()+"###"+player.getPassword());
+              
+                   // long type = 2;
+               // try {
+                   // dis = new DataInputStream(SocketClient.getInstant().getSocket().getInputStream());
+                   // ps = new PrintStream(SocketClient.getInstant().getSocket().getOutputStream());
+                    // stream = true;
+               // } catch (IOException ex) {
+                 //   Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
+               // }
+                 ps.println("SignIn###"+tfInEmail.getText()+"###"+tfInPassword.getText());
              System.out.println("1");
               new Thread(() -> {
                       
@@ -121,27 +139,33 @@ public  class signInBase extends AnchorPane {
                           System.out.println("waiting for server response");
                           String replyMsg = dis.readLine();
                           System.out.println(replyMsg);
+                            StringTokenizer token = new StringTokenizer(replyMsg,"###");
+                            String msg = token.nextToken();
                           if (replyMsg.equals("Login Successful")) {
-                           player.setActive(true);
+                          // player.setActive(true);
+                         Platform.runLater(() -> {
+                               nav.navigatToScene(new AvailableFriendBase());
+                              });
+                         
+                          }else if(replyMsg.equals("You Registered first")){
                               Platform.runLater(() -> {
-                           // Avilable Friends fxml by abstract class generated from availableFriends.fxml
+                              nav.navigatToScene(new signUpBase());
                               });
                           } else {
-                              Platform.runLater(() -> {
-                                  try {
-                                      ps.close();
+                             try {
+                                    ps.close();
                                       dis.close();
                                       SocketClient.getInstant().CloseSocket();
                                   } catch (IOException ex) {
                                       Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
                                   }
                                   
-                              });     
+                                  
                           }
                       } catch (IOException ex) {
                           Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
                       }
-                      });
+                      }).start();
                 }
          });
     }
