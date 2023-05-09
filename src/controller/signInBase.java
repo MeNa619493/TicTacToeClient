@@ -16,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import utilities.Navigation;
+import utilities.SocketHelper;
 
 public class signInBase extends AnchorPane {
 
@@ -26,11 +27,8 @@ public class signInBase extends AnchorPane {
     protected final TextField tfInEmail;
     protected final TextField tfInPassword;
     public static String username;
-    DataInputStream dis;
-    PrintStream ps;
-    Boolean stream = false;
-    Socket server;
     Navigation nav = Navigation.getInstance();
+    private SocketHelper socketClient = SocketHelper.getInstance();
 
     public signInBase() {
 
@@ -104,13 +102,6 @@ public class signInBase extends AnchorPane {
 
         btnSignIn.setId("myButton");
         btnHome.setId("myButton");
-        try {
-            server = new Socket("127.0.0.1", 5005);
-            ps = new PrintStream(server.getOutputStream());
-            dis = new DataInputStream(server.getInputStream());
-        } catch (IOException ex) {
-            Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         btnHome.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -123,17 +114,17 @@ public class signInBase extends AnchorPane {
             @Override
             public void handle(ActionEvent event) {
 
-                ps.println("SignIn###" + tfInEmail.getText() + "###" + tfInPassword.getText());
+                socketClient.getPrintStream().println("SignIn###" + tfInEmail.getText() + "###" + tfInPassword.getText());
                 new Thread(() -> {
 
                     try {
                         System.out.println("waiting for server response");
-                        String replyMsg = dis.readLine();
+                        String replyMsg = socketClient.getDataInputStream().readLine();
                         System.out.println(replyMsg);
                         StringTokenizer token = new StringTokenizer(replyMsg, "###");
                         String msg = token.nextToken();
                         if (replyMsg.equals("Login Successful")) {
-                            username = dis.readLine();
+                            username = socketClient.getDataInputStream().readLine();
                             System.out.println("my username = " + username);
                             Platform.runLater(() -> {
                                 nav.navigatToScene(new AvailableFriendBase());
@@ -145,8 +136,8 @@ public class signInBase extends AnchorPane {
                             });
                         } else {
                             try {
-                                ps.close();
-                                dis.close();
+                                socketClient.getPrintStream().close();
+                                socketClient.getDataInputStream().close();
                                 SocketClient.getInstant().CloseSocket();
                             } catch (IOException ex) {
                                 Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);

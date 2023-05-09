@@ -18,14 +18,14 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
 import model.Player;
+import utilities.SocketHelper;
 
 /**
  *
  * @author Mina
  */
 public class OnlineFriendCellController extends ListCell<String> {
-    private utilities.SocketClient socketClient = utilities.SocketClient.getInstance();
-    private Socket serverSocket = socketClient.getSocket();
+    private SocketHelper socketClient = SocketHelper.getInstance();
 
     @FXML
     private Label lblFriendName;
@@ -35,11 +35,11 @@ public class OnlineFriendCellController extends ListCell<String> {
 
     public OnlineFriendCellController() {
         loadFXML();
-          btnAsk.setOnAction(new EventHandler<ActionEvent>() {
+        
+        btnAsk.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 String opponant = getItem();
-
                 socketClient.getPrintStream().println("request###"+opponant+"###"+signInBase.username);
             }
         });

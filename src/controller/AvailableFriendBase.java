@@ -21,15 +21,14 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import utilities.SocketClient;
+import utilities.SocketHelper;
 
 public class AvailableFriendBase extends AnchorPane {
-
-    private SocketClient socketClient = SocketClient.getInstance();
-    private Socket serverSocket = socketClient.getSocket();
+    
+    private SocketHelper socketClient = SocketHelper.getInstance();
     private StringTokenizer token;
     private ObservableList<String> friendsList;
     private Thread thread;
-    boolean isListUpdated = false;
     private Alert alert;
     public static int opponentScore;
     public static String opponentUsername;
@@ -89,12 +88,11 @@ public class AvailableFriendBase extends AnchorPane {
         friendsListView.setItems(friendsList);
 
         socketClient.getPrintStream().println("playerlist");
-        isListUpdated = true;
 
         friendsListView.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
                 String selectedItem = (String) friendsListView.getSelectionModel().getSelectedItem();
-                sendPlayRequest();
+                //sendPlayRequest();
 
             }
         });
@@ -108,7 +106,7 @@ public class AvailableFriendBase extends AnchorPane {
                         try {
                             String data = socketClient.getDataInputStream().readLine();
                             System.out.println(data);
-                            if (data.equals("null")) {
+                            if (data.equals("finished")) {
                                 break;
                             }
                             switch (data) {
@@ -123,7 +121,7 @@ public class AvailableFriendBase extends AnchorPane {
                                     //navigate
                                     break;
                                 default:
-                                    System.out.println("default" + data);
+                                    //System.out.println("default" + data);
                                     getOnlinefriends(data);
                             }
                         } catch (IOException ex) {
@@ -144,34 +142,16 @@ public class AvailableFriendBase extends AnchorPane {
     }
 
     private void getOnlinefriends(String data) {
-        System.out.println("data in read online list :" + data);
+        //System.out.println("data in read online list :" + data);
         token = new StringTokenizer(data, "###");
         String username = token.nextToken();
         if (!signInBase.username.equals(username)) {
             if (!friendsList.contains(username)) {
-                System.out.println("Add to list");
+                //System.out.println("Add to list");
                 friendsList.add(username);
             }
         }
     }
 
-    public void sendPlayRequest(){
-        try {
-            serverSocket = new Socket(PushIpXmlClass.ip, 5005);
-            ps = new PrintStream(serverSocket.getOutputStream());
-            dis = new DataInputStream(serverSocket.getInputStream());
-            friendsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue != null) {
-                   String userName= signInBase.username;
-                   String nameOfFriend = newValue.toString();
-                   System.out.println(userName + "+" + nameOfFriend);
-                   ps.println("request###"+ userName + "###" + nameOfFriend);
-                }
-            });
-            
-            
-        } catch (IOException ex) {
-            Logger.getLogger(AvailableFriendBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    
 }
