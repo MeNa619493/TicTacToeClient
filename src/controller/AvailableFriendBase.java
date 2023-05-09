@@ -21,7 +21,6 @@ public class AvailableFriendBase extends AnchorPane {
     private StringTokenizer token;
     private ObservableList<String> friendsList;
     private Thread thread;
-    boolean isListUpdated = false;
     private Alert alert;
     public static int opponentScore;
     public static String opponentUsername;
@@ -79,7 +78,6 @@ public class AvailableFriendBase extends AnchorPane {
         friendsListView.setItems(friendsList);
 
         socketClient.getPrintStream().println("playerlist");
-        isListUpdated = true;
 
         thread = new Thread(new Runnable() {
             @Override
@@ -88,6 +86,7 @@ public class AvailableFriendBase extends AnchorPane {
                     do {
                         try {
                             String data = socketClient.getDataInputStream().readLine();
+                            System.out.println(data);
                             if (data.equals("null")) {
                                 break;
                             }
