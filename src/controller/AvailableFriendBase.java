@@ -95,6 +95,7 @@ public class AvailableFriendBase extends AnchorPane {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
                 String selectedItem = (String) friendsListView.getSelectionModel().getSelectedItem();
                 sendPlayRequest();
+                System.out.println("aaaaaaaaaaaaaa");
 
             }
         });
