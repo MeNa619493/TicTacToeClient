@@ -5,6 +5,7 @@
  */
 package utilities;
 
+import controller.PushIpXmlClass;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -21,6 +22,7 @@ public class SocketClient {
     private PrintStream ps;
     private boolean isInitialized;
     static private SocketClient socketClient;
+    
 
     static {
         socketClient = new SocketClient();
@@ -37,7 +39,8 @@ public class SocketClient {
     public Socket getSocket() {
         if (!isInitialized) {
             try {
-                serverSocket = new Socket("127.0.0.1", 5005);
+
+                serverSocket = new Socket(PushIpXmlClass.ip, 5005);
                 dis = new DataInputStream(serverSocket.getInputStream());
                 ps = new PrintStream(serverSocket.getOutputStream());
                 System.out.println("new Socket");
