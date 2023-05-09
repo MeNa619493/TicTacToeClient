@@ -108,12 +108,14 @@ public class AvailableFriendBase extends AnchorPane {
                     do {
                         try {
                             String data = socketClient.getDataInputStream().readLine();
+                            System.out.println(data);
                             if (data.equals("null")) {
                                 break;
                             }
                             switch (data) {
                                 case "requestPlaying":
                                     //recievedRequest();
+                                    System.out.println("sssssssssssssssssssadsasdaasd");
                                     break;
                                 case "decline":
                                     //refuseAlert();

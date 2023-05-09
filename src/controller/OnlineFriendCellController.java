@@ -6,6 +6,9 @@
 package controller;
 
 import java.io.IOException;
+import java.net.Socket;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -21,6 +24,8 @@ import model.Player;
  * @author Mina
  */
 public class OnlineFriendCellController extends ListCell<String> {
+    private utilities.SocketClient socketClient = utilities.SocketClient.getInstance();
+    private Socket serverSocket = socketClient.getSocket();
 
     @FXML
     private Label lblFriendName;
@@ -30,6 +35,14 @@ public class OnlineFriendCellController extends ListCell<String> {
 
     public OnlineFriendCellController() {
         loadFXML();
+          btnAsk.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String opponant = getItem();
+
+                socketClient.getPrintStream().println("request###"+opponant+"###"+signInBase.username);
+            }
+        });
     }
 
     private void loadFXML() {
