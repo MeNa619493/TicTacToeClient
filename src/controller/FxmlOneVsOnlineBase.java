@@ -38,7 +38,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     public final Button btnEndGame;
 
     public FxmlOneVsOnlineBase() {
-
+        
         text = new Text();
         playerScore = new Text();
         text0 = new Text();
@@ -255,5 +255,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
         btnEndGame.setId("myButton");
+        
+        
     }
 }
