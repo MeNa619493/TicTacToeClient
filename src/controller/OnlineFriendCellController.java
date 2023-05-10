@@ -33,7 +33,7 @@ public class OnlineFriendCellController extends ListCell<String> {
     @FXML
     private Button btnAsk;
 
-    public OnlineFriendCellController() {
+    public OnlineFriendCellController(CustomCellButtonHandler action) {
         loadFXML();
         
         btnAsk.setOnAction(new EventHandler<ActionEvent>() {
@@ -41,8 +41,13 @@ public class OnlineFriendCellController extends ListCell<String> {
             public void handle(ActionEvent event) {
                 String opponant = getItem();
                 socketClient.getPrintStream().println("request###"+opponant+"###"+signInBase.username);
+                action.perform();
             }
         });
+    }
+    
+    public Button getButton() {
+        return btnAsk;
     }
 
     private void loadFXML() {
@@ -73,9 +78,14 @@ public class OnlineFriendCellController extends ListCell<String> {
 }
 
 class OnlineFriendCellFactory implements Callback<ListView<String>, ListCell<String>> {
+    private CustomCellButtonHandler myArgument;
+
+    public OnlineFriendCellFactory(CustomCellButtonHandler argument) {
+        this.myArgument = argument;
+    }
 
     @Override
     public ListCell<String> call(ListView<String> param) {
-        return new OnlineFriendCellController();
+        return new OnlineFriendCellController(myArgument);
     }
 }

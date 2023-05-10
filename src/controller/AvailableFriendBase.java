@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -22,9 +24,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import utilities.SocketClient;
 import utilities.SocketHelper;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 
 public class AvailableFriendBase extends AnchorPane {
-    
+
     private SocketHelper socketClient = SocketHelper.getInstance();
     private StringTokenizer token;
     private ObservableList<String> friendsList;
@@ -82,20 +86,17 @@ public class AvailableFriendBase extends AnchorPane {
         friendsListView.setStyle("-fx-background-color: #232832;");
         scrollPane.setStyle("-fx-color: #232832;");
 
-        friendsListView.setCellFactory(new OnlineFriendCellFactory());
+        friendsListView.setCellFactory(new OnlineFriendCellFactory(new CustomCellButtonHandler() {
+            @Override
+            public void perform() {
+                System.out.println("button clicked!!!!");
+            }
+        }));
 
         friendsList = FXCollections.observableArrayList();
         friendsListView.setItems(friendsList);
 
         socketClient.getPrintStream().println("playerlist");
-
-        friendsListView.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-                String selectedItem = (String) friendsListView.getSelectionModel().getSelectedItem();
-                //sendPlayRequest();
-
-            }
-        });
 
         thread = new Thread(new Runnable() {
             @Override
@@ -153,5 +154,6 @@ public class AvailableFriendBase extends AnchorPane {
         }
     }
 
-    
 }
+
+
