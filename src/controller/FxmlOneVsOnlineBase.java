@@ -353,6 +353,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         ImageView viewO = new ImageView(imgO);
         viewO.setPreserveRatio(true);
         return viewO;
+
     }
 
     private void intalizeButtons() {
