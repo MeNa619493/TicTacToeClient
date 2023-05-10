@@ -66,7 +66,7 @@ public class signInBase extends AnchorPane {
         btnSignIn.setPrefWidth(293.0);
         btnSignIn.setText("Sign In");
         btnSignIn.setFont(new Font(24.0));
-        btnSignIn.setFont(new Font("System Bold", 12.0));
+        btnSignIn.setFont(new Font("System Bold", 24.0));
 
         btnHome.setLayoutX(467.0);
         btnHome.setLayoutY(359.0);
@@ -102,7 +102,7 @@ public class signInBase extends AnchorPane {
 
         btnSignIn.setId("myButton");
         btnHome.setId("myButton");
-
+		
         btnHome.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
