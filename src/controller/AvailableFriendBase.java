@@ -13,7 +13,11 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -21,15 +25,16 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import utilities.SocketClient;
+import utilities.SocketHelper;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 
 public class AvailableFriendBase extends AnchorPane {
 
-    private SocketClient socketClient = SocketClient.getInstance();
-    private Socket serverSocket = socketClient.getSocket();
+    private SocketHelper socketClient = SocketHelper.getInstance();
     private StringTokenizer token;
     private ObservableList<String> friendsList;
     private Thread thread;
-    boolean isListUpdated = false;
     private Alert alert;
     public static int opponentScore;
     public static String opponentUsername;
@@ -83,22 +88,17 @@ public class AvailableFriendBase extends AnchorPane {
         friendsListView.setStyle("-fx-background-color: #232832;");
         scrollPane.setStyle("-fx-color: #232832;");
 
-        friendsListView.setCellFactory(new OnlineFriendCellFactory());
+        friendsListView.setCellFactory(new OnlineFriendCellFactory(new CustomCellButtonHandler() {
+            @Override
+            public void perform() {
+                System.out.println("button clicked!!!!");
+            }
+        }));
 
         friendsList = FXCollections.observableArrayList();
         friendsListView.setItems(friendsList);
 
         socketClient.getPrintStream().println("playerlist");
-        isListUpdated = true;
-
-        friendsListView.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-                String selectedItem = (String) friendsListView.getSelectionModel().getSelectedItem();
-                sendPlayRequest();
-                System.out.println("aaaaaaaaaaaaaa");
-
-            }
-        });
 
         thread = new Thread(new Runnable() {
             @Override
@@ -109,22 +109,22 @@ public class AvailableFriendBase extends AnchorPane {
                         try {
                             String data = socketClient.getDataInputStream().readLine();
                             System.out.println(data);
-                            if (data.equals("null")) {
+                            if (data.equals("finished")) {
                                 break;
                             }
                             switch (data) {
                                 case "requestPlaying":
-                                    //recievedRequest();
+                                     recievedRequest();
                                     System.out.println("sssssssssssssssssssadsasdaasd");
                                     break;
-                                case "decline":
+                                case "refuse":
                                     //refuseAlert();
                                     break;
-                                case "gameOn":
+                                case "gameStarted":
                                     //navigate
                                     break;
                                 default:
-                                    System.out.println("default" + data);
+                                    //System.out.println("default" + data);
                                     getOnlinefriends(data);
                             }
                         } catch (IOException ex) {
@@ -145,34 +145,61 @@ public class AvailableFriendBase extends AnchorPane {
     }
 
     private void getOnlinefriends(String data) {
-        System.out.println("data in read online list :" + data);
+        //System.out.println("data in read online list :" + data);
         token = new StringTokenizer(data, "###");
         String username = token.nextToken();
         if (!signInBase.username.equals(username)) {
             if (!friendsList.contains(username)) {
-                System.out.println("Add to list");
+                //System.out.println("Add to list");
                 friendsList.add(username);
             }
         }
     }
+    
+    public void recievedRequest() throws IOException{
+    String opponot = socketClient.getDataInputStream().readLine();
+    
+        System.out.println(opponot);
+         Platform.runLater(() -> {
+        // Code that updates the UI...
+   
+          Label messageLabel = new Label("Do you want play With "+opponot);
 
-    public void sendPlayRequest(){
-        try {
-            serverSocket = new Socket(PushIpXmlClass.ip, 5005);
-            ps = new PrintStream(serverSocket.getOutputStream());
-            dis = new DataInputStream(serverSocket.getInputStream());
-            friendsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue != null) {
-                   String userName= signInBase.username;
-                   String nameOfFriend = newValue.toString();
-                   System.out.println(userName + "+" + nameOfFriend);
-                   ps.println("request###"+ userName + "###" + nameOfFriend);
-                }
-            });
-            
-            
-        } catch (IOException ex) {
-            Logger.getLogger(AvailableFriendBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // Create the Yes and No buttons
+        ButtonType yesButton = new ButtonType("Yes", ButtonData.YES);
+        ButtonType noButton = new ButtonType("No", ButtonData.NO);
+
+        // Create the dialog with the message and buttons
+        javafx.scene.control.Dialog<ButtonType> dialog = new javafx.scene.control.Dialog<>();
+        dialog.getDialogPane().getButtonTypes().addAll(yesButton, noButton);
+        dialog.getDialogPane().setContent(messageLabel);
+
+        // Set the result converter for the dialog
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == yesButton) {
+                return ButtonType.YES;
+            } else if (buttonType == noButton) {
+                return ButtonType.NO;
+            } else {
+                return null;
+            }
+        });
+
+        // Show the dialog and wait for a response
+        dialog.showAndWait().ifPresent(result -> {
+            if (result == ButtonType.YES) {
+                socketClient.getPrintStream().println("accept###"+opponot+"###"+signInBase.username);
+                System.out.println("Exiting...");
+            } else if (result == ButtonType.NO) {
+                System.out.println("Not exiting.");
+                socketClient.getPrintStream().println("refuse###"+opponot);
+            }
+        });
+
+     });
+    
     }
+
 }
+
+

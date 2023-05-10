@@ -26,12 +26,11 @@ import javafx.stage.Stage;
 //import org.json.JSONException;
 //import org.json.JSONObject;
 import utilities.Navigation;
+import utilities.SocketHelper;
 
 public class signUpBase extends AnchorPane {
 
-    Socket server;
-    DataInputStream dis;
-    PrintStream ps;
+    private SocketHelper socketClient = SocketHelper.getInstance();
     boolean sign;
     String replyMsg;
     Navigation nav = Navigation.getInstance();
@@ -90,14 +89,6 @@ public class signUpBase extends AnchorPane {
         btnSignUp.setText("Sign Up");
         btnSignUp.setFont(new Font("System Bold", 24.0));
 
-        try {
-            server = new Socket(PushIpXmlClass.ip, 5005);
-            ps = new PrintStream(server.getOutputStream());
-            dis = new DataInputStream(server.getInputStream());
-        } catch (IOException ex) {
-            Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         btnSignUp.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
 
@@ -140,12 +131,12 @@ public class signUpBase extends AnchorPane {
                     alert.showAndWait();
                 }
 
-                ps.println("SignUp###" + name + "###" + email + "###" + password);
+                socketClient.getPrintStream().println("SignUp###" + name + "###" + email + "###" + password);
 
                 new Thread(() -> {
                     try {
 
-                        replyMsg = dis.readLine();
+                        replyMsg = socketClient.getDataInputStream().readLine();
                         StringTokenizer token = new StringTokenizer(replyMsg, "###");
                         String msg = token.nextToken();
                         if (replyMsg.equals("already signed-up")) {
