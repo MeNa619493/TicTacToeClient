@@ -127,7 +127,8 @@ public class AvailableFriendBase extends AnchorPane {
                                     System.out.println("sssssssssssssssssssadsasdaasd");
                                     break;
                                 case "refuse":
-                                    //refuseAlert();
+                                    refuseAlert();
+                                    System.out.println("refuse");
                                     break;
                                 case "gameStarted":
                                     System.out.println("game accepted");
@@ -203,6 +204,7 @@ public class AvailableFriendBase extends AnchorPane {
             // Show the dialog and wait for a response
             dialog.showAndWait().ifPresent(result -> {
                 if (result == ButtonType.YES) {
+
                     socketClient.getPrintStream().println("accept###" + signInBase.username + "###" + opponot);
                     Platform.runLater(() -> {
                         //alert.close();
@@ -218,5 +220,19 @@ public class AvailableFriendBase extends AnchorPane {
         });
 
     }
+
+
+    public void refuseAlert() {
+         Platform.runLater(() -> {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Refuse Invitation");
+        alert.setContentText("Request Refuesed");
+
+        alert.setHeaderText(null);
+
+        alert.showAndWait();
+
+    } );}
+
 
 }
