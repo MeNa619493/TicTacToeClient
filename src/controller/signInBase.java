@@ -68,7 +68,7 @@ public class signInBase extends AnchorPane {
         btnSignIn.setPrefWidth(293.0);
         btnSignIn.setText("Sign In");
         btnSignIn.setFont(new Font(24.0));
-        btnSignIn.setFont(new Font("System Bold", 12.0));
+        btnSignIn.setFont(new Font("System Bold", 24.0));
 
         btnHome.setLayoutX(467.0);
         btnHome.setLayoutY(359.0);
@@ -105,7 +105,7 @@ public class signInBase extends AnchorPane {
         btnSignIn.setId("myButton");
         btnHome.setId("myButton");
         try {
-            server = new Socket("127.0.0.1", 5005);
+            server = new Socket(PushIpXmlClass.ip, 5005);
             ps = new PrintStream(server.getOutputStream());
             dis = new DataInputStream(server.getInputStream());
         } catch (IOException ex) {

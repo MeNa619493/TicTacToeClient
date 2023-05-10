@@ -1,5 +1,17 @@
 package controller;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -8,10 +20,37 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import utilities.Navigation;
+import utilities.SocketClient;
+import utilities.SocketHelper;
 
 public class FxmlOneVsOnlineBase extends AnchorPane {
+
+//    Socket server;
+//    DataInputStream dis;
+//    PrintStream ps;
+    SocketHelper socket=SocketHelper.getInstance();
+    PrintStream ps;
+     DataInputStream dis;
+    private Boolean isUserTurn = true;
+    private boolean isWinner = false;
+    GameState state = GameState.NONE;
+    private Boolean isHard;
+    Integer compScore = 0;
+    Integer userScore = 0;
+    
+    int x = 0;
+
+    String currentPlayer = "X";
+    ArrayList<Button> btns;
+    Button[][] board = new Button[3][3];
+    ArrayList<Button> available = new ArrayList();
+
+    Image imgX;
+    Image imgO;
 
     protected final Text text;
     protected final Text playerScore;
@@ -39,6 +78,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
 
     public FxmlOneVsOnlineBase() {
 
+        ArrayList<Button> btns;
         text = new Text();
         playerScore = new Text();
         text0 = new Text();
@@ -255,5 +295,184 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
         btnEndGame.setId("myButton");
+        btns = new ArrayList<>(Arrays.asList(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9));
+        intalizeButtons();
+        intalizeBorad();
+        intalizeAvailablePlaces();
+        
+//        try {
+//            server = new Socket(PushIpXmlClass.ip, 5005);
+//            ps = new PrintStream(server.getOutputStream());
+//            dis = new DataInputStream(server.getInputStream());
+//        } catch (IOException ex) {
+//            Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        ps=socket.getPrintStream();
+        dis=socket.getDataInputStream();
     }
+
+    public void sendButtonPressed(Button buttonPressed) {
+
+        ps.println("Index###" + findButtonPlaceFromBoard(buttonPressed));
+    }
+
+    public void reAvailableButton() {
+        try {
+            String replyMsg = dis.readLine();
+            System.out.println(replyMsg);
+            StringTokenizer token = new StringTokenizer(replyMsg, "###");
+            String msg = token.nextToken();
+            int i = Integer.parseInt(msg);
+            btns.get(i-1).setDisable(true);
+        } catch (IOException ex) {
+            Logger.getLogger(FxmlOneVsOnlineBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    private int findButtonPlaceFromBoard(Button buttonPressed) {
+        int index = 0;
+        for (int i = 0; i < btns.size() - 1; i++) {
+            if (btns.get(i) == buttonPressed) {
+                index = i;
+                break;
+            }
+        }
+        return index + 1;
+    }
+
+    private ImageView createImageViewX() {
+        imgX = new Image("file:./src/Photo/x2.png");
+        ImageView viewX = new ImageView(imgX);
+        viewX.setPreserveRatio(true);
+        return viewX;
+    }
+
+    private ImageView createImageViewO() {
+        imgO = new Image("file:./src/Photo/o2.png");
+        ImageView viewO = new ImageView(imgO);
+        viewO.setPreserveRatio(true);
+        return viewO;
+    }
+
+    private void intalizeButtons() {
+        ButtonListener listener = new ButtonListener();
+        for (Button btn : btns) {
+            btn.setOnAction(listener);
+        }
+    }
+
+    private void intalizeBorad() {
+        int index = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i][j] = btns.get(index);
+                index++;
+            }
+        }
+    }
+
+    private void intalizeAvailablePlaces() {
+        for (Button button : btns) {
+            available.add(button);
+        }
+    }
+
+    private void setTextFields() {
+        computerScore.setText(compScore.toString());
+        playerScore.setText(userScore.toString());
+    }
+
+    private Boolean equals(Button a, Button b, Button c) {
+        if (!a.getText().isEmpty()
+                && a.getText().equals(b.getText())
+                && b.getText().equals(c.getText())) {
+            if (a.getText().equals("X")) {
+                state = GameState.WIN;
+            } else {
+                state = GameState.LOSE;
+            }
+
+            return true;
+        }
+        return false;
+    }
+
+    private void checkWinner() {
+        // horizontal
+        for (int i = 0; i < 3; i++) {
+            if (equals(board[i][0], board[i][1], board[i][2])) {
+                isWinner = true;
+            }
+        }
+
+        // Vertical
+        for (int i = 0; i < 3; i++) {
+            if (equals(board[0][i], board[1][i], board[2][i])) {
+                isWinner = true;
+            }
+        }
+
+        // Diagonal
+        if (equals(board[0][0], board[1][1], board[2][2])) {
+            isWinner = true;
+        }
+        if (equals(board[2][0], board[1][1], board[0][2])) {
+            isWinner = true;
+        }
+
+        if (!isWinner && available.isEmpty()) {
+            state = GameState.TIE;
+
+        }
+
+        showResultVideo();
+    }
+
+    private void showResultVideo() {
+        Navigation nav = Navigation.getInstance();
+        switch (state) {
+            case TIE:
+                nav.navigatToWatchVideo("tie");
+                break;
+            case LOSE:
+                compScore++;
+                nav.navigatToWatchVideo("lose");
+                break;
+            case WIN:
+                userScore++;
+                nav.navigatToWatchVideo("win");
+                break;
+        }
+        setTextFields();
+    }
+
+    private class ButtonListener implements EventHandler {
+
+        @Override
+        public void handle(Event event) {
+            if (!isWinner) {
+                if (isUserTurn) {
+                    Button buttonPressed = (Button) event.getSource();
+                    if (buttonPressed.getText().isEmpty()) {
+                        if (x % 2 != 0) {
+                            buttonPressed.setText(currentPlayer);
+                            buttonPressed.setTextFill(Color.TRANSPARENT);
+                            buttonPressed.setGraphic(createImageViewX());
+                            buttonPressed.setDisable(true);
+                            available.remove(buttonPressed);
+                            checkWinner();
+                        } else {
+                            buttonPressed.setText(currentPlayer);
+                            buttonPressed.setTextFill(Color.TRANSPARENT);
+                            buttonPressed.setGraphic(createImageViewO());
+                            buttonPressed.setDisable(true);
+                            available.remove(buttonPressed);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
