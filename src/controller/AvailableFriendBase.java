@@ -26,7 +26,7 @@ import utilities.SocketClient;
 import utilities.SocketHelper;
 
 public class AvailableFriendBase extends AnchorPane {
-    
+
     private SocketHelper socketClient = SocketHelper.getInstance();
     private StringTokenizer token;
     private ObservableList<String> friendsList;
@@ -113,11 +113,12 @@ public class AvailableFriendBase extends AnchorPane {
                             }
                             switch (data) {
                                 case "requestPlaying":
-                                     recievedRequest();
+                                    recievedRequest();
                                     System.out.println("sssssssssssssssssssadsasdaasd");
                                     break;
                                 case "refuse":
-                                    //refuseAlert();
+                                    refuseAlert();
+                                    System.out.println("refuse");
                                     break;
                                 case "gameOn":
                                     //navigate
@@ -154,50 +155,63 @@ public class AvailableFriendBase extends AnchorPane {
             }
         }
     }
-    
-    public void recievedRequest() throws IOException{
-    String opponot = socketClient.getDataInputStream().readLine();
-    
+
+    public void recievedRequest() throws IOException {
+        String opponot = socketClient.getDataInputStream().readLine();
+
         System.out.println(opponot);
-         Platform.runLater(() -> {
-        // Code that updates the UI...
-   
-          Label messageLabel = new Label("Do you want play With "+opponot);
+        Platform.runLater(() -> {
+            // Code that updates the UI...
 
-        // Create the Yes and No buttons
-        ButtonType yesButton = new ButtonType("Yes", ButtonData.YES);
-        ButtonType noButton = new ButtonType("No", ButtonData.NO);
+            Label messageLabel = new Label("Do you want play With " + opponot);
 
-        // Create the dialog with the message and buttons
-        javafx.scene.control.Dialog<ButtonType> dialog = new javafx.scene.control.Dialog<>();
-        dialog.getDialogPane().getButtonTypes().addAll(yesButton, noButton);
-        dialog.getDialogPane().setContent(messageLabel);
+            // Create the Yes and No buttons
+            ButtonType yesButton = new ButtonType("Yes", ButtonData.YES);
+            ButtonType noButton = new ButtonType("No", ButtonData.NO);
 
-        // Set the result converter for the dialog
-        dialog.setResultConverter(buttonType -> {
-            if (buttonType == yesButton) {
-                return ButtonType.YES;
-            } else if (buttonType == noButton) {
-                return ButtonType.NO;
-            } else {
-                return null;
-            }
+            // Create the dialog with the message and buttons
+            javafx.scene.control.Dialog<ButtonType> dialog = new javafx.scene.control.Dialog<>();
+            dialog.getDialogPane().getButtonTypes().addAll(yesButton, noButton);
+            dialog.getDialogPane().setContent(messageLabel);
+
+            // Set the result converter for the dialog
+            dialog.setResultConverter(buttonType -> {
+                if (buttonType == yesButton) {
+                    return ButtonType.YES;
+                } else if (buttonType == noButton) {
+                    return ButtonType.NO;
+                } else {
+                    return null;
+                }
+            });
+
+            // Show the dialog and wait for a response
+            dialog.showAndWait().ifPresent(result -> {
+                if (result == ButtonType.YES) {
+                    socketClient.getPrintStream().println("accept");
+                    System.out.println("Exiting...");
+                } else if (result == ButtonType.NO) {
+                    System.out.println("Not exiting.");
+                    socketClient.getPrintStream().println("refuse###"+opponot);
+                    
+                    
+                }
+            });
+
         });
 
-        // Show the dialog and wait for a response
-        dialog.showAndWait().ifPresent(result -> {
-            if (result == ButtonType.YES) {
-                socketClient.getPrintStream().println("accept");
-                System.out.println("Exiting...");
-            } else if (result == ButtonType.NO) {
-                System.out.println("Not exiting.");
-                socketClient.getPrintStream().println("refuse");
-            }
-        });
-
-     });
-    
     }
 
-    
+    public void refuseAlert() {
+         Platform.runLater(() -> {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Refuse Invitation");
+        alert.setContentText("Request Refuesed");
+
+        alert.setHeaderText(null);
+
+        alert.showAndWait();
+
+    } );}
+
 }
