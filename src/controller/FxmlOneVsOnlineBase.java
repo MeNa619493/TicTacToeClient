@@ -33,16 +33,16 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
 //    Socket server;
 //    DataInputStream dis;
 //    PrintStream ps;
-    SocketHelper socket=SocketHelper.getInstance();
+    SocketHelper socket = SocketHelper.getInstance();
     PrintStream ps;
-     DataInputStream dis;
+    DataInputStream dis;
     private Boolean isUserTurn = true;
     private boolean isWinner = false;
     GameState state = GameState.NONE;
     private Boolean isHard;
     Integer compScore = 0;
     Integer userScore = 0;
-    
+
     int x = 0;
 
     String currentPlayer = "X";
@@ -300,7 +300,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         intalizeButtons();
         intalizeBorad();
         intalizeAvailablePlaces();
-        
+
 //        try {
 //            server = new Socket(PushIpXmlClass.ip, 5005);
 //            ps = new PrintStream(server.getOutputStream());
@@ -308,8 +308,8 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
 //        } catch (IOException ex) {
 //            Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        ps=socket.getPrintStream();
-        dis=socket.getDataInputStream();
+        ps = socket.getPrintStream();
+        dis = socket.getDataInputStream();
     }
 
     public void sendButtonPressed(Button buttonPressed) {
@@ -325,18 +325,18 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
             StringTokenizer token = new StringTokenizer(replyMsg, "###");
             String msg = token.nextToken();
             int i = Integer.parseInt(msg);
-            draw(btns.get(i-1));
-            btns.get(i-1).setDisable(true);
-            btns.remove(get(i-1));
+            draw(btns.get(i - 1));
+            btns.get(i - 1).setDisable(true);
+            btns.remove(get(i - 1));
             enableButtons();
         } catch (IOException ex) {
             Logger.getLogger(FxmlOneVsOnlineBase.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-    
+
     private void draw(Button btn) {
-         imgX = new Image("file:./src/Photo/x2.png");
+        imgX = new Image("file:./src/Photo/x2.png");
         imgO = new Image("file:./src/Photo/o2.png");
         ImageView viewX;
         viewX = new ImageView(imgX);
@@ -344,32 +344,32 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         ImageView viewO;
         viewO = new ImageView(imgO);
         viewO.setPreserveRatio(true);
-        
-            if (x % 2 != 0) {
-                btn.setGraphic(viewO);
-                btn.setTextFill(Color.TRANSPARENT);
-                btn.setText("O");
-            } else {
-                btn.setGraphic(viewX);
-                btn.setTextFill(Color.TRANSPARENT);
-                btn.setText("X");
-            }
-            checkWinner();
-        
+
+        if (x % 2 != 0) {
+            btn.setGraphic(viewO);
+            btn.setTextFill(Color.TRANSPARENT);
+            btn.setText("O");
+        } else {
+            btn.setGraphic(viewX);
+            btn.setTextFill(Color.TRANSPARENT);
+            btn.setText("X");
+        }
+        checkWinner();
+
     }
-    
-    public void disableButton(){
-        for(Button btn:btns){
+
+    public void disableButton() {
+        for (Button btn : btns) {
             btn.setDisable(true);
         }
     }
-    
-     public void enableButtons(){
-        for(Button btn:btns){
+
+    public void enableButtons() {
+        for (Button btn : btns) {
             btn.setDisable(false);
         }
     }
-    
+
     private int findButtonPlaceFromBoard(Button buttonPressed) {
         int index = 0;
         for (int i = 0; i < btns.size() - 1; i++) {
@@ -488,8 +488,6 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         setTextFields();
     }
 
-    
-
     private class ButtonListener implements EventHandler {
 
         @Override
@@ -507,7 +505,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                             checkWinner();
                             sendButtonPressed(buttonPressed);
                             recieveButtonPressed();
-                            
+
                         } else {
                             buttonPressed.setText(currentPlayer);
                             buttonPressed.setTextFill(Color.TRANSPARENT);
