@@ -14,6 +14,8 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -111,10 +113,10 @@ public class AvailableFriendBase extends AnchorPane {
                             }
                             switch (data) {
                                 case "requestPlaying":
-                                    //recievedRequest();
+                                     recievedRequest();
                                     System.out.println("sssssssssssssssssssadsasdaasd");
                                     break;
-                                case "decline":
+                                case "refuse":
                                     //refuseAlert();
                                     break;
                                 case "gameOn":
@@ -151,6 +153,50 @@ public class AvailableFriendBase extends AnchorPane {
                 friendsList.add(username);
             }
         }
+    }
+    
+    public void recievedRequest() throws IOException{
+    String opponot = socketClient.getDataInputStream().readLine();
+    
+        System.out.println(opponot);
+         Platform.runLater(() -> {
+        // Code that updates the UI...
+   
+          Label messageLabel = new Label("Do you want play With "+opponot);
+
+        // Create the Yes and No buttons
+        ButtonType yesButton = new ButtonType("Yes", ButtonData.YES);
+        ButtonType noButton = new ButtonType("No", ButtonData.NO);
+
+        // Create the dialog with the message and buttons
+        javafx.scene.control.Dialog<ButtonType> dialog = new javafx.scene.control.Dialog<>();
+        dialog.getDialogPane().getButtonTypes().addAll(yesButton, noButton);
+        dialog.getDialogPane().setContent(messageLabel);
+
+        // Set the result converter for the dialog
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == yesButton) {
+                return ButtonType.YES;
+            } else if (buttonType == noButton) {
+                return ButtonType.NO;
+            } else {
+                return null;
+            }
+        });
+
+        // Show the dialog and wait for a response
+        dialog.showAndWait().ifPresent(result -> {
+            if (result == ButtonType.YES) {
+                socketClient.getPrintStream().println("accept");
+                System.out.println("Exiting...");
+            } else if (result == ButtonType.NO) {
+                System.out.println("Not exiting.");
+                socketClient.getPrintStream().println("refuse");
+            }
+        });
+
+     });
+    
     }
 
     
