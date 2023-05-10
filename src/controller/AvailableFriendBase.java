@@ -132,7 +132,6 @@ public class AvailableFriendBase extends AnchorPane {
                             switch (data) {
                                 case "requestPlaying":
                                     recievedRequest();
-                                    System.out.println("sssssssssssssssssssadsasdaasd");
                                     break;
                                 case "refuse":
                                     refuseAlert();
@@ -141,11 +140,9 @@ public class AvailableFriendBase extends AnchorPane {
                                 case "gameStarted":
                                     System.out.println("game accepted");
                                     Platform.runLater(() -> {
-                                        alert.close();
                                         System.out.println("navigate");
                                         nav.navigatToScene(new FxmlOneVsOnlineBase());
                                     });
-                                    //navigate
                                     break;
                                 default:
                                     //System.out.println("default" + data);
@@ -212,7 +209,6 @@ public class AvailableFriendBase extends AnchorPane {
             // Show the dialog and wait for a response
             dialog.showAndWait().ifPresent(result -> {
                 if (result == ButtonType.YES) {
-
                     socketClient.getPrintStream().println("accept###" + signInBase.username + "###" + opponot);
                     Platform.runLater(() -> {
                         //alert.close();
