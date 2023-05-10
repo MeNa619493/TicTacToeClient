@@ -10,6 +10,9 @@ import java.net.Socket;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,7 +30,9 @@ import javafx.scene.text.Font;
 import utilities.SocketClient;
 import utilities.SocketHelper;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.ListCell;
+import javafx.util.Duration;
 
 public class AvailableFriendBase extends AnchorPane {
 
@@ -91,7 +96,24 @@ public class AvailableFriendBase extends AnchorPane {
         friendsListView.setCellFactory(new OnlineFriendCellFactory(new CustomCellButtonHandler() {
             @Override
             public void perform() {
-                System.out.println("button clicked!!!!");
+                // Create the dialog with the message and buttons
+//                alert = new Alert(Alert.AlertType.NONE);
+//                alert.setTitle("Success");
+//                alert.setHeaderText("Empty Field");
+//                alert.setContentText("Your request had been sent");
+//                alert.showAndWait();
+
+                ButtonType Yes = new ButtonType("Ok");
+                alert = new Alert(Alert.AlertType.NONE);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText("Please Wait The Opponent to respond..");
+                alert.getDialogPane().getButtonTypes().addAll(Yes);
+
+                PauseTransition delay = new PauseTransition(Duration.seconds(10));
+                delay.setOnFinished(e -> alert.hide());
+
+                alert.show();
+                delay.play();
             }
         }));
 
