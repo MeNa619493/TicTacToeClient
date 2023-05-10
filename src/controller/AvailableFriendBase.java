@@ -10,12 +10,15 @@ import java.net.Socket;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -28,6 +31,9 @@ import utilities.SocketClient;
 import utilities.SocketHelper;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
+import utilities.Navigation;
 
 public class AvailableFriendBase extends AnchorPane {
 
@@ -35,15 +41,13 @@ public class AvailableFriendBase extends AnchorPane {
     private StringTokenizer token;
     private ObservableList<String> friendsList;
     private Thread thread;
-    private Alert alert;
+    public Alert alert;
+    private Navigation nav = Navigation.getInstance();
     public static int opponentScore;
     public static String opponentUsername;
-    PrintStream ps;
-    DataInputStream dis;
     protected final Label label;
     protected final ScrollPane scrollPane;
     protected final ListView friendsListView;
-    //String nameOfFriend;
 
     public AvailableFriendBase() {
 
@@ -91,7 +95,12 @@ public class AvailableFriendBase extends AnchorPane {
         friendsListView.setCellFactory(new OnlineFriendCellFactory(new CustomCellButtonHandler() {
             @Override
             public void perform() {
-                System.out.println("button clicked!!!!");
+                // Create the dialog with the message and buttons
+                alert = new Alert(Alert.AlertType.NONE);
+                alert.setTitle("Success");
+                alert.setHeaderText("Empty Field");
+                alert.setContentText("Your request had been sent");
+                alert.showAndWait();
             }
         }));
 
@@ -114,13 +123,20 @@ public class AvailableFriendBase extends AnchorPane {
                             }
                             switch (data) {
                                 case "requestPlaying":
-                                     recievedRequest();
+                                    recievedRequest();
                                     System.out.println("sssssssssssssssssssadsasdaasd");
                                     break;
                                 case "refuse":
-                                    //refuseAlert();
+                                    refuseAlert();
+                                    System.out.println("refuse");
                                     break;
                                 case "gameStarted":
+                                    System.out.println("game accepted");
+                                    Platform.runLater(() -> {
+                                        alert.close();
+                                        System.out.println("navigate");
+                                        nav.navigatToScene(new FxmlOneVsOnlineBase());
+                                    });
                                     //navigate
                                     break;
                                 default:
@@ -155,51 +171,68 @@ public class AvailableFriendBase extends AnchorPane {
             }
         }
     }
-    
-    public void recievedRequest() throws IOException{
-    String opponot = socketClient.getDataInputStream().readLine();
-    
+
+    public void recievedRequest() throws IOException {
+        String opponot = socketClient.getDataInputStream().readLine();
+
         System.out.println(opponot);
-         Platform.runLater(() -> {
-        // Code that updates the UI...
-   
-          Label messageLabel = new Label("Do you want play With "+opponot);
+        Platform.runLater(() -> {
+            // Code that updates the UI...
 
-        // Create the Yes and No buttons
-        ButtonType yesButton = new ButtonType("Yes", ButtonData.YES);
-        ButtonType noButton = new ButtonType("No", ButtonData.NO);
+            Label messageLabel = new Label("Do you want play With " + opponot);
 
-        // Create the dialog with the message and buttons
-        javafx.scene.control.Dialog<ButtonType> dialog = new javafx.scene.control.Dialog<>();
-        dialog.getDialogPane().getButtonTypes().addAll(yesButton, noButton);
-        dialog.getDialogPane().setContent(messageLabel);
+            // Create the Yes and No buttons
+            ButtonType yesButton = new ButtonType("Yes", ButtonData.YES);
+            ButtonType noButton = new ButtonType("No", ButtonData.NO);
 
-        // Set the result converter for the dialog
-        dialog.setResultConverter(buttonType -> {
-            if (buttonType == yesButton) {
-                return ButtonType.YES;
-            } else if (buttonType == noButton) {
-                return ButtonType.NO;
-            } else {
-                return null;
-            }
+            // Create the dialog with the message and buttons
+            javafx.scene.control.Dialog<ButtonType> dialog = new javafx.scene.control.Dialog<>();
+            dialog.getDialogPane().getButtonTypes().addAll(yesButton, noButton);
+            dialog.getDialogPane().setContent(messageLabel);
+
+            // Set the result converter for the dialog
+            dialog.setResultConverter(buttonType -> {
+                if (buttonType == yesButton) {
+                    return ButtonType.YES;
+                } else if (buttonType == noButton) {
+                    return ButtonType.NO;
+                } else {
+                    return null;
+                }
+            });
+
+            // Show the dialog and wait for a response
+            dialog.showAndWait().ifPresent(result -> {
+                if (result == ButtonType.YES) {
+
+                    socketClient.getPrintStream().println("accept###" + signInBase.username + "###" + opponot);
+                    Platform.runLater(() -> {
+                        //alert.close();
+                        System.out.println("Exiting...");
+                        nav.navigatToScene(new FxmlOneVsOnlineBase());
+                    });
+                } else if (result == ButtonType.NO) {
+                    System.out.println("Not exiting.");
+                    socketClient.getPrintStream().println("refuse###" + opponot);
+                }
+            });
+
         });
 
-        // Show the dialog and wait for a response
-        dialog.showAndWait().ifPresent(result -> {
-            if (result == ButtonType.YES) {
-                socketClient.getPrintStream().println("accept###"+opponot+"###"+signInBase.username);
-                System.out.println("Exiting...");
-            } else if (result == ButtonType.NO) {
-                System.out.println("Not exiting.");
-                socketClient.getPrintStream().println("refuse###"+opponot);
-            }
-        });
-
-     });
-    
     }
 
+
+    public void refuseAlert() {
+         Platform.runLater(() -> {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Refuse Invitation");
+        alert.setContentText("Request Refuesed");
+
+        alert.setHeaderText(null);
+
+        alert.showAndWait();
+
+    } );}
+
+
 }
-
-
