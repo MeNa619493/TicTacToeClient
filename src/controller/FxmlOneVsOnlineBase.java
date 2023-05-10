@@ -23,6 +23,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import static javax.swing.UIManager.get;
 import utilities.Navigation;
 import utilities.SocketClient;
 import utilities.SocketHelper;
@@ -314,22 +315,61 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     public void sendButtonPressed(Button buttonPressed) {
 
         ps.println("Index###" + findButtonPlaceFromBoard(buttonPressed));
+        disableButton();
     }
 
-    public void reAvailableButton() {
+    public void recieveButtonPressed() {
         try {
             String replyMsg = dis.readLine();
             System.out.println(replyMsg);
             StringTokenizer token = new StringTokenizer(replyMsg, "###");
             String msg = token.nextToken();
             int i = Integer.parseInt(msg);
+            draw(btns.get(i-1));
             btns.get(i-1).setDisable(true);
+            btns.remove(get(i-1));
+            enableButtons();
         } catch (IOException ex) {
             Logger.getLogger(FxmlOneVsOnlineBase.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-
+    
+    private void draw(Button btn) {
+         imgX = new Image("file:./src/Photo/x2.png");
+        imgO = new Image("file:./src/Photo/o2.png");
+        ImageView viewX;
+        viewX = new ImageView(imgX);
+        viewX.setPreserveRatio(true);
+        ImageView viewO;
+        viewO = new ImageView(imgO);
+        viewO.setPreserveRatio(true);
+        
+            if (x % 2 != 0) {
+                btn.setGraphic(viewO);
+                btn.setTextFill(Color.TRANSPARENT);
+                btn.setText("O");
+            } else {
+                btn.setGraphic(viewX);
+                btn.setTextFill(Color.TRANSPARENT);
+                btn.setText("X");
+            }
+            checkWinner();
+        
+    }
+    
+    public void disableButton(){
+        for(Button btn:btns){
+            btn.setDisable(true);
+        }
+    }
+    
+     public void enableButtons(){
+        for(Button btn:btns){
+            btn.setDisable(false);
+        }
+    }
+    
     private int findButtonPlaceFromBoard(Button buttonPressed) {
         int index = 0;
         for (int i = 0; i < btns.size() - 1; i++) {
@@ -448,6 +488,8 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         setTextFields();
     }
 
+    
+
     private class ButtonListener implements EventHandler {
 
         @Override
@@ -463,12 +505,17 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                             buttonPressed.setDisable(true);
                             available.remove(buttonPressed);
                             checkWinner();
+                            sendButtonPressed(buttonPressed);
+                            recieveButtonPressed();
+                            
                         } else {
                             buttonPressed.setText(currentPlayer);
                             buttonPressed.setTextFill(Color.TRANSPARENT);
                             buttonPressed.setGraphic(createImageViewO());
                             buttonPressed.setDisable(true);
                             available.remove(buttonPressed);
+                            sendButtonPressed(buttonPressed);
+                            recieveButtonPressed();
                         }
                     }
                 }
