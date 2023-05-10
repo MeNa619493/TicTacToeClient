@@ -120,7 +120,7 @@ public class AvailableFriendBase extends AnchorPane {
                                 case "refuse":
                                     //refuseAlert();
                                     break;
-                                case "gameOn":
+                                case "gameStarted":
                                     //navigate
                                     break;
                                 default:
@@ -188,11 +188,11 @@ public class AvailableFriendBase extends AnchorPane {
         // Show the dialog and wait for a response
         dialog.showAndWait().ifPresent(result -> {
             if (result == ButtonType.YES) {
-                socketClient.getPrintStream().println("accept");
+                socketClient.getPrintStream().println("accept###"+opponot+"###"+signInBase.username);
                 System.out.println("Exiting...");
             } else if (result == ButtonType.NO) {
                 System.out.println("Not exiting.");
-                socketClient.getPrintStream().println("refuse");
+                socketClient.getPrintStream().println("refuse###"+opponot);
             }
         });
 
