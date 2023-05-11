@@ -74,6 +74,7 @@ public class PushIpXmlClass extends AnchorPane {
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
         btnSendIp.setId("myButton");
+
         btnHome.setId("myButton");
 
         btnSendIp.setOnAction(new EventHandler<ActionEvent>() {
@@ -107,6 +108,7 @@ public class PushIpXmlClass extends AnchorPane {
                 }
             }
         });
+
         
         btnHome.setOnAction(new EventHandler<ActionEvent>() {
             @Override
