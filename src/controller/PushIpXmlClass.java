@@ -16,12 +16,14 @@ public class PushIpXmlClass extends AnchorPane {
     protected final Button btnSendIp;
     Navigation nav = Navigation.getInstance();
     public static String ip;
+    protected final Button btnHome;
 
     public PushIpXmlClass() {
-
+        
         text = new Text();
         tfEnterIp = new TextField();
         btnSendIp = new Button();
+        btnHome=new Button();
 
         setId("AnchorPane");
         setPrefHeight(400.0);
@@ -46,22 +48,37 @@ public class PushIpXmlClass extends AnchorPane {
         btnSendIp.setMnemonicParsing(false);
         btnSendIp.setText("Send");
         btnSendIp.setFont(new Font(18.0));
+        
+        btnHome.setLayoutX(31.0);
+        btnHome.setLayoutY(24.0);
+        btnHome.setMnemonicParsing(false);
+        btnHome.setText("Home");
+        btnHome.setFont(new Font(14.0));
 
         getChildren().add(text);
         getChildren().add(tfEnterIp);
         getChildren().add(btnSendIp);
+        getChildren().add(btnHome);
 
         setStyle("-fx-background-image: url('file:./src/Photo/bg3.jpg');"
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
         btnSendIp.setId("myButton");
+        btnHome.setId("myButton");
         btnSendIp.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 nav.navigatToScene(new SignBase());
             }
         });
-
+        
+        btnHome.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                nav.navigatToScene(new mainBase());
+            }
+        });
+        
         ip = tfEnterIp.getText();
     }
 }

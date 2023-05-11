@@ -39,6 +39,7 @@ public class AvailableFriendBase extends AnchorPane {
 
     private SocketHelper socketClient = SocketHelper.getInstance();
     private StringTokenizer token;
+    private PrintStream ps;
     private ObservableList<String> friendsList;
     private Thread thread;
     public Alert alert;
@@ -48,13 +49,16 @@ public class AvailableFriendBase extends AnchorPane {
     protected final Label label;
     protected final ScrollPane scrollPane;
     protected final ListView friendsListView;
+    protected final Button btnLogOut;
 
     public AvailableFriendBase() {
 
         label = new Label();
         scrollPane = new ScrollPane();
         friendsListView = new ListView();
-
+        btnLogOut=new Button();
+        ps=socketClient.getPrintStream();
+        
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -81,9 +85,17 @@ public class AvailableFriendBase extends AnchorPane {
         friendsListView.setPrefWidth(498.0);
         friendsListView.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;");
         scrollPane.setContent(friendsListView);
+        
+        btnLogOut.setLayoutX(475.0);
+        btnLogOut.setLayoutY(26.0);
+        btnLogOut.setMnemonicParsing(false);
+        btnLogOut.setText("Log Out");
+        btnLogOut.setFont(new Font(14.0));
 
         getChildren().add(label);
         getChildren().add(scrollPane);
+        getChildren().add(btnLogOut);
+        
 
         setStyle("-fx-background-image: url('file:./src/Photo/bg3.jpg');"
                 + "-fx-background-size: cover;"
@@ -91,6 +103,16 @@ public class AvailableFriendBase extends AnchorPane {
 
         friendsListView.setStyle("-fx-background-color: #232832;");
         scrollPane.setStyle("-fx-color: #232832;");
+        
+        btnLogOut.setId("myButton");
+        
+        btnLogOut.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                nav.navigatToScene(new mainBase());
+                ps.println("logout###" + signInBase.username);
+            }
+        });
 
         friendsListView.setCellFactory(new OnlineFriendCellFactory(new CustomCellButtonHandler() {
             @Override

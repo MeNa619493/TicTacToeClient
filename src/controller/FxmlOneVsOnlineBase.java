@@ -27,6 +27,7 @@ import static javax.swing.UIManager.get;
 import utilities.Navigation;
 import utilities.SocketClient;
 import utilities.SocketHelper;
+import utilities.StreamHelper;
 
 public class FxmlOneVsOnlineBase extends AnchorPane {
 
@@ -43,7 +44,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     Integer compScore = 0;
     Integer userScore = 0;
 
-    int x = 0;
+    int x = 1;
 
     String currentPlayer = "X";
     ArrayList<Button> btns;
@@ -300,16 +301,12 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         intalizeButtons();
         intalizeBorad();
         intalizeAvailablePlaces();
-
-//        try {
-//            server = new Socket(PushIpXmlClass.ip, 5005);
-//            ps = new PrintStream(server.getOutputStream());
-//            dis = new DataInputStream(server.getInputStream());
-//        } catch (IOException ex) {
-//            Logger.getLogger(signUpBase.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         ps = socket.getPrintStream();
         dis = socket.getDataInputStream();
+
+        if (x % 2 == 0) {
+            disableButton();
+        }
     }
 
     public void sendButtonPressed(Button buttonPressed) {
@@ -520,5 +517,21 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
             }
         }
     }
+      private void writeOnFile(Button buttonPressed){
+        new Thread(() -> {
+            StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed)+".");
+        }).start();
+    }
+    
+    
+    
+    
+enum GameState {
+    NONE,
+    WIN,
+    LOSE,
+    TIE;
+}
+
 
 }
