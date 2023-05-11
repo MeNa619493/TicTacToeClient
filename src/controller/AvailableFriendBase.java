@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -118,11 +119,17 @@ public class AvailableFriendBase extends AnchorPane {
             @Override
             public void perform() {
                 // Create the dialog with the message and buttons
-                alert = new Alert(Alert.AlertType.NONE);
-                alert.setTitle("Success");
-                alert.setHeaderText("Empty Field");
-                alert.setContentText("Your request had been sent");
-                alert.showAndWait();
+                ButtonType Yes = new ButtonType("Ok");
+                Alert alert = new Alert(Alert.AlertType.NONE);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText("Please Wait The Opponent to respond..");
+                alert.getDialogPane().getButtonTypes().addAll(Yes);
+
+                PauseTransition delay = new PauseTransition(Duration.seconds(10));
+                delay.setOnFinished(e -> alert.hide());
+
+                alert.show();
+                delay.play();
             }
         }));
 
@@ -159,14 +166,14 @@ public class AvailableFriendBase extends AnchorPane {
                                         System.out.println("navigate");
                                         nav.navigatToScene(new FxmlOneVsOnlineBase());
                                     });
-                                    //navigate
+                                    thread.stop();
                                     break;
                                 default:
                                     //System.out.println("default" + data);
                                     getOnlinefriends(data);
                             }
                         } catch (IOException ex) {
-                            //serverClosed();
+                            serverClosed();
                         }
                     } while (true);
 
@@ -254,6 +261,21 @@ public class AvailableFriendBase extends AnchorPane {
             alert.showAndWait();
 
         });
+    }
+    
+       private void serverClosed() {
+        System.out.println("Server Colsed");
+
+        Platform.runLater(() -> {
+            ButtonType yes = new ButtonType("Yes");
+            Alert alert = new Alert(Alert.AlertType.NONE);
+            alert.setTitle("Server Issue");
+            alert.getDialogPane().getButtonTypes().add(yes);
+            alert.setHeaderText("There is issue in connection, The Available friends page will be closed");
+            alert.showAndWait();
+            nav.navigatToScene(new mainBase());
+        });
+        thread.stop();
     }
 
 }

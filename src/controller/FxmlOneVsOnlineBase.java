@@ -77,7 +77,6 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
 
     public FxmlOneVsOnlineBase() {
 
-
         if (AvailableFriendBase.XorO == true) {
             x = 1;
         } else {
