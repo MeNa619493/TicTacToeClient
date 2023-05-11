@@ -42,9 +42,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     private Boolean isHard;
     Integer compScore = 0;
     Integer userScore = 0;
-
-    int x = 1;
-
+    int x;
     String currentPlayer = "X";
     ArrayList<Button> btns;
     Button[][] board = new Button[3][3];
@@ -78,6 +76,13 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     public final Button btnEndGame;
 
     public FxmlOneVsOnlineBase() {
+
+
+        if (AvailableFriendBase.XorO == true) {
+            x = 1;
+        } else {
+            x = 2;
+        }
 
         text = new Text();
         playerScore = new Text();
@@ -309,21 +314,23 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
 
     public void sendButtonPressed(Button buttonPressed) {
 
-        ps.println("Index###" + findButtonPlaceFromBoard(buttonPressed));
+        ps.println("play###" + AvailableFriendBase.vsPlayer + "###" + findButtonPlaceFromBoard(buttonPressed));
         disableButton();
     }
 
     public void recieveButtonPressed() {
         try {
+
             String replyMsg = dis.readLine();
-            System.out.println(replyMsg);
-            StringTokenizer token = new StringTokenizer(replyMsg, "###");
-            String msg = token.nextToken();
-            int i = Integer.parseInt(msg);
-            draw(btns.get(i - 1));
-            btns.get(i - 1).setDisable(true);
-            btns.remove(get(i - 1));
-            enableButtons();
+            if (replyMsg == "game") {
+                String msg = dis.readLine();
+                int i = Integer.parseInt(msg);
+                writeOnFile(btns.get(i - 1));
+                draw(btns.get(i - 1));
+                btns.get(i - 1).setDisable(true);
+                btns.remove(get(i - 1));
+                enableButtons();
+            }
         } catch (IOException ex) {
             Logger.getLogger(FxmlOneVsOnlineBase.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -344,6 +351,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
             btn.setGraphic(viewO);
             btn.setTextFill(Color.TRANSPARENT);
             btn.setText("O");
+
         } else {
             btn.setGraphic(viewX);
             btn.setTextFill(Color.TRANSPARENT);
@@ -500,6 +508,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                             checkWinner();
                             sendButtonPressed(buttonPressed);
                             recieveButtonPressed();
+                            writeOnFile(buttonPressed);
 
                         } else {
                             buttonPressed.setText(currentPlayer);
@@ -509,27 +518,25 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                             available.remove(buttonPressed);
                             sendButtonPressed(buttonPressed);
                             recieveButtonPressed();
+                            writeOnFile(buttonPressed);
                         }
                     }
                 }
             }
         }
     }
-      private void writeOnFile(Button buttonPressed){
+
+    private void writeOnFile(Button buttonPressed) {
         new Thread(() -> {
-            StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed)+".");
+            StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed) + ".");
         }).start();
     }
-    
-    
-    
-    
-enum GameState {
-    NONE,
-    WIN,
-    LOSE,
-    TIE;
-}
 
+    enum GameState {
+        NONE,
+        WIN,
+        LOSE,
+        TIE;
+    }
 
 }
