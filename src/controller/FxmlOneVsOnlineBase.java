@@ -79,7 +79,6 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
 
     public FxmlOneVsOnlineBase() {
 
-        ArrayList<Button> btns;
         text = new Text();
         playerScore = new Text();
         text0 = new Text();
