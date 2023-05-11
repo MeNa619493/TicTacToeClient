@@ -22,7 +22,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import utilities.SocketClient;
 import javafx.stage.Stage;
 //import org.json.JSONException;
 //import org.json.JSONObject;
@@ -149,14 +148,8 @@ public class signUpBase extends AnchorPane {
                         }
 
                     } catch (IOException ex) {
-                        try {
-                            serverClosed();
-                            socketClient.getPrintStream().close();
-                            socketClient.getDataInputStream().close();
-                            controller.SocketClient.getInstant().CloseSocket();
-                        } catch (IOException ex1) {
-                            Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex1);
-                        }
+                        serverClosed();
+                        socketClient.closeSocket();
                         Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }).start();
