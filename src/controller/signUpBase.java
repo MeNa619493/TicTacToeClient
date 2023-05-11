@@ -16,6 +16,7 @@ import javafx.event.EventType;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -96,38 +97,38 @@ public class signUpBase extends AnchorPane {
                 String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(tfUpEmail.getText());
-                String name = tfUpUserName.getText();
-                String email = tfUpEmail.getText();
-                String password = tfUpPassword.getText();
-                String passwordConfirm = tfUpConPassword.getText();
+                String name = tfUpUserName.getText().trim();
+                String email = tfUpEmail.getText().trim();
+                String password = tfUpPassword.getText().trim();
+                String passwordConfirm = tfUpConPassword.getText().trim();
                 if (name.isEmpty() || email.isEmpty()
                         || password.isEmpty() || passwordConfirm.isEmpty()) {
 
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("ERROR");
                     alert.setHeaderText("Empty Field");
-                    alert.setContentText("please Entry your Username password and Email ");
+                    alert.setContentText("please Enter your Username password and Email.");
                     alert.showAndWait();
 
                 } else if (!matcher.matches()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("ERROR");
 
-                    alert.setContentText("please Entry vaild Email ");
+                    alert.setContentText("please Enter vaild Email.");
                     alert.showAndWait();
 
                 } else if (password.length() < 5) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("ERROR");
                     alert.setHeaderText("pasword Error");
-                    alert.setContentText("Pasword must not less than 5");
+                    alert.setContentText("Pasword must not less than 5.");
                     alert.showAndWait();
 
                 } else if (!password.equals(passwordConfirm)) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("ERROR");
                     alert.setHeaderText("pasword Error");
-                    alert.setContentText("The passwords does't matches ");
+                    alert.setContentText("The passwords does't matches.");
                     alert.showAndWait();
                 }
 
@@ -142,17 +143,21 @@ public class signUpBase extends AnchorPane {
                         if (replyMsg.equals("already signed-up")) {
                             //show alert to user
                         } else if (replyMsg.equals("Registered Successfully")) {
-                            sign = true;
-
+                            Platform.runLater(() -> {
+                                nav.navigatToScene(new signInBase());
+                            });
                         }
 
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    if (sign == true) {
-                        Platform.runLater(() -> {
-                            nav.navigatToScene(new signInBase());
-                        });
+                    } catch (IOException ex) {
+                        try {
+                            serverClosed();
+                            socketClient.getPrintStream().close();
+                            socketClient.getDataInputStream().close();
+                            controller.SocketClient.getInstant().CloseSocket();
+                        } catch (IOException ex1) {
+                            Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
+                        Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }).start();
 
@@ -235,5 +240,19 @@ public class signUpBase extends AnchorPane {
             }
         });
 
+    }
+
+    private void serverClosed() {
+        System.out.println("Server Colsed");
+
+        Platform.runLater(() -> {
+            ButtonType yes = new ButtonType("Yes");
+            Alert alert = new Alert(Alert.AlertType.NONE);
+            alert.setTitle("Server Issue");
+            alert.getDialogPane().getButtonTypes().add(yes);
+            alert.setHeaderText("There is issue in connection, The Available friends page will be closed");
+            alert.showAndWait();
+            nav.navigatToScene(new mainBase());
+        });
     }
 }
