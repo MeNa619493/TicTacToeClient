@@ -50,15 +50,17 @@ public class AvailableFriendBase extends AnchorPane {
     protected final ScrollPane scrollPane;
     protected final ListView friendsListView;
     protected final Button btnLogOut;
+    public static String vsPlayer;
+    public static boolean XorO;
 
     public AvailableFriendBase() {
 
         label = new Label();
         scrollPane = new ScrollPane();
         friendsListView = new ListView();
-        btnLogOut=new Button();
-        ps=socketClient.getPrintStream();
-        
+        btnLogOut = new Button();
+        ps = socketClient.getPrintStream();
+
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -85,7 +87,7 @@ public class AvailableFriendBase extends AnchorPane {
         friendsListView.setPrefWidth(498.0);
         friendsListView.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;");
         scrollPane.setContent(friendsListView);
-        
+
         btnLogOut.setLayoutX(475.0);
         btnLogOut.setLayoutY(26.0);
         btnLogOut.setMnemonicParsing(false);
@@ -95,7 +97,6 @@ public class AvailableFriendBase extends AnchorPane {
         getChildren().add(label);
         getChildren().add(scrollPane);
         getChildren().add(btnLogOut);
-        
 
         setStyle("-fx-background-image: url('file:./src/Photo/bg3.jpg');"
                 + "-fx-background-size: cover;"
@@ -103,9 +104,9 @@ public class AvailableFriendBase extends AnchorPane {
 
         friendsListView.setStyle("-fx-background-color: #232832;");
         scrollPane.setStyle("-fx-color: #232832;");
-        
+
         btnLogOut.setId("myButton");
-        
+
         btnLogOut.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -196,7 +197,7 @@ public class AvailableFriendBase extends AnchorPane {
 
     public void recievedRequest() throws IOException {
         String opponot = socketClient.getDataInputStream().readLine();
-
+        vsPlayer = opponot;
         System.out.println(opponot);
         Platform.runLater(() -> {
             // Code that updates the UI...
@@ -226,7 +227,7 @@ public class AvailableFriendBase extends AnchorPane {
             // Show the dialog and wait for a response
             dialog.showAndWait().ifPresent(result -> {
                 if (result == ButtonType.YES) {
-
+                    XorO=true;
                     socketClient.getPrintStream().println("accept###" + signInBase.username + "###" + opponot);
                     Platform.runLater(() -> {
                         //alert.close();
@@ -243,18 +244,17 @@ public class AvailableFriendBase extends AnchorPane {
 
     }
 
-
     public void refuseAlert() {
-         Platform.runLater(() -> {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Refuse Invitation");
-        alert.setContentText("Request Refuesed");
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Refuse Invitation");
+            alert.setContentText("Request Refuesed");
 
-        alert.setHeaderText(null);
+            alert.setHeaderText(null);
 
-        alert.showAndWait();
+            alert.showAndWait();
 
-    } );}
-
+        });
+    }
 
 }
