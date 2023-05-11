@@ -1,13 +1,23 @@
 package controller;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import utilities.Navigation;
+import utilities.SocketHelper;
 
 public class PushIpXmlClass extends AnchorPane {
 
@@ -64,13 +74,41 @@ public class PushIpXmlClass extends AnchorPane {
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
         btnSendIp.setId("myButton");
+
         btnHome.setId("myButton");
+
         btnSendIp.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                nav.navigatToScene(new SignBase());
+                //
+                ip = tfEnterIp.getText().trim();
+                if (ip.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText("Empty Field");
+                    alert.setContentText("please Enter IP Number.");
+                    alert.showAndWait();
+                } else if (validate()) {
+                    
+                    try {
+                        if (!InetAddress.getByName(ip).isReachable(5)) {
+                            showUnvalidIpAlert();
+                        } else {
+                            System.out.println("Valid ip");
+                            nav.navigatToScene(new SignBase());
+                        }
+                    } catch (UnknownHostException e) {
+                        System.err.println("Fail when getting Server Address.");
+                    } catch (IOException ex) {
+                        Logger.getLogger(PushIpXmlClass.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                } else {
+                    showUnvalidIpAlert();
+                }
             }
         });
+
         
         btnHome.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -80,5 +118,24 @@ public class PushIpXmlClass extends AnchorPane {
         });
         
         ip = tfEnterIp.getText();
+
+    }
+
+    private boolean validate() {
+        String IPADDRESS_PATTERN
+                = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
+                + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
+                + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
+                + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+        Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
+        Matcher matcher = pattern.matcher(ip);
+        return matcher.matches();
+    }
+
+    private void showUnvalidIpAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERROR");
+        alert.setContentText("please Enter vaild IP Number.");
+        alert.showAndWait();
     }
 }
