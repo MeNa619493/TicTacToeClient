@@ -322,6 +322,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
             StringTokenizer token = new StringTokenizer(replyMsg, "###");
             String msg = token.nextToken();
             int i = Integer.parseInt(msg);
+            writeOnFile(btns.get(i-1));
             draw(btns.get(i - 1));
             btns.get(i - 1).setDisable(true);
             btns.remove(get(i - 1));
@@ -341,11 +342,12 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         ImageView viewO;
         viewO = new ImageView(imgO);
         viewO.setPreserveRatio(true);
-
+        
         if (x % 2 != 0) {
             btn.setGraphic(viewO);
             btn.setTextFill(Color.TRANSPARENT);
             btn.setText("O");
+            
         } else {
             btn.setGraphic(viewX);
             btn.setTextFill(Color.TRANSPARENT);
@@ -502,6 +504,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                             checkWinner();
                             sendButtonPressed(buttonPressed);
                             recieveButtonPressed();
+                            writeOnFile(buttonPressed);
 
                         } else {
                             buttonPressed.setText(currentPlayer);
@@ -511,6 +514,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                             available.remove(buttonPressed);
                             sendButtonPressed(buttonPressed);
                             recieveButtonPressed();
+                            writeOnFile(buttonPressed);
                         }
                     }
                 }
