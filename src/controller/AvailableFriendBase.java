@@ -162,7 +162,6 @@ public class AvailableFriendBase extends AnchorPane {
                                 case "gameStarted":
                                     System.out.println("game accepted");
                                     Platform.runLater(() -> {
-                                        alert.close();
                                         System.out.println("navigate");
                                         nav.navigatToScene(new FxmlOneVsOnlineBase());
                                     });
