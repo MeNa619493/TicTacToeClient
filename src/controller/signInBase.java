@@ -154,14 +154,8 @@ public class signInBase extends AnchorPane {
                                 });
                             }
                         } catch (IOException ex) {
-                            try {
-                                serverClosed();
-                                socketClient.getPrintStream().close();
-                                socketClient.getDataInputStream().close();
-                                SocketClient.getInstant().CloseSocket();
-                            } catch (IOException ex1) {
-                                Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex1);
-                            }
+                            serverClosed();
+                            socketClient.closeSocket();
                             Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }).start();

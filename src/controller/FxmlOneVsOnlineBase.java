@@ -25,7 +25,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import static javax.swing.UIManager.get;
 import utilities.Navigation;
-import utilities.SocketClient;
 import utilities.SocketHelper;
 import utilities.StreamHelper;
 
@@ -77,6 +76,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     public final Button btnEndGame;
 
     public FxmlOneVsOnlineBase() {
+
 
         if (AvailableFriendBase.XorO == true) {
             x = 1;
