@@ -44,7 +44,6 @@ public class AvailableFriendBase extends AnchorPane {
     private StringTokenizer token;
     private ObservableList<String> friendsList;
     private Thread thread;
-    public Alert alert;
     private Navigation nav = Navigation.getInstance();
     public static int opponentScore;
     public static String opponentUsername;
@@ -99,7 +98,7 @@ public class AvailableFriendBase extends AnchorPane {
             @Override
             public void perform() {
                 ButtonType Yes = new ButtonType("Ok");
-                alert = new Alert(Alert.AlertType.NONE);
+                Alert alert = new Alert(Alert.AlertType.NONE);
                 alert.setTitle("Information Dialog");
                 alert.setHeaderText("Please Wait The Opponent to respond..");
                 alert.getDialogPane().getButtonTypes().addAll(Yes);
@@ -143,13 +142,14 @@ public class AvailableFriendBase extends AnchorPane {
                                         System.out.println("navigate");
                                         nav.navigatToScene(new FxmlOneVsOnlineBase());
                                     });
+                                    thread.stop();
                                     break;
                                 default:
                                     //System.out.println("default" + data);
                                     getOnlinefriends(data);
                             }
                         } catch (IOException ex) {
-                            //serverClosed();
+                            serverClosed();
                         }
                     } while (true);
 
@@ -225,18 +225,32 @@ public class AvailableFriendBase extends AnchorPane {
 
     }
 
-
     public void refuseAlert() {
-         Platform.runLater(() -> {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Refuse Invitation");
-        alert.setContentText("Request Refuesed");
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Refuse Invitation");
+            alert.setContentText("Request Refuesed");
 
-        alert.setHeaderText(null);
+            alert.setHeaderText(null);
 
-        alert.showAndWait();
+            alert.showAndWait();
 
-    } );}
+        });
+    }
 
+    private void serverClosed() {
+        System.out.println("Server Colsed");
+
+        Platform.runLater(() -> {
+            ButtonType yes = new ButtonType("Yes");
+            Alert alert = new Alert(Alert.AlertType.NONE);
+            alert.setTitle("Server Issue");
+            alert.getDialogPane().getButtonTypes().add(yes);
+            alert.setHeaderText("There is issue in connection, The Available friends page will be closed");
+            alert.showAndWait();
+            nav.navigatToScene(new mainBase());
+        });
+        thread.stop();
+    }
 
 }

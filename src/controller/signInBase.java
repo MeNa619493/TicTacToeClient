@@ -10,7 +10,9 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
@@ -102,7 +104,7 @@ public class signInBase extends AnchorPane {
 
         btnSignIn.setId("myButton");
         btnHome.setId("myButton");
-		
+
         btnHome.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -113,42 +115,73 @@ public class signInBase extends AnchorPane {
         btnSignIn.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
-                socketClient.getPrintStream().println("SignIn###" + tfInEmail.getText() + "###" + tfInPassword.getText());
-                new Thread(() -> {
-
-                    try {
-                        System.out.println("waiting for server response");
-                        String replyMsg = socketClient.getDataInputStream().readLine();
-                        System.out.println(replyMsg);
-                        StringTokenizer token = new StringTokenizer(replyMsg, "###");
-                        String msg = token.nextToken();
-                        if (replyMsg.equals("Login Successful")) {
-                            username = socketClient.getDataInputStream().readLine();
-                            System.out.println("my username = " + username);
-                            Platform.runLater(() -> {
-                                nav.navigatToScene(new AvailableFriendBase());
-                            });
-
-                        } else if (replyMsg.equals("Invalid Email or Password")) {
-                            Platform.runLater(() -> {
-                                //show alert
-                            });
-                        } else {
+                String email = tfInEmail.getText().trim();
+                String password = tfInPassword.getText().trim();
+                if (email.isEmpty() || password.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText("Empty Field");
+                    alert.setContentText("please Enter your Username password and Email.");
+                    alert.showAndWait();
+                } else {
+                    socketClient.getPrintStream().println("SignIn###" + email + "###" + password);
+                    new Thread(() -> {
+                        try {
+                            System.out.println("waiting for server response");
+                            String replyMsg = socketClient.getDataInputStream().readLine();
+                            System.out.println(replyMsg);
+                            StringTokenizer token = new StringTokenizer(replyMsg, "###");
+                            String msg = token.nextToken();
+                            if (replyMsg.equals("Login Successful")) {
+                                username = socketClient.getDataInputStream().readLine();
+                                System.out.println("my username = " + username);
+                                Platform.runLater(() -> {
+                                    nav.navigatToScene(new AvailableFriendBase());
+                                });
+                            } else if (replyMsg.equals("Invalid Email or Password")) {
+                                Platform.runLater(() -> {
+                                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                                    alert.setTitle("ERROR");
+                                    alert.setContentText("Invalid Email or Password.");
+                                    alert.showAndWait();
+                                });
+                            } else if (replyMsg.equals("User Already Signed in")) {
+                                Platform.runLater(() -> {
+                                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                                    alert.setTitle("ERROR");
+                                    alert.setContentText("Please try another account.");
+                                    alert.showAndWait();
+                                });
+                            }
+                        } catch (IOException ex) {
                             try {
+                                serverClosed();
                                 socketClient.getPrintStream().close();
                                 socketClient.getDataInputStream().close();
                                 SocketClient.getInstant().CloseSocket();
-                            } catch (IOException ex) {
-                                Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (IOException ex1) {
+                                Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex1);
                             }
+                            Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    } catch (IOException ex) {
-                        Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }).start();
+                    }).start();
+                }
             }
         });
 
+    }
+
+    private void serverClosed() {
+        System.out.println("Server Colsed");
+
+        Platform.runLater(() -> {
+            ButtonType yes = new ButtonType("Yes");
+            Alert alert = new Alert(Alert.AlertType.NONE);
+            alert.setTitle("Server Issue");
+            alert.getDialogPane().getButtonTypes().add(yes);
+            alert.setHeaderText("There is issue in connection, The Available friends page will be closed");
+            alert.showAndWait();
+            nav.navigatToScene(new mainBase());
+        });
     }
 }

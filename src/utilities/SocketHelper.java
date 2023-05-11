@@ -9,7 +9,9 @@ import controller.PushIpXmlClass;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.ConnectException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  *
@@ -20,26 +22,29 @@ public class SocketHelper {
     private Socket serverSocket;
     private DataInputStream dis;
     private PrintStream ps;
-    static public SocketHelper instance;
+    private String ipAddress = PushIpXmlClass.ip;
+    public static SocketHelper instance;
 
     private SocketHelper() {
         intializeSocket();
     }
 
     public static synchronized SocketHelper getInstance() {
-        if (instance == null){
+        if (instance == null) {
             instance = new SocketHelper();
         }
-       
+
         return instance;
     }
 
     public void intializeSocket() {
         try {
-            serverSocket = new Socket(PushIpXmlClass.ip, 5005);
+            serverSocket = new Socket(ipAddress, 5005);
             dis = new DataInputStream(serverSocket.getInputStream());
             ps = new PrintStream(serverSocket.getOutputStream());
             System.out.println("new Socket");
+        } catch (ConnectException e) {
+            e.printStackTrace();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -47,11 +52,13 @@ public class SocketHelper {
 
     public void closeSocket() {
         try {
-            dis.close();
-            ps.close();
-            serverSocket.close();
-            instance = null;
-            System.out.println("Socket is closed");
+            if (serverSocket != null) {
+                dis.close();
+                ps.close();
+                serverSocket.close();
+                instance = null;
+                System.out.println("Socket is closed");
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
