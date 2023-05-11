@@ -28,7 +28,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
-import utilities.SocketClient;
 import utilities.SocketHelper;
 import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
