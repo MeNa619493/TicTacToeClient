@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -30,7 +31,9 @@ import javafx.scene.text.Font;
 import utilities.SocketClient;
 import utilities.SocketHelper;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.ListCell;
+import javafx.util.Duration;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import utilities.Navigation;
@@ -42,7 +45,6 @@ public class AvailableFriendBase extends AnchorPane {
     private PrintStream ps;
     private ObservableList<String> friendsList;
     private Thread thread;
-    public Alert alert;
     private Navigation nav = Navigation.getInstance();
     public static int opponentScore;
     public static String opponentUsername;
@@ -117,12 +119,17 @@ public class AvailableFriendBase extends AnchorPane {
         friendsListView.setCellFactory(new OnlineFriendCellFactory(new CustomCellButtonHandler() {
             @Override
             public void perform() {
-                // Create the dialog with the message and buttons
-                alert = new Alert(Alert.AlertType.NONE);
-                alert.setTitle("Success");
-                alert.setHeaderText("Empty Field");
-                alert.setContentText("Your request had been sent");
-                alert.showAndWait();
+                ButtonType Yes = new ButtonType("Ok");
+                Alert alert = new Alert(Alert.AlertType.NONE);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText("Please Wait The Opponent to respond..");
+                alert.getDialogPane().getButtonTypes().addAll(Yes);
+
+                PauseTransition delay = new PauseTransition(Duration.seconds(10));
+                delay.setOnFinished(e -> alert.hide());
+
+                alert.show();
+                delay.play();
             }
         }));
 
@@ -146,7 +153,6 @@ public class AvailableFriendBase extends AnchorPane {
                             switch (data) {
                                 case "requestPlaying":
                                     recievedRequest();
-                                    System.out.println("sssssssssssssssssssadsasdaasd");
                                     break;
                                 case "refuse":
                                     refuseAlert();
@@ -155,18 +161,17 @@ public class AvailableFriendBase extends AnchorPane {
                                 case "gameStarted":
                                     System.out.println("game accepted");
                                     Platform.runLater(() -> {
-                                        alert.close();
                                         System.out.println("navigate");
                                         nav.navigatToScene(new FxmlOneVsOnlineBase());
                                     });
-                                    //navigate
+                                    thread.stop();
                                     break;
                                 default:
                                     //System.out.println("default" + data);
                                     getOnlinefriends(data);
                             }
                         } catch (IOException ex) {
-                            //serverClosed();
+                            serverClosed();
                         }
                     } while (true);
 
@@ -226,7 +231,6 @@ public class AvailableFriendBase extends AnchorPane {
             // Show the dialog and wait for a response
             dialog.showAndWait().ifPresent(result -> {
                 if (result == ButtonType.YES) {
-
                     socketClient.getPrintStream().println("accept###" + signInBase.username + "###" + opponot);
                     Platform.runLater(() -> {
                         //alert.close();
@@ -243,18 +247,32 @@ public class AvailableFriendBase extends AnchorPane {
 
     }
 
-
     public void refuseAlert() {
-         Platform.runLater(() -> {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Refuse Invitation");
-        alert.setContentText("Request Refuesed");
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Refuse Invitation");
+            alert.setContentText("Request Refuesed");
 
-        alert.setHeaderText(null);
+            alert.setHeaderText(null);
 
-        alert.showAndWait();
+            alert.showAndWait();
 
-    } );}
+        });
+    }
 
+    private void serverClosed() {
+        System.out.println("Server Colsed");
+
+        Platform.runLater(() -> {
+            ButtonType yes = new ButtonType("Yes");
+            Alert alert = new Alert(Alert.AlertType.NONE);
+            alert.setTitle("Server Issue");
+            alert.getDialogPane().getButtonTypes().add(yes);
+            alert.setHeaderText("There is issue in connection, The Available friends page will be closed");
+            alert.showAndWait();
+            nav.navigatToScene(new mainBase());
+        });
+        thread.stop();
+    }
 
 }
