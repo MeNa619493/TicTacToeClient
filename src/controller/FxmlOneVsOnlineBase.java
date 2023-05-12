@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -43,6 +44,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     ArrayList<Button> available = new ArrayList();
     Image imgX;
     Image imgO;
+    Navigation nav;
 
     protected final Text text;
     protected final Text playerScore;
@@ -157,10 +159,9 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         playerScore.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
         playerScore.setLayoutX(75.0);
         playerScore.setLayoutY(74.0);
-        playerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
-        playerScore.setStrokeWidth(0.0);
-        playerScore.setText("1");
-        playerScore.setFont(new Font(24.0));
+//        playerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+//        playerScore.setStrokeWidth(0.0);
+//        playerScore.setFont(new Font(24.0));
 
         AnchorPane.setRightAnchor(text0, 24.0);
         AnchorPane.setTopAnchor(text0, 16.0);
@@ -177,10 +178,17 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         computerScore.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
         computerScore.setLayoutX(483.0);
         computerScore.setLayoutY(75.0);
-        computerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
-        computerScore.setStrokeWidth(0.0);
-        computerScore.setText("1");
-        computerScore.setFont(new Font(24.0));
+//        computerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+//        computerScore.setStrokeWidth(0.0);
+//        computerScore.setFont(new Font(24.0));
+
+        if (x % 2 != 0) {
+            playerScore.setText("X");
+            computerScore.setText("O");
+        } else {
+            playerScore.setText("O");
+            computerScore.setText("X");
+        }
 
         stackPane.setLayoutX(133.0);
         stackPane.setLayoutY(64.0);
@@ -323,6 +331,13 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         getChildren().add(stackPane);
         getChildren().add(btnEndGame);
 
+        btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                nav.navigatToScene(new AvailableFriendBase());
+            }
+        });
+
         text.setText(signInBase.username);
         if (AvailableFriendBase.vsPlayer != null) {
             text0.setText(AvailableFriendBase.vsPlayer);
@@ -341,8 +356,6 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         setTextFields();
         ps = socket.getPrintStream();
         dis = socket.getDataInputStream();
-
-        recieveButtonPressed();
         if (x % 2 == 0) {
             disableButton();
         }
@@ -567,7 +580,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
 
     private void writeOnFile(Button buttonPressed) {
         new Thread(() -> {
-            StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed) + ".");
+            //StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed) + ".");
         }).start();
     }
 
