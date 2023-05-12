@@ -26,7 +26,7 @@ import utilities.SocketHelper;
  */
 public class OnlineFriendCellController extends ListCell<String> {
     private SocketHelper socketClient = SocketHelper.getInstance();
-
+public static String opponant;
     @FXML
     private Label lblFriendName;
 
@@ -39,7 +39,7 @@ public class OnlineFriendCellController extends ListCell<String> {
         btnAsk.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String opponant = getItem();
+                 opponant = getItem();
                 socketClient.getPrintStream().println("request###"+opponant+"###"+signInBase.username);
                 action.perform();
             }

@@ -237,7 +237,7 @@ public class AvailableFriendBase extends AnchorPane {
                     Platform.runLater(() -> {
                         //alert.close();
                         System.out.println("Exiting...");
-                        nav.navigatToScene(new FxmlOneVsOnlineBase());
+                        nav.navigatToScene(new FxmlOneVsOnlineBase( ));
                     });
                     thread.stop();
                 } else if (result == ButtonType.NO) {
