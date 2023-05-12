@@ -1,15 +1,13 @@
 package controller;
 
 import java.io.DataInputStream;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -23,6 +21,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import static javax.swing.UIManager.get;
 import utilities.Navigation;
 import utilities.SocketHelper;
@@ -30,13 +29,9 @@ import utilities.StreamHelper;
 
 public class FxmlOneVsOnlineBase extends AnchorPane {
 
-//    Socket server;
-//    DataInputStream dis;
-//    PrintStream ps;
     SocketHelper socket = SocketHelper.getInstance();
     PrintStream ps;
     DataInputStream dis;
-
     Thread thread;
     private Boolean isUserTurn = true;
     private boolean isWinner = false;
@@ -48,9 +43,9 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     ArrayList<Button> btns;
     Button[][] board = new Button[3][3];
     ArrayList<Button> available = new ArrayList();
-
     Image imgX;
     Image imgO;
+    Navigation nav;
 
     protected final Text text;
     protected final Text playerScore;
@@ -88,7 +83,6 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
 
                         String data = socket.getDataInputStream().readLine().trim();
                         System.out.println(data);
-
                         switch (data) {
                             case "game":
                                 String buttonFromSever = socket.getDataInputStream().readLine();
@@ -96,16 +90,15 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                                     recieveButtonPressed(buttonFromSever);
                                 });
                                 break;
-
                             default:
-
                         }
                     } catch (Exception ex) {
-
+                        socket.closeSocket();
                     }
                     try {
                         Thread.sleep(300);
                     } catch (InterruptedException ex) {
+                        thread.stop();
                         Logger.getLogger(FxmlOneVsOnlineBase.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
@@ -156,21 +149,20 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         AnchorPane.setTopAnchor(text, 16.0);
         text.setFill(javafx.scene.paint.Color.valueOf("#0070fc"));
         text.setLayoutX(45.0);
-        text.setLayoutY(40.0);
+        text.setLayoutY(100.0);
         text.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text.setStrokeWidth(0.0);
         text.setText("Your Score");
         text.setFont(new Font(24.0));
+        text.setTextAlignment(TextAlignment.LEFT);
 
-        AnchorPane.setLeftAnchor(playerScore, 65.0);
-        AnchorPane.setTopAnchor(playerScore, 48.1015625);
         playerScore.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-        playerScore.setLayoutX(75.0);
+        playerScore.setLayoutX(45.0);
         playerScore.setLayoutY(74.0);
         playerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         playerScore.setStrokeWidth(0.0);
-        playerScore.setText("1");
         playerScore.setFont(new Font(24.0));
+        playerScore.setTextAlignment(TextAlignment.LEFT);
 
         AnchorPane.setRightAnchor(text0, 24.0);
         AnchorPane.setTopAnchor(text0, 16.0);
@@ -181,16 +173,23 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         text0.setStrokeWidth(0.0);
         text0.setText("Friend Score");
         text0.setFont(new Font(24.0));
+        text0.setTextAlignment(TextAlignment.RIGHT);
 
-        AnchorPane.setRightAnchor(computerScore, 80.0);
-        AnchorPane.setTopAnchor(computerScore, 48.1015625);
         computerScore.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-        computerScore.setLayoutX(483.0);
+        computerScore.setLayoutX(550.0);
         computerScore.setLayoutY(75.0);
         computerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         computerScore.setStrokeWidth(0.0);
-        computerScore.setText("1");
         computerScore.setFont(new Font(24.0));
+        computerScore.setTextAlignment(TextAlignment.RIGHT);
+
+        if (x % 2 != 0) {
+            playerScore.setText("X");
+            computerScore.setText("O");
+        } else {
+            playerScore.setText("O");
+            computerScore.setText("X");
+        }
 
         stackPane.setLayoutX(133.0);
         stackPane.setLayoutY(64.0);
@@ -332,6 +331,21 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         stackPane.getChildren().add(gridPane);
         getChildren().add(stackPane);
         getChildren().add(btnEndGame);
+
+        btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                nav.navigatToScene(new AvailableFriendBase());
+            }
+        });
+
+        text.setText(signInBase.username);
+        if (AvailableFriendBase.vsPlayer != null) {
+            text0.setText(AvailableFriendBase.vsPlayer);
+        } else {
+            text0.setText(OnlineFriendCellController.opponant);
+        }
+
         setStyle("-fx-background-image: url('file:./src/Photo/bgGp.jpg');"
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
@@ -341,10 +355,8 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         intalizeButtons();
         intalizeBorad();
         intalizeAvailablePlaces();
-        setTextFields();
         ps = socket.getPrintStream();
         dis = socket.getDataInputStream();
-
         if (x % 2 == 0) {
             disableButton();
         }
@@ -365,6 +377,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     }
 
     public void sendButtonPressed(Button buttonPressed) {
+
         if (AvailableFriendBase.vsPlayer != null) {
             ps.println("play###" + AvailableFriendBase.vsPlayer + "###" + findButtonPlaceFromBoard(buttonPressed));
         } else {
@@ -384,7 +397,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
             draw(btns.get(i - 1));
             enableButtons();
         }
-
+        enableButtons();
     }
 
     private void draw(Button btn) {
@@ -470,11 +483,6 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         }
     }
 
-    private void setTextFields() {
-        computerScore.setText(compScore.toString());
-        playerScore.setText(userScore.toString());
-    }
-
     private Boolean equals(Button a, Button b, Button c) {
         if (!a.getText().isEmpty()
                 && a.getText().equals(b.getText())
@@ -543,7 +551,6 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                 nav.navigatToWatchVideo("win");
                 break;
         }
-        setTextFields();
     }
 
     private class ButtonListener implements EventHandler {

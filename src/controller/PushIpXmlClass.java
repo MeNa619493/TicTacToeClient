@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +16,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import utilities.Navigation;
-import utilities.SocketHelper;
 
 public class PushIpXmlClass extends AnchorPane {
 
@@ -46,6 +44,7 @@ public class PushIpXmlClass extends AnchorPane {
         text.setText("Enter Server IP");
         text.setFont(new Font(36.0));
         text.setStyle("-fx-text-fill: White;");
+        text.setFill(javafx.scene.paint.Color.web("#0070fc"));
 
         tfEnterIp.setLayoutX(127.0);
         tfEnterIp.setLayoutY(176.0);
