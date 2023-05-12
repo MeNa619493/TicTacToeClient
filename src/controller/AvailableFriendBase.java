@@ -163,7 +163,7 @@ public class AvailableFriendBase extends AnchorPane {
                                     System.out.println("game accepted");
                                     Platform.runLater(() -> {
                                         System.out.println("navigate");
-                                        nav.navigatToScene(new FxmlOneVsOnlineBase());
+                                        nav.navigatToScene(new FxmlOneVsOnlineBase( ));
                                     });
                                     thread.stop();
                                     break;
@@ -237,8 +237,9 @@ public class AvailableFriendBase extends AnchorPane {
                     Platform.runLater(() -> {
                         //alert.close();
                         System.out.println("Exiting...");
-                        nav.navigatToScene(new FxmlOneVsOnlineBase());
+                        nav.navigatToScene(new FxmlOneVsOnlineBase( ));
                     });
+                    thread.stop();
                 } else if (result == ButtonType.NO) {
                     System.out.println("Not exiting.");
                     socketClient.getPrintStream().println("refuse###" + opponot);
