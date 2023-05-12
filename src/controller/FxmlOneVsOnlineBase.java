@@ -172,7 +172,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         text0.setFont(new Font(24.0));
         text0.setTextAlignment(TextAlignment.RIGHT);
 
-        computerScore.setLayoutX(525.0);
+        computerScore.setLayoutX(550.0);
         computerScore.setLayoutY(50.0);
         computerScore.setFitHeight(25);
         computerScore.setFitWidth(25);
