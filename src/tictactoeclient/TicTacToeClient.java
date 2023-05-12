@@ -44,6 +44,10 @@ public class TicTacToeClient extends Application {
         primaryStage.setScene(MainScene);
         primaryStage.setResizable(false);
         primaryStage.show();
+        
+        primaryStage.setOnCloseRequest((event) -> {
+            System.exit(1);
+        }); 
     }
 
     /**
