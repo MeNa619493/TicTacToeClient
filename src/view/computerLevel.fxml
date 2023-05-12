@@ -12,7 +12,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Button>
-      <Button fx:id="btnHigh" layoutX="164.0" layoutY="200.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="293.0" text="High">
+      <Button fx:id="btnHigh" layoutX="164.0" layoutY="253.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="293.0" text="High">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
@@ -27,5 +27,10 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Text>
+      <Button fx:id="btnMedium" layoutX="164.0" layoutY="186.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="293.0" text="medium">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
