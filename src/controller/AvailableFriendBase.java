@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -149,6 +150,7 @@ public class AvailableFriendBase extends AnchorPane {
             @Override
 
             public void run() {
+                mainwhile:
                 while (true) {
                     do {
                         try {
@@ -178,10 +180,16 @@ public class AvailableFriendBase extends AnchorPane {
                                     //System.out.println("default" + data);
                                     getOnlinefriends(data);
                             }
+                        } catch (SocketException e) {
+                            serverClosed();
+                            e.printStackTrace();
+                            break mainwhile;
                         } catch (IOException ex) {
                             if (!isLoggedOut) {
                                 serverClosed();
                             }
+                            ex.printStackTrace();
+                            break mainwhile;
                         }
                     } while (true);
 
@@ -200,7 +208,7 @@ public class AvailableFriendBase extends AnchorPane {
     private void getOnlinefriends(String data) {
         //System.out.println("data in read online list :" + data);
         token = new StringTokenizer(data, "###");
-        String username = token.nextToken();
+        String username = token.nextToken().trim();
         if (!signInBase.username.equals(username)) {
             if (!friendsList.contains(username)) {
                 //System.out.println("Add to list");
@@ -246,7 +254,7 @@ public class AvailableFriendBase extends AnchorPane {
                     Platform.runLater(() -> {
                         thread.stop();
                         System.out.println("Exiting...");
-                        nav.navigatToScene(new FxmlOneVsOnlineBase( ));
+                        nav.navigatToScene(new FxmlOneVsOnlineBase());
                     });
                     thread.stop();
                 } else if (result == ButtonType.NO) {
@@ -274,17 +282,15 @@ public class AvailableFriendBase extends AnchorPane {
 
     private void serverClosed() {
         System.out.println("Server Colsed");
-
+        socketClient.closeSocket();
         Platform.runLater(() -> {
             ButtonType yes = new ButtonType("Yes");
             Alert alert = new Alert(Alert.AlertType.NONE);
             alert.setTitle("Server Issue");
             alert.getDialogPane().getButtonTypes().add(yes);
-            alert.setHeaderText("There is issue in connection, The Available friends page will be closed");
+            alert.setHeaderText("There is issue in connection, The Game page will be closed");
             alert.showAndWait();
             nav.navigatToScene(new mainBase());
-        });
-        Platform.runLater(() -> {
             thread.stop();
         });
     }

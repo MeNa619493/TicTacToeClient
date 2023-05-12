@@ -1,7 +1,9 @@
 package controller;
 
 import java.io.DataInputStream;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -10,7 +12,10 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -45,7 +50,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     ArrayList<Button> available = new ArrayList();
     Image imgX;
     Image imgO;
-    Navigation nav;
+    private Navigation nav = Navigation.getInstance();
 
     protected final Text text;
     protected final ImageView playerScore;
@@ -72,47 +77,6 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     public final Button btnEndGame;
 
     public FxmlOneVsOnlineBase() {
-
-        thread = new Thread(new Runnable() {
-            @Override
-
-            public void run() {
-                while (true) {
-
-                    try {
-
-                        String data = socket.getDataInputStream().readLine().trim();
-                        System.out.println(data);
-                        switch (data) {
-                            case "game":
-                                String buttonFromSever = socket.getDataInputStream().readLine();
-                                Platform.runLater(() -> {
-                                    recieveButtonPressed(buttonFromSever);
-                                });
-                                break;
-                            default:
-                        }
-                    } catch (Exception ex) {
-                        socket.closeSocket();
-                    }
-                    try {
-                        Thread.sleep(300);
-                    } catch (InterruptedException ex) {
-                        thread.stop();
-                        Logger.getLogger(FxmlOneVsOnlineBase.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            }
-        });
-        thread.start();
-
-        if (AvailableFriendBase.XorO == true) {
-            x = 1;
-        } else {
-            x = 2;
-        }
-
         text = new Text();
         playerScore = new ImageView();
         text0 = new Text();
@@ -348,6 +312,38 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
         btnEndGame.setId("myButton");
+
+        btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ButtonType yes = new ButtonType("Yes");
+                ButtonType no = new ButtonType("NO", ButtonBar.ButtonData.CANCEL_CLOSE);
+                Alert a = new Alert(Alert.AlertType.NONE);
+                a.setTitle("Alert");
+                a.getDialogPane().getButtonTypes().addAll(yes, no);
+                a.setHeaderText("Are you sure you want to exit the game?");
+                a.showAndWait();
+
+                if (a.getResult() == yes) {
+                    System.out.println("Send to server to exit");
+                    if (AvailableFriendBase.vsPlayer != null) {
+                        socket.getPrintStream().println("withdraw###" + AvailableFriendBase.vsPlayer);
+                    } else {
+                        socket.getPrintStream().println("withdraw###" + OnlineFriendCellController.opponant);
+                    }
+                    socket.getPrintStream().println("available###" + signInBase.username);
+                    thread.stop();
+                    nav.navigatToScene(new AvailableFriendBase());
+                }
+            }
+        });
+
+        if (AvailableFriendBase.XorO == true) {
+            x = 1;
+        } else {
+            x = 2;
+        }
+
         createFile();
         btns = new ArrayList<>(Arrays.asList(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9));
         intalizeButtons();
@@ -358,6 +354,49 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         if (x % 2 == 0) {
             disableButton();
         }
+
+        thread = new Thread(new Runnable() {
+            @Override
+
+            public void run() {
+                while (true) {
+
+                    try {
+                        String data = socket.getDataInputStream().readLine().trim();
+                        System.out.println(data);
+                        switch (data) {
+                            case "game":
+                                String buttonFromSever = socket.getDataInputStream().readLine();
+                                Platform.runLater(() -> {
+                                    recieveButtonPressed(buttonFromSever);
+                                });
+                                break;
+                            case "withdraw":
+                                withdraw();
+                                break;
+                            default:
+                        }
+                    } catch (SocketException e){
+                        serverClosed();
+                        e.printStackTrace();
+                        break;
+                    } catch (IOException ex) {
+                        serverClosed();
+                        ex.printStackTrace();
+                        break;
+                    } 
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException ex) {
+                        thread.stop();
+                        Logger.getLogger(FxmlOneVsOnlineBase.class.getName()).log(Level.SEVERE, null, ex);
+                        break;
+                    }
+
+                }
+            }
+        });
+        thread.start();
     }
 
     private void createFile() {
@@ -596,6 +635,37 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         WIN,
         LOSE,
         TIE;
+    }
+
+    private void withdraw() {
+        System.out.println("withdraw");
+
+        socket.getPrintStream().println("available###" + signInBase.username);
+        Platform.runLater(() -> {
+            ButtonType yes = new ButtonType("Ok");
+            Alert a = new Alert(Alert.AlertType.NONE);
+            a.setTitle("Alert");
+            a.getDialogPane().getButtonTypes().addAll(yes);
+            a.setHeaderText("You opponent has withdrawed, you are the winner!!!");
+            a.showAndWait();
+            thread.stop();
+            nav.navigatToScene(new AvailableFriendBase());
+        });
+    }
+
+    private void serverClosed() {
+        System.out.println("Server Colsed");
+        socket.closeSocket();
+        Platform.runLater(() -> {
+            ButtonType yes = new ButtonType("Yes");
+            Alert alert = new Alert(Alert.AlertType.NONE);
+            alert.setTitle("Server Issue");
+            alert.getDialogPane().getButtonTypes().add(yes);
+            alert.setHeaderText("There is issue in connection, The Game page will be closed");
+            alert.showAndWait();
+            nav.navigatToScene(new mainBase());
+            thread.stop();
+        });
     }
 
 }
