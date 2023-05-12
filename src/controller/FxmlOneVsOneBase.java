@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import utilities.Navigation;
+import controller.chooseXOBase;
 
 public class FxmlOneVsOneBase extends AnchorPane {
 
@@ -42,8 +43,9 @@ public class FxmlOneVsOneBase extends AnchorPane {
     protected final Button btn00;
     protected final Button btnEndGame;
     protected final Button btnReset;
-    int x =1;
-    int y = 1;
+    
+        int x;
+    
     int flag = 0;
     Image imgX;
     Image imgO;
@@ -52,7 +54,11 @@ public class FxmlOneVsOneBase extends AnchorPane {
     Navigation nav = Navigation.getInstance();
 
     public FxmlOneVsOneBase() {
-        
+        if(chooseXOBase.chooseXorO==true){
+            x=1;
+        }else{
+            x=2;
+        }
         playerScoorNum = 0;
         computerScoreNum = 0;
         text = new Text();
@@ -374,7 +380,7 @@ public class FxmlOneVsOneBase extends AnchorPane {
         btnReset.setDisable(true);
         playerScore.setText("" + playerScoorNum);
         computerScore.setText("" + computerScoreNum);
-        
+
         btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -453,7 +459,7 @@ public class FxmlOneVsOneBase extends AnchorPane {
     }
 
     private void showResultVideo() {
-        
+
         --x;
         if (x % 2 != 0) {
             nav.navigatToWatchVideo("win");

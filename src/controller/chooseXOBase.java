@@ -16,6 +16,7 @@ public class chooseXOBase extends AnchorPane {
     boolean isGoingToOneVsOne;
     boolean isHard;
     Navigation nav = Navigation.getInstance();
+    public static boolean chooseXorO;
     
     protected final Text tvChoose;
     protected final Button btnChooseX;
@@ -107,6 +108,7 @@ public class chooseXOBase extends AnchorPane {
             @Override
             public void handle(ActionEvent event) {
                 handleNavigation();
+                chooseXorO=true;
             }
         });
         
