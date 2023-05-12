@@ -2,6 +2,9 @@ package controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -16,18 +19,20 @@ public class GameHistoryBase extends AnchorPane {
 
     ArrayList<String> gameNames = new ArrayList<>();
     File[] files;
-    
+
     Navigation nav = Navigation.getInstance();
-    
+
     protected final Label label;
     protected final ScrollPane scrollPane;
     protected final ListView gamesListView;
+    protected final Button btnBack;
 
     public GameHistoryBase() {
 
         label = new Label();
         scrollPane = new ScrollPane();
         gamesListView = new ListView();
+        btnBack = new Button();
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -35,6 +40,12 @@ public class GameHistoryBase extends AnchorPane {
         setMinWidth(USE_PREF_SIZE);
         setPrefHeight(400.0);
         setPrefWidth(600.0);
+
+        btnBack.setLayoutX(500.0);
+        btnBack.setLayoutY(28.0);
+        btnBack.setMnemonicParsing(false);
+        btnBack.setText("Main");
+        btnBack.setFont(new Font("System Bold", 12.0));
 
         AnchorPane.setLeftAnchor(label, 16.0);
         AnchorPane.setTopAnchor(label, 16.0);
@@ -58,6 +69,7 @@ public class GameHistoryBase extends AnchorPane {
 
         getChildren().add(label);
         getChildren().add(scrollPane);
+        getChildren().add(btnBack);
 
         setStyle("-fx-background-image: url('file:./src/Photo/bg3.jpg');"
                 + "-fx-background-size: cover;"
@@ -65,7 +77,14 @@ public class GameHistoryBase extends AnchorPane {
 
         gamesListView.setStyle("-fx-background-color: #232832;");
         scrollPane.setStyle("-fx-color: #232832;");
-
+        btnBack.setId("myButton");
+        btnBack.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                nav.navigatToScene(new mainBase());
+            }
+        });
+        
         gamesListView.setCellFactory(new GameCellFactory());
         populateDataIntoListView();
     }
