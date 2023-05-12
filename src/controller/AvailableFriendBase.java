@@ -42,7 +42,8 @@ public class AvailableFriendBase extends AnchorPane {
     private PrintStream ps;
     private ObservableList<String> friendsList;
     private Thread thread;
-    public Alert alert;
+    private boolean isLoggedOut = false;
+
     private Navigation nav = Navigation.getInstance();
     public static int opponentScore;
     public static String opponentUsername;
@@ -110,8 +111,14 @@ public class AvailableFriendBase extends AnchorPane {
         btnLogOut.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                nav.navigatToScene(new mainBase());
+                Platform.runLater(() -> {
+                    System.out.println("navigate");
+                    nav.navigatToScene(new mainBase());
+                    thread.stop();
+                });
                 ps.println("logout###" + signInBase.username);
+                isLoggedOut = true;
+                socketClient.closeSocket();
             }
         });
 
@@ -153,7 +160,6 @@ public class AvailableFriendBase extends AnchorPane {
                             switch (data) {
                                 case "requestPlaying":
                                     recievedRequest();
-                                    System.out.println("sssssssssssssssssssadsasdaasd");
                                     break;
                                 case "refuse":
                                     refuseAlert();
@@ -161,18 +167,21 @@ public class AvailableFriendBase extends AnchorPane {
                                     break;
                                 case "gameStarted":
                                     System.out.println("game accepted");
+                                    //vsPlayer = socketClient.getDataInputStream().readLine();
                                     Platform.runLater(() -> {
                                         System.out.println("navigate");
-                                        nav.navigatToScene(new FxmlOneVsOnlineBase( ));
+                                        nav.navigatToScene(new FxmlOneVsOnlineBase());
+                                        thread.stop();
                                     });
-                                    thread.stop();
                                     break;
                                 default:
                                     //System.out.println("default" + data);
                                     getOnlinefriends(data);
                             }
                         } catch (IOException ex) {
-                            serverClosed();
+                            if (!isLoggedOut) {
+                                serverClosed();
+                            }
                         }
                     } while (true);
 
@@ -232,10 +241,10 @@ public class AvailableFriendBase extends AnchorPane {
             // Show the dialog and wait for a response
             dialog.showAndWait().ifPresent(result -> {
                 if (result == ButtonType.YES) {
-                    XorO=true;
+                    XorO = true;
                     socketClient.getPrintStream().println("accept###" + signInBase.username + "###" + opponot);
                     Platform.runLater(() -> {
-                        //alert.close();
+                        thread.stop();
                         System.out.println("Exiting...");
                         nav.navigatToScene(new FxmlOneVsOnlineBase( ));
                     });
@@ -262,8 +271,8 @@ public class AvailableFriendBase extends AnchorPane {
 
         });
     }
-    
-       private void serverClosed() {
+
+    private void serverClosed() {
         System.out.println("Server Colsed");
 
         Platform.runLater(() -> {
@@ -275,7 +284,9 @@ public class AvailableFriendBase extends AnchorPane {
             alert.showAndWait();
             nav.navigatToScene(new mainBase());
         });
-        thread.stop();
+        Platform.runLater(() -> {
+            thread.stop();
+        });
     }
 
 }
