@@ -30,7 +30,6 @@ import utilities.StreamHelper;
 
 public class FxmlOneVsOnlineBase extends AnchorPane {
 
-
 //    Socket server;
 //    DataInputStream dis;
 //    PrintStream ps;
@@ -81,7 +80,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     Button buttonPressed;
 
     public FxmlOneVsOnlineBase() {
-        
+
         thread = new Thread(new Runnable() {
             @Override
 
@@ -89,7 +88,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                 while (true) {
 
                     try {
-                        
+
                         String data = socket.getDataInputStream().readLine();
                         System.out.println(data);
 
@@ -103,11 +102,12 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
 
                                 System.out.println("game");
                                 System.out.println("button recccccccccccccccccccieved");
-                                System.out.println("userrrrrrrrrrrrrname"+signInBase.username);
+                                System.out.println("userrrrrrrrrrrrrname" + signInBase.username);
 
                                 System.out.println(buttonfromsever1);
                                 System.out.println("button recccccccccccccccccccieved");
-                                System.out.println("opponottttttttttttttt"+AvailableFriendBase.vsPlayer);
+                                System.out.println("opponottttttttttttttt" + AvailableFriendBase.vsPlayer);
+                                System.out.println("opponottttttttttttttt" + OnlineFriendCellController.opponant);
 
                                 break;
 
@@ -364,10 +364,13 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
 
     public void sendButtonPressed(Button buttonPressed) {
         this.buttonPressed = buttonPressed;
-        
-            ps.println("play###" + AvailableFriendBase.vsPlayer + "###" + findButtonPlaceFromBoard(buttonPressed));
-      
-        disableButton();
+if(AvailableFriendBase.vsPlayer!=null){
+        ps.println("play###" + AvailableFriendBase.vsPlayer + "###" + findButtonPlaceFromBoard(buttonPressed));
+
+        disableButton();}
+else 
+            ps.println("play###" + OnlineFriendCellController.opponant + "###" + findButtonPlaceFromBoard(buttonPressed));
+
     }
 
     public void recieveButtonPressed() {
@@ -379,7 +382,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
             btns.get(i - 1).setDisable(true);
             btns.remove(get(i - 1));
             enableButtons();
-            
+
         }
 
     }
