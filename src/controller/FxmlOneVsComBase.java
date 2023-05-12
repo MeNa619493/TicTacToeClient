@@ -24,21 +24,21 @@ import utilities.StreamHelper;
 
 public class FxmlOneVsComBase extends AnchorPane {
 
-    private Boolean isUserTurn = true;
+    private boolean isUserTurn = true;
     private boolean isWinner = false;
-    GameState state = GameState.NONE;
-    private Boolean isHard;
+    private GameState state = GameState.NONE;
+    private Levels level;
     Integer compScore = 0;
     Integer userScore = 0;
-     
+
     String currentPlayer = "X";
     ArrayList<Button> btns;
     Button[][] board = new Button[3][3];
     ArrayList<Button> available = new ArrayList();
-    
+
     Image imgX;
     Image imgO;
-    
+
     Navigation nav = Navigation.getInstance();
 
     protected final Text text;
@@ -66,7 +66,7 @@ public class FxmlOneVsComBase extends AnchorPane {
     protected final Button btnEndGame;
     protected final Button btnReset;
 
-    public FxmlOneVsComBase(Boolean isHard) {
+    public FxmlOneVsComBase(Levels level) {
 
         text = new Text();
         playerScore = new Text();
@@ -257,7 +257,7 @@ public class FxmlOneVsComBase extends AnchorPane {
         btnEndGame.setMnemonicParsing(false);
         btnEndGame.setText("End Game");
         btnEndGame.setFont(new Font(14.0));
-        
+
         AnchorPane.setBottomAnchor(btnReset, 20.0);
         AnchorPane.setLeftAnchor(btnReset, 20.0);
         btnReset.setLayoutX(51.0);
@@ -296,34 +296,34 @@ public class FxmlOneVsComBase extends AnchorPane {
         btnEndGame.setId("myButton");
         btnReset.setId("myButton");
         btnReset.setDisable(true);
-        
-        this.isHard = isHard;
-        
+
+        this.level = level;
+
         btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 nav.navigatToScene(new mainBase());
             }
         });
-        
+
         btnReset.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 playAgain();
             }
         });
-        
+
         createFile();
-        
-        btns = new ArrayList<>(Arrays.asList(btn1, btn2, btn3,btn4, btn5, btn6,btn7, btn8, btn9));
+
+        btns = new ArrayList<>(Arrays.asList(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9));
         intalizeButtons();
-        
+
         intalizeBorad();
         intalizeAvailablePlaces();
         setTextFields();
     }
-    
-    private void createFile(){
+
+    private void createFile() {
         new Thread(() -> {
             StreamHelper.createFile("User", "Computer");
             StreamHelper.writeOnFile("User.");
@@ -347,7 +347,7 @@ public class FxmlOneVsComBase extends AnchorPane {
 
     private void intalizeButtons() {
         ButtonListener listener = new ButtonListener();
-        for(Button btn: btns){
+        for (Button btn : btns) {
             btn.setOnAction(listener);
         }
     }
@@ -367,17 +367,17 @@ public class FxmlOneVsComBase extends AnchorPane {
             available.add(button);
         }
     }
-    
-    private void setTextFields(){
+
+    private void setTextFields() {
         computerScore.setText(compScore.toString());
         playerScore.setText(userScore.toString());
     }
-    
+
     //easy
-    private void computerTurnEasyMode(){
-        if(!isWinner){
-            if(available.size() > 0){
-                int index = (int)floor(random(available.size()-1));
+    private void computerTurnEasyMode() {
+        if (!isWinner) {
+            if (available.size() > 0) {
+                int index = (int) floor(random(available.size() - 1));
                 Button buttonChoosed = available.get(index);
                 buttonChoosed.setText(currentPlayer);
                 buttonChoosed.setTextFill(Color.TRANSPARENT);
@@ -392,10 +392,42 @@ public class FxmlOneVsComBase extends AnchorPane {
         }
     }
     
+    //meduim
+    private void computerTurnMeduimMode() {
+        if (!isWinner) {
+            if (available.size() > 0) {
+                char[][] playBoard = new char[3][3];
+                for (int j = 0; j < 3; j++) {
+                    for (int i = 0; i < 3; i++) {
+                        if (board[j][i].getText().isEmpty()) {
+                            playBoard[j][i] = ' ';
+                            continue;
+                        }
+                        playBoard[j][i] = (board[j][i].getText()).charAt(0);
+                    }
+                }
+
+                int[] res = new int[2];
+                res = MiniMax.getBestMove(playBoard, 5);
+                int index = res[0] * 3 + res[1];
+                Button buttonChoosed = btns.get(index);
+                buttonChoosed.setText(currentPlayer);
+                buttonChoosed.setTextFill(Color.TRANSPARENT);
+                buttonChoosed.setGraphic(createImageViewO());
+                writeOnFile(buttonChoosed);
+                isUserTurn = true;
+                currentPlayer = "X";
+                buttonChoosed.setDisable(true);
+                available.remove(buttonChoosed);
+                checkWinner();
+            }
+        }
+    }
+
     //hard
-    private void computerTurnHardMode(){
-        if(!isWinner){
-            if(available.size() > 0){
+    private void computerTurnHardMode() {
+        if (!isWinner) {
+            if (available.size() > 0) {
                 char[][] playBoard = new char[3][3];
                 for (int j = 0; j < 3; j++) {
                     for (int i = 0; i < 3; i++) {
@@ -428,9 +460,9 @@ public class FxmlOneVsComBase extends AnchorPane {
         if (!a.getText().isEmpty()
                 && a.getText().equals(b.getText())
                 && b.getText().equals(c.getText())) {
-            if(a.getText().equals("X")){
+            if (a.getText().equals("X")) {
                 state = GameState.WIN;
-            }else{
+            } else {
                 state = GameState.LOSE;
             }
             btnReset.setDisable(false);
@@ -465,14 +497,14 @@ public class FxmlOneVsComBase extends AnchorPane {
         if (!isWinner && available.isEmpty()) {
             state = GameState.TIE;
             btnReset.setDisable(false);
-        } 
-        
+        }
+
         showResultVideo();
     }
 
     private void showResultVideo() {
         Navigation nav = Navigation.getInstance();
-        switch(state){
+        switch (state) {
             case TIE:
                 nav.navigatToWatchVideo("tie");
                 break;
@@ -511,36 +543,41 @@ public class FxmlOneVsComBase extends AnchorPane {
             }
         }
     }
-    
-    private void writeOnFile(Button buttonPressed){
+
+    private void writeOnFile(Button buttonPressed) {
         new Thread(() -> {
-            StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed)+".");
+            StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed) + ".");
         }).start();
     }
-    
-    private int findButtonPlaceFromBoard(Button buttonPressed){
+
+    private int findButtonPlaceFromBoard(Button buttonPressed) {
         int index = 0;
-        for(int i=0; i < btns.size(); i++){
-            System.out.println("i = " + i);
-            if(btns.get(i) == buttonPressed){
+        for (int i = 0; i < btns.size(); i++) {
+            if (btns.get(i) == buttonPressed) {
                 index = i;
-                System.out.println("index = " + index);
                 break;
             }
         }
-        return index+1;
+        return index + 1;
     }
-    
-    private void computerTurn(){
-        if(isHard){
-            computerTurnHardMode();
-        }else{
-            computerTurnEasyMode();
+
+    private void computerTurn() {
+        switch (level) {
+            case HARD:
+                computerTurnHardMode();
+                break;
+            case MEDUIM:
+                computerTurnMeduimMode();
+                break;
+            case EASY:
+                computerTurnEasyMode();
+                break;
+
         }
     }
-    
-    private void playAgain(){
-        for(Button btn: btns){
+
+    private void playAgain() {
+        for (Button btn : btns) {
             btn.setText("");
             btn.setGraphic(null);
             btn.setDisable(false);

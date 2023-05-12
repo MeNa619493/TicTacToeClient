@@ -6,11 +6,13 @@
 package utilities;
 
 import controller.FxmlOneVsComBase;
+import controller.Levels;
 import controller.PushIpXmlClass;
 import controller.VideoHistoryClass;
 import controller.WatchVideoController;
 import controller.chooseXOBase;
 import java.io.IOException;
+import java.util.logging.Level;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -75,15 +77,15 @@ public class Navigation {
         primaryStage.setScene(computerLevelScene);
     }
 
-    public void navigatToChooseXO(boolean isGoingToOneVsOne, boolean isHard) {
-        chooseXOBase OneVsOneChooseXOroot = new chooseXOBase(isGoingToOneVsOne, isHard);
+    public void navigatToChooseXO(boolean isGoingToOneVsOne, Levels level) {
+        chooseXOBase OneVsOneChooseXOroot = new chooseXOBase(isGoingToOneVsOne, level);
         Scene oneVsOneChooseXOScene = new Scene(OneVsOneChooseXOroot);
         primaryStage.setScene(oneVsOneChooseXOScene);
         oneVsOneChooseXOScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
     }
 
-    public void navigatToOneVsComp(boolean isHard) {
-        FxmlOneVsComBase oneVsComRoot = new FxmlOneVsComBase(isHard);
+    public void navigatToOneVsComp(Levels level) {
+        FxmlOneVsComBase oneVsComRoot = new FxmlOneVsComBase(level);
         Scene oneVsComScene = new Scene(oneVsComRoot);
         primaryStage.setScene(oneVsComScene);
         oneVsComScene.getStylesheets().add("file:./src/Photo/buttonStyle.css");
