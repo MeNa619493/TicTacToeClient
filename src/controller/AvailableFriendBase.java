@@ -246,8 +246,9 @@ public class AvailableFriendBase extends AnchorPane {
                     Platform.runLater(() -> {
                         thread.stop();
                         System.out.println("Exiting...");
-                        nav.navigatToScene(new FxmlOneVsOnlineBase());
+                        nav.navigatToScene(new FxmlOneVsOnlineBase( ));
                     });
+                    thread.stop();
                 } else if (result == ButtonType.NO) {
                     System.out.println("Not exiting.");
                     socketClient.getPrintStream().println("refuse###" + opponot);
