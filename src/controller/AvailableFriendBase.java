@@ -167,7 +167,7 @@ public class AvailableFriendBase extends AnchorPane {
                                     break;
                                 case "gameStarted":
                                     System.out.println("game accepted");
-                                    vsPlayer = socketClient.getDataInputStream().readLine();
+                                    //vsPlayer = socketClient.getDataInputStream().readLine();
                                     Platform.runLater(() -> {
                                         System.out.println("navigate");
                                         nav.navigatToScene(new FxmlOneVsOnlineBase());

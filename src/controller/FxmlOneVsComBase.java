@@ -520,9 +520,11 @@ public class FxmlOneVsComBase extends AnchorPane {
     
     private int findButtonPlaceFromBoard(Button buttonPressed){
         int index = 0;
-        for(int i=0; i < btns.size()-1; i++){
+        for(int i=0; i < btns.size(); i++){
+            System.out.println("i = " + i);
             if(btns.get(i) == buttonPressed){
                 index = i;
+                System.out.println("index = " + index);
                 break;
             }
         }

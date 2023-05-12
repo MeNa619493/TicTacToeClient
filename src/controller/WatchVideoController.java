@@ -40,15 +40,15 @@ public class WatchVideoController implements Initializable{
         switch(gameState){
             case "win":
                 createMedia("/resources/win.mp4");
-                checkWinnerLabel.setText("Winner is X");
+                checkWinnerLabel.setText("you win.");
                 break;
             case "lose":
                 createMedia("/resources/lose.mp4");
-                checkWinnerLabel.setText("Winner is O");
+                checkWinnerLabel.setText("you lose.");
                 break;
             case "tie":
                 createMedia("/resources/draw.mp4");
-                checkWinnerLabel.setText("There is no winner");
+                checkWinnerLabel.setText("There is no winner.");
                 break;
         }
     }
