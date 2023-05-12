@@ -91,18 +91,20 @@ public class PushIpXmlClass extends AnchorPane {
                     
                     try {
                         if (!InetAddress.getByName(ip).isReachable(5)) {
+                            System.out.println("not reachable ip");
                             showUnvalidIpAlert();
                         } else {
                             System.out.println("Valid ip");
                             nav.navigatToScene(new SignBase());
                         }
                     } catch (UnknownHostException e) {
-                        System.err.println("Fail when getting Server Address.");
+                        System.out.println("Fail when getting Server Address.");
                     } catch (IOException ex) {
                         Logger.getLogger(PushIpXmlClass.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                 } else {
+                    System.out.println("not Valid ip");
                     showUnvalidIpAlert();
                 }
             }

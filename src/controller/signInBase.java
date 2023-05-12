@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +33,7 @@ public class signInBase extends AnchorPane {
     public static String username;
     private Navigation nav = Navigation.getInstance();
     private SocketHelper socketClient = SocketHelper.getInstance();
+    private Thread thread;
 
     public signInBase() {
 
@@ -126,7 +128,7 @@ public class signInBase extends AnchorPane {
                     alert.showAndWait();
                 } else {
                     socketClient.getPrintStream().println("SignIn###" + email + "###" + password);
-                    new Thread(() -> {
+                    thread = new Thread(() -> {
                         try {
                             System.out.println("waiting for server response");
                             String replyMsg = socketClient.getDataInputStream().readLine();
@@ -154,12 +156,15 @@ public class signInBase extends AnchorPane {
                                     alert.showAndWait();
                                 });
                             }
+                        } catch (SocketException e) {
+                            serverClosed();
+                            e.printStackTrace();
                         } catch (IOException ex) {
                             serverClosed();
-                            socketClient.closeSocket();
-                            Logger.getLogger(signInBase.class.getName()).log(Level.SEVERE, null, ex);
+                            ex.printStackTrace();
                         }
-                    }).start();
+                    });
+                    thread.start();
                 }
             }
         });
@@ -168,15 +173,16 @@ public class signInBase extends AnchorPane {
 
     private void serverClosed() {
         System.out.println("Server Colsed");
-
+        socketClient.closeSocket();
         Platform.runLater(() -> {
             ButtonType yes = new ButtonType("Yes");
             Alert alert = new Alert(Alert.AlertType.NONE);
             alert.setTitle("Server Issue");
             alert.getDialogPane().getButtonTypes().add(yes);
-            alert.setHeaderText("There is issue in connection, The Available friends page will be closed");
+            alert.setHeaderText("There is issue in connection, The Game page will be closed");
             alert.showAndWait();
             nav.navigatToScene(new mainBase());
+            thread.stop();
         });
     }
 }
