@@ -36,13 +36,11 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     SocketHelper socket = SocketHelper.getInstance();
     PrintStream ps;
     DataInputStream dis;
-    String buttonfromsever1;
-
+    
     Thread thread;
     private Boolean isUserTurn = true;
     private boolean isWinner = false;
     GameState state = GameState.NONE;
-    private Boolean isHard;
     Integer compScore = 0;
     Integer userScore = 0;
     int x;
@@ -77,7 +75,6 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     protected final Button btn2;
     protected final Button btn1;
     public final Button btnEndGame;
-    Button buttonPressed;
 
     public FxmlOneVsOnlineBase() {
 
@@ -89,26 +86,15 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
 
                     try {
 
-                        String data = socket.getDataInputStream().readLine();
+                        String data = socket.getDataInputStream().readLine().trim();
                         System.out.println(data);
 
                         switch (data) {
                             case "game":
-                                buttonfromsever1 = socket.getDataInputStream().readLine();
+                                String buttonFromSever = socket.getDataInputStream().readLine();
                                 Platform.runLater(() -> {
-                                    recieveButtonPressed();
-
+                                    recieveButtonPressed(buttonFromSever);
                                 });
-
-                                System.out.println("game");
-                                System.out.println("button recccccccccccccccccccieved");
-                                System.out.println("userrrrrrrrrrrrrname" + signInBase.username);
-
-                                System.out.println(buttonfromsever1);
-                                System.out.println("button recccccccccccccccccccieved");
-                                System.out.println("opponottttttttttttttt" + AvailableFriendBase.vsPlayer);
-                                System.out.println("opponottttttttttttttt" + OnlineFriendCellController.opponant);
-
                                 break;
 
                             default:
@@ -354,6 +340,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         intalizeButtons();
         intalizeBorad();
         intalizeAvailablePlaces();
+        setTextFields();
         ps = socket.getPrintStream();
         dis = socket.getDataInputStream();
 
@@ -363,26 +350,24 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     }
 
     public void sendButtonPressed(Button buttonPressed) {
-        this.buttonPressed = buttonPressed;
-if(AvailableFriendBase.vsPlayer!=null){
-        ps.println("play###" + AvailableFriendBase.vsPlayer + "###" + findButtonPlaceFromBoard(buttonPressed));
-
-        disableButton();}
-else 
+        if (AvailableFriendBase.vsPlayer != null) {
+            ps.println("play###" + AvailableFriendBase.vsPlayer + "###" + findButtonPlaceFromBoard(buttonPressed));
+        } else {
             ps.println("play###" + OnlineFriendCellController.opponant + "###" + findButtonPlaceFromBoard(buttonPressed));
-
+        }
+        disableButton();
     }
 
-    public void recieveButtonPressed() {
+    public void recieveButtonPressed(String buttonFromSever) {
 
-        if (buttonfromsever1 != null) {
-            int i = Integer.parseInt(buttonfromsever1);
+        if (buttonFromSever != null) {
+            int i = Integer.parseInt(buttonFromSever);
             writeOnFile(btns.get(i - 1));
             draw(btns.get(i - 1));
             btns.get(i - 1).setDisable(true);
-            btns.remove(get(i - 1));
+            System.out.println("removed button index = " + (i - 1));
+            available.remove(btns.get(i - 1));
             enableButtons();
-
         }
 
     }
@@ -401,14 +386,12 @@ else
             btn.setGraphic(viewO);
             btn.setTextFill(Color.TRANSPARENT);
             btn.setText("O");
-
         } else {
             btn.setGraphic(viewX);
             btn.setTextFill(Color.TRANSPARENT);
             btn.setText("X");
         }
         checkWinner();
-
     }
 
     public void disableButton() {
@@ -425,7 +408,7 @@ else
 
     private int findButtonPlaceFromBoard(Button buttonPressed) {
         int index = 0;
-        for (int i = 0; i < btns.size() - 1; i++) {
+        for (int i = 0; i < btns.size(); i++) {
             if (btns.get(i) == buttonPressed) {
                 index = i;
                 break;
@@ -481,10 +464,18 @@ else
         if (!a.getText().isEmpty()
                 && a.getText().equals(b.getText())
                 && b.getText().equals(c.getText())) {
-            if (a.getText().equals("X")) {
-                state = GameState.WIN;
+            if (x % 2 != 0) {
+                if (a.getText().equals("X")) {
+                    state = GameState.WIN;
+                } else {
+                    state = GameState.LOSE;
+                }
             } else {
-                state = GameState.LOSE;
+                if (a.getText().equals("O")) {
+                    state = GameState.WIN;
+                } else {
+                    state = GameState.LOSE;
+                }
             }
 
             return true;
@@ -547,27 +538,25 @@ else
         public void handle(Event event) {
             if (!isWinner) {
                 if (isUserTurn) {
-                    buttonPressed = (Button) event.getSource();
-                    if (buttonPressed.getText().isEmpty()) {
+                    Button buttonPressed = (Button) event.getSource();
+                    if (available.contains(buttonPressed)) {
                         if (x % 2 != 0) {
+                            currentPlayer = "X";
                             buttonPressed.setText(currentPlayer);
                             buttonPressed.setTextFill(Color.TRANSPARENT);
                             buttonPressed.setGraphic(createImageViewX());
                             buttonPressed.setDisable(true);
                             available.remove(buttonPressed);
-                            checkWinner();
                             sendButtonPressed(buttonPressed);
-                            recieveButtonPressed();
                             writeOnFile(buttonPressed);
-
                         } else {
+                            currentPlayer = "O";
                             buttonPressed.setText(currentPlayer);
                             buttonPressed.setTextFill(Color.TRANSPARENT);
                             buttonPressed.setGraphic(createImageViewO());
                             buttonPressed.setDisable(true);
                             available.remove(buttonPressed);
                             sendButtonPressed(buttonPressed);
-                            recieveButtonPressed();
                             writeOnFile(buttonPressed);
                         }
                     }

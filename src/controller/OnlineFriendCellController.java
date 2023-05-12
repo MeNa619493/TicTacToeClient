@@ -25,8 +25,10 @@ import utilities.SocketHelper;
  * @author Mina
  */
 public class OnlineFriendCellController extends ListCell<String> {
+
     private SocketHelper socketClient = SocketHelper.getInstance();
-public static String opponant;
+    public static String opponant;
+
     @FXML
     private Label lblFriendName;
 
@@ -35,17 +37,17 @@ public static String opponant;
 
     public OnlineFriendCellController(CustomCellButtonHandler action) {
         loadFXML();
-        
+
         btnAsk.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                 opponant = getItem();
-                socketClient.getPrintStream().println("request###"+opponant+"###"+signInBase.username);
+                opponant = getItem();
+                socketClient.getPrintStream().println("request###" + opponant + "###" + signInBase.username);
                 action.perform();
             }
         });
     }
-    
+
     public Button getButton() {
         return btnAsk;
     }
@@ -56,8 +58,7 @@ public static String opponant;
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -66,11 +67,10 @@ public static String opponant;
     protected void updateItem(String item, boolean empty) {
         super.updateItem(item, empty);
 
-        if(empty || item == null) {
+        if (empty || item == null) {
             setText(null);
             setContentDisplay(ContentDisplay.TEXT_ONLY);
-        }
-        else {
+        } else {
             lblFriendName.setText(item);
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }
@@ -78,6 +78,7 @@ public static String opponant;
 }
 
 class OnlineFriendCellFactory implements Callback<ListView<String>, ListCell<String>> {
+
     private CustomCellButtonHandler myArgument;
 
     public OnlineFriendCellFactory(CustomCellButtonHandler argument) {
