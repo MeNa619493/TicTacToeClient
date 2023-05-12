@@ -29,7 +29,7 @@ public class signInBase extends AnchorPane {
     protected final TextField tfInEmail;
     protected final TextField tfInPassword;
     public static String username;
-    Navigation nav = Navigation.getInstance();
+    private Navigation nav = Navigation.getInstance();
     private SocketHelper socketClient = SocketHelper.getInstance();
 
     public signInBase() {

@@ -160,7 +160,6 @@ public class AvailableFriendBase extends AnchorPane {
                             switch (data) {
                                 case "requestPlaying":
                                     recievedRequest();
-                                    System.out.println("sssssssssssssssssssadsasdaasd");
                                     break;
                                 case "refuse":
                                     refuseAlert();
@@ -168,6 +167,7 @@ public class AvailableFriendBase extends AnchorPane {
                                     break;
                                 case "gameStarted":
                                     System.out.println("game accepted");
+                                    vsPlayer = socketClient.getDataInputStream().readLine();
                                     Platform.runLater(() -> {
                                         System.out.println("navigate");
                                         nav.navigatToScene(new FxmlOneVsOnlineBase());
