@@ -36,7 +36,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     SocketHelper socket = SocketHelper.getInstance();
     PrintStream ps;
     DataInputStream dis;
-    
+
     Thread thread;
     private Boolean isUserTurn = true;
     private boolean isWinner = false;
@@ -336,6 +336,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                 + "-fx-background-size: cover;"
                 + "-fx-background-position: center center;");
         btnEndGame.setId("myButton");
+        createFile();
         btns = new ArrayList<>(Arrays.asList(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9));
         intalizeButtons();
         intalizeBorad();
@@ -347,6 +348,20 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         if (x % 2 == 0) {
             disableButton();
         }
+    }
+
+    private void createFile() {
+        String oponent;
+        if (AvailableFriendBase.vsPlayer != null) {
+            oponent = AvailableFriendBase.vsPlayer;
+        } else {
+            oponent = OnlineFriendCellController.opponant;
+        }
+        new Thread(() -> {
+            StreamHelper.createFile(signInBase.username, oponent);
+            StreamHelper.writeOnFile(signInBase.username + ".");
+            StreamHelper.writeOnFile(oponent + ".");
+        }).start();
     }
 
     public void sendButtonPressed(Button buttonPressed) {
@@ -363,10 +378,10 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         if (buttonFromSever != null) {
             int i = Integer.parseInt(buttonFromSever);
             writeOnFile(btns.get(i - 1));
-            draw(btns.get(i - 1));
             btns.get(i - 1).setDisable(true);
             System.out.println("removed button index = " + (i - 1));
             available.remove(btns.get(i - 1));
+            draw(btns.get(i - 1));
             enableButtons();
         }
 
@@ -508,7 +523,6 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
 
         if (!isWinner && available.isEmpty()) {
             state = GameState.TIE;
-
         }
 
         showResultVideo();
@@ -559,6 +573,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                             sendButtonPressed(buttonPressed);
                             writeOnFile(buttonPressed);
                         }
+                        checkWinner();
                     }
                 }
             }
@@ -567,7 +582,7 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
 
     private void writeOnFile(Button buttonPressed) {
         new Thread(() -> {
-//            StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed) + ".");
+            StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed) + ".");
         }).start();
     }
 
