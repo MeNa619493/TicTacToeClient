@@ -53,9 +53,9 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     private Navigation nav = Navigation.getInstance();
 
     protected final Text text;
-    protected final Text playerScore;
+    protected final ImageView playerScore;
     protected final Text text0;
-    protected final Text computerScore;
+    protected final ImageView computerScore;
     protected final StackPane stackPane;
     protected final ImageView imageView;
     protected final GridPane gridPane;
@@ -78,9 +78,9 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
 
     public FxmlOneVsOnlineBase() {
         text = new Text();
-        playerScore = new Text();
+        playerScore = new ImageView();
         text0 = new Text();
-        computerScore = new Text();
+        computerScore = new ImageView();
         stackPane = new StackPane();
         imageView = new ImageView();
         gridPane = new GridPane();
@@ -120,13 +120,10 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         text.setFont(new Font(24.0));
         text.setTextAlignment(TextAlignment.LEFT);
 
-        playerScore.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-        playerScore.setLayoutX(45.0);
-        playerScore.setLayoutY(74.0);
-        playerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
-        playerScore.setStrokeWidth(0.0);
-        playerScore.setFont(new Font(24.0));
-        playerScore.setTextAlignment(TextAlignment.LEFT);
+        playerScore.setLayoutX(25.0);
+        playerScore.setLayoutY(50.0);
+        playerScore.setFitHeight(25);
+        playerScore.setFitWidth(25);
 
         AnchorPane.setRightAnchor(text0, 24.0);
         AnchorPane.setTopAnchor(text0, 16.0);
@@ -139,20 +136,21 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         text0.setFont(new Font(24.0));
         text0.setTextAlignment(TextAlignment.RIGHT);
 
-        computerScore.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
         computerScore.setLayoutX(550.0);
-        computerScore.setLayoutY(75.0);
-        computerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
-        computerScore.setStrokeWidth(0.0);
-        computerScore.setFont(new Font(24.0));
-        computerScore.setTextAlignment(TextAlignment.RIGHT);
+        computerScore.setLayoutY(50.0);
+        computerScore.setFitHeight(25);
+        computerScore.setFitWidth(25);
 
-        if (x % 2 != 0) {
-            playerScore.setText("X");
-            computerScore.setText("O");
+        if (AvailableFriendBase.XorO == true) {
+            imgX = new Image("file:./src/Photo/x2.png");
+            imgO = new Image("file:./src/Photo/o2.png");
+            playerScore.setImage(imgX);
+            computerScore.setImage(imgO);
         } else {
-            playerScore.setText("O");
-            computerScore.setText("X");
+            imgX = new Image("file:./src/Photo/x2.png");
+            imgO = new Image("file:./src/Photo/o2.png");
+            playerScore.setImage(imgO);
+            computerScore.setImage(imgX);
         }
 
         stackPane.setLayoutX(133.0);
