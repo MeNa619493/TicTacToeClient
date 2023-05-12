@@ -21,6 +21,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import static javax.swing.UIManager.get;
 import utilities.Navigation;
 import utilities.SocketHelper;
@@ -148,20 +149,20 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         AnchorPane.setTopAnchor(text, 16.0);
         text.setFill(javafx.scene.paint.Color.valueOf("#0070fc"));
         text.setLayoutX(45.0);
-        text.setLayoutY(40.0);
+        text.setLayoutY(100.0);
         text.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text.setStrokeWidth(0.0);
         text.setText("Your Score");
         text.setFont(new Font(24.0));
+        text.setTextAlignment(TextAlignment.LEFT);
 
-        AnchorPane.setLeftAnchor(playerScore, 65.0);
-        AnchorPane.setTopAnchor(playerScore, 48.1015625);
         playerScore.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-        playerScore.setLayoutX(75.0);
+        playerScore.setLayoutX(45.0);
         playerScore.setLayoutY(74.0);
-//        playerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
-//        playerScore.setStrokeWidth(0.0);
-//        playerScore.setFont(new Font(24.0));
+        playerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+        playerScore.setStrokeWidth(0.0);
+        playerScore.setFont(new Font(24.0));
+        playerScore.setTextAlignment(TextAlignment.LEFT);
 
         AnchorPane.setRightAnchor(text0, 24.0);
         AnchorPane.setTopAnchor(text0, 16.0);
@@ -172,15 +173,15 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         text0.setStrokeWidth(0.0);
         text0.setText("Friend Score");
         text0.setFont(new Font(24.0));
+        text0.setTextAlignment(TextAlignment.RIGHT);
 
-        AnchorPane.setRightAnchor(computerScore, 80.0);
-        AnchorPane.setTopAnchor(computerScore, 48.1015625);
         computerScore.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-        computerScore.setLayoutX(483.0);
+        computerScore.setLayoutX(550.0);
         computerScore.setLayoutY(75.0);
-//        computerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
-//        computerScore.setStrokeWidth(0.0);
-//        computerScore.setFont(new Font(24.0));
+        computerScore.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+        computerScore.setStrokeWidth(0.0);
+        computerScore.setFont(new Font(24.0));
+        computerScore.setTextAlignment(TextAlignment.RIGHT);
 
         if (x % 2 != 0) {
             playerScore.setText("X");
@@ -354,7 +355,6 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         intalizeButtons();
         intalizeBorad();
         intalizeAvailablePlaces();
-        setTextFields();
         ps = socket.getPrintStream();
         dis = socket.getDataInputStream();
         if (x % 2 == 0) {
@@ -483,11 +483,6 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         }
     }
 
-    private void setTextFields() {
-        computerScore.setText(compScore.toString());
-        playerScore.setText(userScore.toString());
-    }
-
     private Boolean equals(Button a, Button b, Button c) {
         if (!a.getText().isEmpty()
                 && a.getText().equals(b.getText())
@@ -556,7 +551,6 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                 nav.navigatToWatchVideo("win");
                 break;
         }
-        setTextFields();
     }
 
     private class ButtonListener implements EventHandler {

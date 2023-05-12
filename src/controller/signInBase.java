@@ -13,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
@@ -27,7 +28,7 @@ public class signInBase extends AnchorPane {
     protected final Button btnSignIn;
     protected final Button btnHome;
     protected final TextField tfInEmail;
-    protected final TextField tfInPassword;
+    protected final PasswordField tfInPassword;
     public static String username;
     private Navigation nav = Navigation.getInstance();
     private SocketHelper socketClient = SocketHelper.getInstance();
@@ -39,7 +40,7 @@ public class signInBase extends AnchorPane {
         btnSignIn = new Button();
         btnHome = new Button();
         tfInEmail = new TextField();
-        tfInPassword = new TextField();
+        tfInPassword = new PasswordField();
 
         setId("AnchorPane");
         setPrefHeight(400.0);

@@ -18,7 +18,7 @@
                        <Font size="24.0" />
                     </font>
                  </Text>
-                 <Text fx:id="playerScore" fill="#ffffff" layoutX="75.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.leftAnchor="65.0" AnchorPane.topAnchor="48.1015625">
+                 <Text fx:id="playerScore" fill="#ffffff" layoutX="45.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0">
                     <font>
                        <Font size="24.0" />
                     </font>
@@ -28,7 +28,7 @@
                        <Font size="24.0" />
                     </font>
                  </Text>
-                 <Text fx:id="computerScore" fill="#ffffff" layoutX="483.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0"  AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="48.1015625">
+                 <Text fx:id="computerScore" fill="#ffffff" layoutX="550.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0">
                     <font>
                        <Font size="24.0" />
                     </font>
