@@ -51,6 +51,8 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
     Image imgX;
     Image imgO;
 
+    Thread thread;
+
     protected final Text text;
     protected final Text playerScore;
     protected final Text text0;
@@ -303,37 +305,47 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         intalizeButtons();
         intalizeBorad();
         intalizeAvailablePlaces();
+        
         ps = socket.getPrintStream();
         dis = socket.getDataInputStream();
 
-        if (x % 2 == 0) {
-            disableButton();
-        }
+        recieveButtonPressed();
+//        if (x % 2 == 0) {
+//            disableButton();
+//        }
     }
 
     public void sendButtonPressed(Button buttonPressed) {
 
         ps.println("play###" + AvailableFriendBase.vsPlayer + "###" + findButtonPlaceFromBoard(buttonPressed));
-        disableButton();
+       // disableButton();
     }
 
     public void recieveButtonPressed() {
-        try {
-
-            String replyMsg = dis.readLine();
-            if (replyMsg == "game") {
-                String msg = dis.readLine();
-                int i = Integer.parseInt(msg);
-                writeOnFile(btns.get(i - 1));
-                draw(btns.get(i - 1));
-                btns.get(i - 1).setDisable(true);
-                btns.remove(get(i - 1));
-                enableButtons();
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        String replyMsg = dis.readLine();
+                        System.out.println(replyMsg);
+                        if (replyMsg == "game") {
+                            String msg = dis.readLine();
+                            System.out.println(msg);
+                            int i = Integer.parseInt(msg);
+                            //writeOnFile(btns.get(i - 1));
+                            draw(btns.get(i - 1));
+                            btns.get(i - 1).setDisable(true);
+                            btns.remove(get(i - 1));
+                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(FxmlOneVsOnlineBase.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
-        } catch (IOException ex) {
-            Logger.getLogger(FxmlOneVsOnlineBase.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        );
+        enableButtons();
     }
 
     private void draw(Button btn) {
@@ -506,8 +518,8 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                             available.remove(buttonPressed);
                             checkWinner();
                             sendButtonPressed(buttonPressed);
-                            recieveButtonPressed();
-                            writeOnFile(buttonPressed);
+                            //recieveButtonPressed();
+                            //writeOnFile(buttonPressed);
 
                         } else {
                             buttonPressed.setText(currentPlayer);
@@ -516,8 +528,8 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
                             buttonPressed.setDisable(true);
                             available.remove(buttonPressed);
                             sendButtonPressed(buttonPressed);
-                            recieveButtonPressed();
-                            writeOnFile(buttonPressed);
+                            //recieveButtonPressed();
+                            // writeOnFile(buttonPressed);
                         }
                     }
                 }
@@ -525,12 +537,11 @@ public class FxmlOneVsOnlineBase extends AnchorPane {
         }
     }
 
-    private void writeOnFile(Button buttonPressed) {
-        new Thread(() -> {
-            StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed) + ".");
-        }).start();
-    }
-
+//    private void writeOnFile(Button buttonPressed) {
+//        new Thread(() -> {
+//            StreamHelper.writeOnFile(findButtonPlaceFromBoard(buttonPressed) + ".");
+//        }).start();
+//    }
     enum GameState {
         NONE,
         WIN,
