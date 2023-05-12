@@ -106,7 +106,7 @@ public class computerLevelBase extends AnchorPane {
             }
         });
         
-        btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
+        btnMedium.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 nav.navigatToChooseXO(true, false);
