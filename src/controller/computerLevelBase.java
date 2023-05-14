@@ -88,14 +88,14 @@ public class computerLevelBase extends AnchorPane {
         btnHigh.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                nav.navigatToChooseXO(false, true);
+                nav.navigatToChooseXO(false, Levels.HARD);
             }
         });
         
         btnLow.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                nav.navigatToChooseXO(false, false);
+                nav.navigatToChooseXO(false, Levels.EASY);
             }
         });
         
@@ -109,7 +109,7 @@ public class computerLevelBase extends AnchorPane {
         btnMedium.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //nav.navigatToChooseXO(true, false);
+                nav.navigatToChooseXO(false, Levels.MEDUIM);
             }
         });
     }

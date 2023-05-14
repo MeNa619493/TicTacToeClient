@@ -13,9 +13,9 @@ import javafx.stage.Stage;
 import utilities.Navigation;
 
 public class chooseXOBase extends AnchorPane {
-    boolean isGoingToOneVsOne;
-    boolean isHard;
-    Navigation nav = Navigation.getInstance();
+    private boolean isGoingToOneVsOne;
+    private Levels level;
+    private Navigation nav = Navigation.getInstance();
     public static boolean chooseXorO;
     
     protected final Text tvChoose;
@@ -24,7 +24,7 @@ public class chooseXOBase extends AnchorPane {
     protected final Button btnEndGame;
     protected final ImageView ivLine;
     
-    public chooseXOBase(boolean isGoingToOneVsOne, boolean isHard) {
+    public chooseXOBase(boolean isGoingToOneVsOne, Levels level) {
         tvChoose = new Text();
         btnChooseX = new Button();
         btnChooseO = new Button();
@@ -95,7 +95,7 @@ public class chooseXOBase extends AnchorPane {
         ivLine.setImage(imgLine);
         
         this.isGoingToOneVsOne = isGoingToOneVsOne;
-        this.isHard = isHard;
+        this.level = level;
         
         btnEndGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -124,7 +124,7 @@ public class chooseXOBase extends AnchorPane {
         if(isGoingToOneVsOne){
             nav.navigatToScene(new FxmlOneVsOneBase());
         }else{
-            nav.navigatToOneVsComp(isHard);
+            nav.navigatToOneVsComp(level);
         }
     }
 }

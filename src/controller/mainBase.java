@@ -76,7 +76,7 @@ public class mainBase extends AnchorPane {
         btnPlayVsFriend.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                nav.navigatToChooseXO(true, false);
+                nav.navigatToChooseXO(true, Levels.EASY);
             }
         });
         
